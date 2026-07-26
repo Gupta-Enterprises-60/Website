@@ -12,7 +12,7 @@
 
 backend:
   name: github
-  repo: OWNER/REPOSITORY # <-- CHANGE THIS, e.g. guptaenterprises/website
+  repo: Gupta-Enterprises-60/Website # <-- CHANGE THIS, e.g. guptaenterprises/website
   branch: main
   # Netlify's built-in GitHub OAuth provider handles the login handshake, so no
   # OAuth app of your own is needed. Enable it in the Netlify dashboard under
