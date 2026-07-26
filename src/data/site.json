@@ -16,8 +16,12 @@
     "postalCode": "121004",
     "country": "India",
     "countryCode": "IN",
-    "phones": ["+91 95607 44339", "+91 96253 22563"],
-    "phonesE164": ["+919560744339", "+919625322563"],
+    "phones": [
+      "+91 95607 44339"
+    ],
+    "phonesE164": [
+      "+919560744339"
+    ],
     "email": "guptaenterprises@guptagroups.in",
     "salesEmail": "guptaenterprises@guptagroups.in",
     "careersEmail": "guptaenterprises@guptagroups.in",
@@ -25,7 +29,10 @@
     "hours": "Monday – Saturday, 9:00 – 18:00 IST",
     "responsePromise": "We respond to every enquiry within one working day.",
     "mapQuery": "Plot No. 60, Bazri Industrial Area, Faridabad, Haryana 121004, India",
-    "geo": { "latitude": "28.3670", "longitude": "77.3155" }
+    "geo": {
+      "latitude": "28.3670",
+      "longitude": "77.3155"
+    }
   },
   "social": {
     "linkedin": "",
