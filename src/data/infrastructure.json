@@ -1,0 +1,167 @@
+{
+  "intro": "Two manufacturing units in Faridabad, 1,100 sq. yards of combined floor area, and 144 kVA of standby generation. The layout is deliberate: forming and fabrication in one unit, machining, tooling and inspection in the other, so heavy press work never sits next to precision measurement.",
+
+  "units": [
+    {
+      "name": "Unit 1",
+      "area": "650",
+      "areaUnit": "sq yards",
+      "purpose": "Manufacturing & fabrication floor",
+      "houses": [
+        "35 power presses · 20 – 250 tonnes",
+        "Fibre laser cutting cell",
+        "MIG & projection welding lines",
+        "Special-purpose flaring and boring machines",
+        "Material handling — 2 × 1-tonne crane lifters"
+      ]
+    },
+    {
+      "name": "Unit 2",
+      "area": "450",
+      "areaUnit": "sq yards",
+      "purpose": "Machining, tool room & inspection",
+      "houses": [
+        "CNC / VMC machining centres",
+        "Tool room — dies, fixtures & gauges",
+        "Surface grinding, milling, turning & drilling",
+        "Quality inspection & gauging room",
+        "Finished-goods staging and dispatch"
+      ]
+    }
+  ],
+
+  "headline": [
+    { "value": "1,100", "unit": "sq yards", "label": "Total plant area across two units" },
+    { "value": "144", "unit": "kVA", "label": "Standby power · 62 + 82 kVA DG sets" },
+    { "value": "50+", "unit": "", "label": "Skilled team members" },
+    { "value": "35", "unit": "", "label": "Power presses · 20 to 250 tonnes" }
+  ],
+
+  "power": {
+    "total": "144 kVA",
+    "sets": ["62 kVA DG set", "82 kVA DG set"],
+    "note": "Full standby generation covers the press shop, laser, welding and machining lines. Grid outages do not become delivery delays — a distinction that matters when your line is running to a daily call-off."
+  },
+
+  "pressBreakdown": {
+    "caption": "Power press capacity distribution",
+    "total": 35,
+    "rows": [
+      { "tonnage": "20 T", "count": 5 },
+      { "tonnage": "30 T", "count": 2 },
+      { "tonnage": "50 T", "count": 10 },
+      { "tonnage": "75 T", "count": 4 },
+      { "tonnage": "100 T", "count": 4 },
+      { "tonnage": "150 T", "count": 6 },
+      { "tonnage": "250 T", "count": 4, "highlight": true }
+    ],
+    "note": "250-tonne H-frame capacity handles heavy draw and forming work, while the same shop scales down to precision brackets and clips on 20-tonne presses."
+  },
+
+  "gallerySections": [
+    {
+      "id": "shop-floor",
+      "title": "Shop floor",
+      "description": "Press lines, laser cell and fabrication bays in Unit 1.",
+      "shotList": [
+        "Press line, wide angle down the bay",
+        "250 T H-frame press mid-operation",
+        "Operator at a 50 T press with progressive die",
+        "Laser cutting cell with sheet loaded"
+      ]
+    },
+    {
+      "id": "machines",
+      "title": "Machinery",
+      "description": "Individual machines with the work they run.",
+      "shotList": [
+        "VMC machining centre, door open, part on table",
+        "Fibre laser bed mid-cut",
+        "MIG welding station with fixture",
+        "Projection welding machine"
+      ]
+    },
+    {
+      "id": "tool-room",
+      "title": "Tool room",
+      "description": "Where our dies, fixtures and gauges are built and maintained.",
+      "shotList": [
+        "Surface grinder with die block",
+        "Assembled progressive die on the bench",
+        "Weld fixture with part located",
+        "Tool room overview"
+      ]
+    },
+    {
+      "id": "quality",
+      "title": "Quality inspection",
+      "description": "Incoming, in-process and final inspection stations.",
+      "shotList": [
+        "Inspector with vernier calliper on a part",
+        "Surface plate with height gauge",
+        "Gauge board — plug, ring and radius gauges",
+        "Inspection records being completed"
+      ]
+    },
+    {
+      "id": "warehouse",
+      "title": "Material & warehouse",
+      "description": "Raw material storage and finished-goods staging.",
+      "shotList": [
+        "Sheet and coil stock racking",
+        "Tube stock storage",
+        "Finished goods staged for inspection",
+        "Bin trolleys on the floor"
+      ]
+    },
+    {
+      "id": "dispatch",
+      "title": "Packing & dispatch",
+      "description": "How parts are protected and loaded.",
+      "shotList": [
+        "Parts being packed with separators",
+        "Labelled and sealed cartons/bins",
+        "Loading bay with vehicle",
+        "Dispatch documentation"
+      ]
+    },
+    {
+      "id": "team",
+      "title": "Our team",
+      "description": "The 50+ people behind every part.",
+      "shotList": [
+        "Group photograph on the shop floor",
+        "Tool room team at the bench",
+        "Quality team at the inspection station",
+        "Shift supervisor with production board"
+      ]
+    }
+  ],
+
+  "videoSections": [
+    {
+      "id": "press-shop",
+      "title": "Press shop in operation",
+      "description": "A progressive die running on a power press, from strip feed to finished part.",
+      "duration": "30 – 60 s"
+    },
+    {
+      "id": "laser-cutting",
+      "title": "Laser cutting",
+      "description": "Fibre laser profiling a sheet-metal blank on the 1500 × 3000 mm bed.",
+      "duration": "20 – 40 s"
+    },
+    {
+      "id": "welding",
+      "title": "Fixture welding",
+      "description": "MIG and projection welding a tubular sub-assembly on a dedicated fixture.",
+      "duration": "20 – 40 s"
+    },
+    {
+      "id": "plant-tour",
+      "title": "Plant walkthrough",
+      "description": "A continuous walk through both units — press shop, laser, tool room, inspection and dispatch.",
+      "duration": "90 – 180 s"
+    }
+  ]
+}

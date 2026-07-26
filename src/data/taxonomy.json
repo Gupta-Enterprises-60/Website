@@ -1,0 +1,70 @@
+{
+  "categories": [
+    {
+      "id": "sheet-metal-parts",
+      "name": "Sheet Metal Parts",
+      "shortName": "Sheet metal",
+      "summary": "Stamped, formed and deep-draw components produced on 20 – 250 tonne presses with progressive and deep-draw tooling built in our own tool room.",
+      "examples": "Brackets · panels · reinforcements",
+      "icon": "layers",
+      "order": 1
+    },
+    {
+      "id": "tubular-parts",
+      "name": "Tubular Parts",
+      "shortName": "Tubular",
+      "summary": "Cut, bent, flared and welded tube assemblies for structural and seating applications, produced on dedicated weld fixtures.",
+      "examples": "Footrests · seat frames · tube sub-assemblies",
+      "icon": "git-merge",
+      "order": 2
+    },
+    {
+      "id": "welded-assemblies",
+      "name": "Welded Assemblies",
+      "shortName": "Assemblies",
+      "summary": "Multi-part sub-assemblies joined by fixture-based MIG and projection welding for repeatable, hole-to-hole accurate geometry.",
+      "examples": "Seat structures · mounting assemblies",
+      "icon": "flame",
+      "order": 3
+    },
+    {
+      "id": "machined-components",
+      "name": "Machined Components",
+      "shortName": "Machined",
+      "summary": "Precision-machined parts and features produced on our CNC/VMC line, within a 1300 × 800 mm envelope.",
+      "examples": "Machined brackets · critical features",
+      "icon": "cog",
+      "order": 4
+    },
+    {
+      "id": "tools-dies",
+      "name": "Tools, Dies & Fixtures",
+      "shortName": "Tools & dies",
+      "summary": "Progressive dies, deep-draw tools, weld fixtures and inspection gauges — designed, built and maintained in our own tool room.",
+      "examples": "Dies · fixtures · gauges",
+      "icon": "wrench",
+      "order": 5
+    }
+  ],
+
+  "materials": [
+    { "id": "crca", "name": "CRCA / Cold-rolled steel" },
+    { "id": "hr-steel", "name": "HR steel" },
+    { "id": "ms-tube", "name": "Mild steel tube" },
+    { "id": "ms-bar", "name": "Mild steel bar" },
+    { "id": "stainless", "name": "Stainless steel" },
+    { "id": "tool-steel", "name": "Tool steel" },
+    { "id": "aluminium", "name": "Aluminium" }
+  ],
+
+  "processes": [
+    { "id": "metal-stamping", "name": "Metal stamping", "capability": "metal-stamping" },
+    { "id": "deep-drawing", "name": "Deep drawing", "capability": "metal-stamping" },
+    { "id": "laser-cutting", "name": "Laser cutting", "capability": "laser-cutting" },
+    { "id": "cnc-machining", "name": "CNC / VMC machining", "capability": "cnc-machining" },
+    { "id": "tube-fabrication", "name": "Tube cutting, bending & flaring", "capability": "sheet-metal-fabrication" },
+    { "id": "welding", "name": "MIG & projection welding", "capability": "welding" },
+    { "id": "tool-room", "name": "Tool & die making", "capability": "" },
+    { "id": "powder-coating", "name": "Powder coating & finishing", "capability": "powder-coating" }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "title": "Laser Cutting",
+  "navTitle": "Laser Cutting",
+  "kicker": "Manufacturing capability",
+  "summary": "Fibre laser profiling on a 1500 × 3000 mm bed — HR steel to 25 mm, stainless to 6 mm, no tooling required.",
+  "intro": "Laser cutting is the fastest path from a drawing to a real part, because it needs no tooling at all. Send a DXF or STEP file and we can have profiles cut within days — which makes it the right answer for prototypes, low volumes, and the awkward middle ground where a die cannot be justified yet.",
+  "sections": [
+    {
+      "heading": "No tooling, no tooling lead time",
+      "body": [
+        "A progressive die is the right investment at volume, but it takes weeks to build and money to commit. For a first article, a validation batch, or a part whose design is still moving, the laser removes that decision entirely.",
+        "We routinely cut the first production batch on the laser while the press tool is still being built in our tool room, so your programme timing does not wait on tooling."
+      ]
+    },
+    {
+      "heading": "Edge quality that saves an operation",
+      "body": [
+        "Clean, square, accurate profiles come straight off the bed. For most applications that removes a secondary deburring or finishing operation, which is a real cost and lead-time saving on any part with significant cut length.",
+        "Where a part does need a formed feature or a machined bore, the laser-cut blank feeds directly into our own press and CNC lines rather than shipping out."
+      ]
+    },
+    {
+      "heading": "Working range",
+      "body": [
+        "The 1500 × 3000 mm bed takes standard sheet sizes without splitting, cutting HR steel up to 25 mm thick and stainless steel up to 6 mm.",
+        "Nesting is done to minimise material use — on higher-volume runs this makes a measurable difference to the piece price, and we will show you the nest if material yield matters to your costing."
+      ]
+    }
+  ],
+  "stats": [
+    {
+      "value": "1500 × 3000",
+      "label": "Bed size, mm"
+    },
+    {
+      "value": "25 mm",
+      "label": "HR steel capacity"
+    },
+    {
+      "value": "6 mm",
+      "label": "Stainless steel capacity"
+    }
+  ],
+  "specs": [
+    {
+      "label": "Working area",
+      "value": "1500 × 3000 mm"
+    },
+    {
+      "label": "HR steel cutting",
+      "value": "Up to 25 mm"
+    },
+    {
+      "label": "Stainless steel",
+      "value": "Up to 6 mm"
+    },
+    {
+      "label": "Tooling required",
+      "value": "None"
+    },
+    {
+      "label": "Accepted files",
+      "value": "DXF, DWG, STEP, PDF"
+    },
+    {
+      "label": "Typical use",
+      "value": "Prototypes, blanks, low-volume production"
+    }
+  ],
+  "materials": [
+    "HR steel",
+    "CRCA / Cold-rolled steel",
+    "Stainless steel"
+  ],
+  "applications": [
+    "Prototype parts",
+    "Press blanks",
+    "Gussets and flat brackets",
+    "Base and mounting plates",
+    "Low-volume production profiles"
+  ],
+  "icon": "zap",
+  "inHouse": true,
+  "order": 3,
+  "seo": {
+    "title": "Laser Cutting — HR Steel to 25 mm",
+    "description": "Fibre laser cutting in Faridabad. HR steel up to 25 mm, stainless to 6 mm, 1500 x 3000 mm bed. No tooling, fast turnaround from DXF or STEP files."
+  }
+}

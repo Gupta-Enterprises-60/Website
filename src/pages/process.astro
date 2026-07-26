@@ -1,0 +1,325 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import SectionHead from '../components/sections/SectionHead.astro';
+import CTABand from '../components/sections/CTABand.astro';
+import Icon from '../components/ui/Icon.astro';
+import company from '../data/company.json';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Our process' }];
+
+const stepIcons = ['file-text', 'wrench', 'package', 'cog', 'flame', 'truck'];
+
+const whatWeNeed = [
+  { label: 'Drawing', value: 'PDF, DWG, DXF or STEP' },
+  { label: 'Material', value: 'Grade and thickness' },
+  { label: 'Volume', value: 'Annual quantity & call-off pattern' },
+  { label: 'Tolerances', value: 'Critical dimensions identified' },
+  { label: 'Finish', value: 'Coating spec, if any' },
+  { label: 'Timing', value: 'Required delivery date' },
+];
+---
+
+<BaseLayout
+  title="Our Process — Enquiry to Dispatch"
+  description="How a component moves through our shop: enquiry and feasibility, in-house tooling, material sourcing, fabrication, welding, inspection and dispatch."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Our process"
+    title="From enquiry to dispatch — one controlled flow"
+    lead="Because tooling, fabrication and inspection are all in-house, there is no point in this sequence where your part leaves our control. Here is exactly what happens, and what you get at each stage."
+    breadcrumbs={crumbs}
+    align="wide"
+    primaryCta={{ label: 'Start with a drawing', href: '/rfq' }}
+  />
+
+  <!-- ===== Steps ===== -->
+  <section class="section">
+    <div class="container">
+      <ol class="steps">
+        {
+          company.process.map((step, i) => (
+            <li class="step" data-reveal data-reveal-delay={(i % 2) * 70}>
+              <div class="step__rail" aria-hidden="true">
+                <span class="step__num">{step.step}</span>
+              </div>
+              <div class="step__body">
+                <div class="step__head">
+                  <Icon name={stepIcons[i] ?? 'cog'} size={22} stroke={1.7} class="step__icon" />
+                  <h2 class="step__title">{step.title}</h2>
+                </div>
+                <p class="step__text">{step.text}</p>
+                <p class="step__output">
+                  <span class="step__output-label">You get</span>
+                  <span class="step__output-value">{step.output}</span>
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== What we need from you ===== -->
+  <section class="section on-dark">
+    <div class="container">
+      <div class="split">
+        <div data-reveal>
+          <p class="eyebrow">Before we can quote</p>
+          <h2>What we need from you</h2>
+          <p class="lead needs__lead">
+            Most quotation delays are caused by missing information rather than busy suppliers. Send
+            these six things and a straightforward part typically comes back costed in two to three
+            working days.
+          </p>
+          <div class="btn-row needs__ctas">
+            <a href="/rfq" class="btn btn--primary">Submit an RFQ</a>
+            <a href="/blog/drawing-package-for-accurate-quotes" class="btn btn--outline">
+              Read the full checklist
+            </a>
+          </div>
+        </div>
+
+        <div data-reveal data-reveal-delay="80">
+          <ul class="spec-list needs__list">
+            {
+              whatWeNeed.map((item) => (
+                <li>
+                  <span class="spec__label">{item.label}</span>
+                  <span class="spec__value">{item.value}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <p class="needs__note">
+            Do not have all of it? Send what you have. We will tell you what is missing rather than
+            guess and quote wrong.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Timeline expectations ===== -->
+  <section class="section">
+    <div class="container">
+      <SectionHead
+        kicker="What to expect"
+        title="Realistic timings, stated upfront"
+        lead="These are the timings we work to. Where a specific programme cannot meet them, we say so at quotation rather than at delivery."
+        wide
+      />
+
+      <div class="table-scroll" data-reveal>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th scope="col">Stage</th>
+              <th scope="col">Typical timing</th>
+              <th scope="col">What drives it</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Enquiry acknowledged</th>
+              <td class="num">1 working day</td>
+              <td>Always. Every enquiry gets a human response.</td>
+            </tr>
+            <tr>
+              <th scope="row">Quotation — existing process</th>
+              <td class="num">2 – 3 working days</td>
+              <td>Material availability and whether the part fits a proven route.</td>
+            </tr>
+            <tr>
+              <th scope="row">Quotation — new tooling required</th>
+              <td class="num">5 – 10 working days</td>
+              <td>We cost the die properly rather than estimate it.</td>
+            </tr>
+            <tr>
+              <th scope="row">First article — laser cut</th>
+              <td class="num">Days</td>
+              <td>No tooling needed. Limited by material and queue only.</td>
+            </tr>
+            <tr>
+              <th scope="row">First article — new press tool</th>
+              <td class="num">Weeks</td>
+              <td>Die design, build and try-out in our tool room.</td>
+            </tr>
+            <tr>
+              <th scope="row">Volume production</th>
+              <td class="num">Per agreed schedule</td>
+              <td>Press capacity, call-off pattern and material lead time.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="timing-note" data-reveal>
+        <Icon name="clock" size={17} />
+        <span>
+          Where timing is critical, we routinely run the first production batch on the laser while
+          the press tool is being built — so your programme starts on time and a late design change
+          costs a drawing revision instead of a die rebuild.
+        </span>
+      </p>
+    </div>
+  </section>
+
+  <CTABand />
+</BaseLayout>
+
+<style>
+  /* ---- Steps --------------------------------------------------------------- */
+
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  @media (max-width: 820px) {
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .step {
+    background: var(--white);
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: var(--sp-5);
+    padding: var(--sp-6);
+  }
+
+  @media (max-width: 480px) {
+    .step {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sp-4);
+    }
+  }
+
+  .step__rail {
+    display: flex;
+    justify-content: center;
+  }
+
+  .step__num {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--ink-150);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 480px) {
+    .step__rail {
+      justify-content: flex-start;
+    }
+  }
+
+  .step__head {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    margin-bottom: var(--sp-3);
+  }
+
+  .step__icon {
+    color: var(--ge-red-ink);
+    flex: none;
+  }
+
+  .step__title {
+    font-size: var(--fs-h4);
+    margin: 0;
+  }
+
+  .step__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0 0 var(--sp-5);
+  }
+
+  .step__output {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 0;
+    padding-top: var(--sp-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .step__output-label {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-400);
+  }
+
+  .step__output-value {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--ge-red-ink);
+  }
+
+  /* ---- Needs --------------------------------------------------------------- */
+
+  .needs__lead {
+    margin-top: var(--sp-5);
+    max-width: 52ch;
+  }
+
+  .needs__ctas {
+    margin-top: var(--sp-6);
+  }
+
+  .needs__list {
+    border-top-color: var(--border-on-dark);
+  }
+
+  .needs__list :global(li) {
+    border-bottom-color: var(--border-on-dark);
+  }
+
+  .needs__note {
+    font-size: var(--fs-sm);
+    color: var(--ink-400);
+    margin: var(--sp-5) 0 0;
+    line-height: 1.6;
+  }
+
+  /* ---- Timing note ----------------------------------------------------------- */
+
+  .timing-note {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: var(--sp-3);
+    align-items: start;
+    margin: var(--sp-6) 0 0;
+    padding: var(--sp-5);
+    background: var(--ge-red-wash);
+    border-left: 3px solid var(--ge-red);
+    font-size: var(--fs-sm);
+    color: var(--ink-700);
+    line-height: 1.65;
+    max-width: 82ch;
+  }
+
+  .timing-note :global(svg) {
+    color: var(--ge-red-ink);
+    margin-top: 0.2rem;
+  }
+</style>

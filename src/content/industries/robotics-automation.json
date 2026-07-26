@@ -1,0 +1,32 @@
+{
+  "title": "Robotics & Automation",
+  "summary": "Precision brackets, machined mounting components and fabricated frames for automation equipment.",
+  "intro": "Automation equipment is tolerance-sensitive in a way that suits our combination of pressing and machining. A mounting bracket that positions a sensor or an actuator has to locate accurately or the machine does not work — which puts the requirement squarely in machined-feature territory.",
+  "body": [
+    "Our route handles both parts of that: the bracket body formed or laser-cut economically, and the critical bores, faces and tapped features machined on our CNC/VMC line within a 1300 × 800 mm envelope. Same supplier, one inspection record, no shipping parts out for a single machining operation.",
+    "We also build jigs, fixtures and mounting frames as custom fabrication work, which is often what automation integrators actually need in small quantities.",
+    "This is a target sector. Our credential is precision discipline proven on automotive tooling rather than a portfolio of robotics customers, and we would rather you evaluate us on a trial part than on a claim."
+  ],
+  "core": false,
+  "status": "Target sector",
+  "componentTypes": [
+    "Precision mounting brackets",
+    "Machined locating components",
+    "Equipment frames and sub-frames",
+    "Jigs and fixtures",
+    "Guards and enclosures"
+  ],
+  "capabilitiesUsed": [
+    "cnc-machining",
+    "laser-cutting",
+    "custom-fabrication",
+    "sheet-metal-fabrication",
+    "prototype-development"
+  ],
+  "icon": "bot",
+  "order": 5,
+  "seo": {
+    "title": "Robotics & Automation Components",
+    "description": "Precision brackets, machined mounting components and fabricated frames for robotics and automation equipment. CNC machining and laser cutting in Faridabad, India."
+  }
+}

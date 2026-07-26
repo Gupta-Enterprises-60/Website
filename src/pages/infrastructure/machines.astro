@@ -1,0 +1,461 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import CTABand from '../../components/sections/CTABand.astro';
+import Icon from '../../components/ui/Icon.astro';
+import quality from '../../data/quality.json';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Infrastructure', href: '/infrastructure' },
+  { label: 'Machine list' },
+];
+
+const machines = await getCollection('machines');
+const total = machines.reduce((sum, m) => sum + m.data.quantity, 0);
+
+const groupMeta: { id: string; label: string; icon: string; note: string }[] = [
+  {
+    id: 'press-shop',
+    label: 'Press shop',
+    icon: 'layers',
+    note: '35 power presses spanning 20 to 250 tonnes, running progressive, deep-draw and trim tooling built in our own tool room.',
+  },
+  {
+    id: 'laser',
+    label: 'Laser cutting',
+    icon: 'zap',
+    note: 'Fibre laser profiling with no tooling requirement — the fastest route from a drawing to a real part.',
+  },
+  {
+    id: 'machining',
+    label: 'CNC & machining',
+    icon: 'cog',
+    note: 'Milling, turning and drilling for production components and for tooling work.',
+  },
+  {
+    id: 'welding',
+    label: 'Welding & special-purpose',
+    icon: 'flame',
+    note: 'Fifteen fixtured welding stations plus dedicated single-purpose machines for high-volume tube operations.',
+  },
+  {
+    id: 'tool-room',
+    label: 'Tool room',
+    icon: 'wrench',
+    note: 'Where our dies, fixtures and gauges are designed, built and maintained — in-house since 2010.',
+  },
+  {
+    id: 'material-handling',
+    label: 'Material handling',
+    icon: 'package',
+    note: 'Safe die changeover on heavier presses and movement of raw material and finished assemblies.',
+  },
+  {
+    id: 'power',
+    label: 'Power backup',
+    icon: 'gauge',
+    note: '144 kVA of standby generation covering the press shop, laser, welding and machining lines.',
+  },
+];
+
+const groups = groupMeta
+  .map((meta) => ({
+    ...meta,
+    machines: machines
+      .filter((m) => m.data.group === meta.id)
+      .sort((a, b) => a.data.order - b.data.order),
+  }))
+  .filter((g) => g.machines.length > 0);
+---
+
+<BaseLayout
+  title="Machine List — Equipment Inventory"
+  description="The full machine list: 35 power presses (20–250 T), fibre laser cutting, CNC/VMC machining, Traub lathe, 15 welding stations and tool room equipment."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Infrastructure"
+    title="Complete machine list"
+    lead="Published in full, with capacity and application for every machine. If your vendor-registration pack needs this as a formatted document, ask and we will send it."
+    breadcrumbs={crumbs}
+    stats={[
+      { label: 'Machines total', value: String(total) },
+      { label: 'Equipment groups', value: String(groups.length) },
+      { label: 'Press capacity', value: '20 – 250 T' },
+    ]}
+  />
+
+  <!-- ===== Jump nav ===== -->
+  <section class="section--tight jump-wrap">
+    <div class="container">
+      <nav class="jump" aria-label="Equipment groups">
+        {
+          groups.map((group) => (
+            <a href={`#${group.id}`} class="jump__link">
+              <Icon name={group.icon} size={16} stroke={1.8} />
+              <span>{group.label}</span>
+              <span class="jump__count mono">
+                {group.machines.reduce((s, m) => s + m.data.quantity, 0)}
+              </span>
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+  </section>
+
+  <!-- ===== Machine tables ===== -->
+  <section class="section">
+    <div class="container">
+      {
+        groups.map((group) => (
+          <section class="mgroup" id={group.id}>
+            <header class="mgroup__head" data-reveal>
+              <span class="mgroup__icon">
+                <Icon name={group.icon} size={22} stroke={1.7} />
+              </span>
+              <div>
+                <h2 class="mgroup__title">{group.label}</h2>
+                <p class="mgroup__note">{group.note}</p>
+              </div>
+              <span class="mgroup__total">
+                <strong>{group.machines.reduce((s, m) => s + m.data.quantity, 0)}</strong>
+                <span>machines</span>
+              </span>
+            </header>
+
+            <div class="table-scroll" data-reveal>
+              <table class="data-table mtable">
+                <thead>
+                  <tr>
+                    <th scope="col">Machine</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Capacity</th>
+                    <th scope="col">Specification &amp; application</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {group.machines.map((machine) => (
+                    <tr>
+                      <th scope="row" class="mtable__name">
+                        {machine.data.name}
+                        {machine.data.make && <span class="mtable__make">{machine.data.make}</span>}
+                      </th>
+                      <td class="num mtable__qty">{machine.data.quantity}</td>
+                      <td class="mono mtable__cap">{machine.data.capacity ?? '—'}</td>
+                      <td>
+                        <ul class="mtable__specs">
+                          {machine.data.specs
+                            .filter((s) => s.label !== 'Quantity')
+                            .map((spec) => (
+                              <li>
+                                <span>{spec.label}</span>
+                                <span class="mono">{spec.value}</span>
+                              </li>
+                            ))}
+                        </ul>
+                        {machine.data.notes && <p class="mtable__notes">{machine.data.notes}</p>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ===== Inspection equipment ===== -->
+  <section class="section section--sunken">
+    <div class="container">
+      <div class="split">
+        <div data-reveal>
+          <p class="eyebrow">Measurement & gauging</p>
+          <h2>Inspection equipment</h2>
+          <p class="lead insp__lead">
+            The instruments behind our 100% inspection commitment. Every part is measured against
+            your drawing before it is packed — incoming, in-process and final.
+          </p>
+          <a href="/quality" class="btn btn--outline insp__cta">
+            How we inspect
+            <Icon name="arrow-right" size={17} class="icon-arrow" />
+          </a>
+        </div>
+
+        <div data-reveal data-reveal-delay="80">
+          <ul class="insp">
+            {
+              quality.instruments.map((instrument) => (
+                <li>
+                  <span class="insp__name">{instrument.name}</span>
+                  <span class="insp__use">{instrument.use}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABand
+    kicker="Capacity questions"
+    title="Not sure whether your part fits our machines?"
+    text="Send the drawing with material and thickness. We will confirm against the specific press, laser or machining envelope rather than guess."
+  />
+</BaseLayout>
+
+<style>
+  /* ---- Jump nav ------------------------------------------------------------------- */
+
+  .jump-wrap {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+  }
+
+  .jump__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid var(--border-strong);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--ink-700);
+    text-decoration: none;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease);
+  }
+
+  .jump__link:hover {
+    background: var(--ink-900);
+    border-color: var(--ink-900);
+    color: #fff;
+  }
+
+  .jump__link :global(svg) {
+    color: var(--ge-red-ink);
+  }
+
+  .jump__link:hover :global(svg) {
+    color: #ff6b66;
+  }
+
+  .jump__count {
+    font-size: var(--fs-xs);
+    color: var(--ink-400);
+    padding-left: 0.4rem;
+    border-left: 1px solid var(--border-strong);
+  }
+
+  .jump__link:hover .jump__count {
+    color: var(--ink-300);
+    border-left-color: rgba(255, 255, 255, 0.2);
+  }
+
+  /* ---- Group ---------------------------------------------------------------------- */
+
+  .mgroup {
+    scroll-margin-top: calc(var(--header-h) + 2rem);
+  }
+
+  .mgroup + .mgroup {
+    margin-top: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+
+  .mgroup__head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--sp-4);
+    align-items: start;
+    padding-bottom: var(--sp-5);
+    margin-bottom: var(--sp-5);
+    border-bottom: 2px solid var(--ink-900);
+  }
+
+  @media (max-width: 640px) {
+    .mgroup__head {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+  }
+
+  .mgroup__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: var(--ge-red-ink);
+    color: #fff;
+    flex: none;
+  }
+
+  .mgroup__title {
+    font-size: var(--fs-h3);
+    margin: 0 0 var(--sp-2);
+  }
+
+  .mgroup__note {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+    max-width: 70ch;
+  }
+
+  .mgroup__total {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 640px) {
+    .mgroup__total {
+      display: none;
+    }
+  }
+
+  .mgroup__total strong {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .mgroup__total span:last-child {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    margin-top: 0.2rem;
+  }
+
+  /* ---- Table ------------------------------------------------------------------------ */
+
+  .mtable {
+    min-width: 720px;
+  }
+
+  .mtable__name {
+    font-weight: 600;
+    color: var(--ink-900);
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: var(--fs-sm);
+    border-bottom: 1px solid var(--border);
+    padding: 0.95rem var(--sp-4) 0.95rem 0;
+    vertical-align: top;
+    white-space: normal;
+    width: 210px;
+  }
+
+  .mtable__make {
+    display: block;
+    font-size: var(--fs-xs);
+    font-weight: 400;
+    color: var(--text-subtle);
+    margin-top: 0.15rem;
+  }
+
+  .mtable__qty {
+    width: 60px;
+    color: var(--ge-red-ink);
+    font-weight: 600;
+  }
+
+  .mtable__cap {
+    width: 170px;
+    color: var(--ink-800);
+  }
+
+  .mtable__specs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .mtable__specs li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: var(--fs-xs);
+  }
+
+  .mtable__specs li span:first-child {
+    color: var(--text-subtle);
+    min-width: 120px;
+  }
+
+  .mtable__specs li span:last-child {
+    color: var(--ink-800);
+    font-weight: 500;
+  }
+
+  .mtable__notes {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin: var(--sp-3) 0 0;
+    padding-top: var(--sp-3);
+    border-top: 1px dashed var(--border);
+    max-width: 60ch;
+  }
+
+  /* ---- Inspection ---------------------------------------------------------------------- */
+
+  .insp__lead {
+    margin-top: var(--sp-5);
+    max-width: 50ch;
+  }
+
+  .insp__cta {
+    margin-top: var(--sp-6);
+  }
+
+  .insp {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .insp li {
+    display: grid;
+    grid-template-columns: minmax(0, 160px) minmax(0, 1fr);
+    gap: var(--sp-4);
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (max-width: 520px) {
+    .insp li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.15rem;
+    }
+  }
+
+  .insp__name {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--ink-900);
+  }
+
+  .insp__use {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+</style>

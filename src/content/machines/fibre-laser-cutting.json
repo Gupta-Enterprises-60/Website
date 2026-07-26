@@ -1,0 +1,30 @@
+{
+  "name": "Fibre Laser Cutting Machine",
+  "group": "laser",
+  "quantity": 1,
+  "capacity": "1500 × 3000 mm bed",
+  "order": 10,
+  "specs": [
+    {
+      "label": "Working area",
+      "value": "1500 × 3000 mm"
+    },
+    {
+      "label": "HR steel",
+      "value": "Up to 25 mm"
+    },
+    {
+      "label": "Stainless steel",
+      "value": "Up to 6 mm"
+    },
+    {
+      "label": "Tooling required",
+      "value": "None"
+    },
+    {
+      "label": "Input files",
+      "value": "DXF, DWG, STEP, PDF"
+    }
+  ],
+  "notes": "Clean, accurate profiles straight off the bed — usually removes a secondary finishing operation."
+}

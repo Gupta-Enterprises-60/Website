@@ -1,0 +1,67 @@
+{
+  "name": "Laser-Cut Profiles & Blanks",
+  "code": "GE-LC-001",
+  "category": "sheet-metal-parts",
+  "summary": "Tooling-free profiles and blanks cut from a 1500 × 3000 mm bed — HR steel to 25 mm, stainless to 6 mm.",
+  "description": "Precision profiles, blanks, gussets and flat components cut on our fibre laser. Because laser cutting needs no dedicated tooling, it is the fastest route from drawing to first part — practical for prototypes, low volumes, and the intermediate batches that fall awkwardly between a hand-cut sample and a die investment. Edge quality comes off the bed clean and square enough that most parts skip a secondary finishing operation entirely. Send a DXF or STEP file and we can usually cut within days.",
+  "images": [],
+  "placeholderHint": "Photograph a nested sheet on the laser bed after cutting, plus a few finished profiles.",
+  "applications": [
+    "Prototype and low-volume parts",
+    "Press blanks",
+    "Gussets and flat brackets",
+    "Base plates and mounting plates"
+  ],
+  "materials": [
+    "HR steel",
+    "CRCA / Cold-rolled steel",
+    "Stainless steel"
+  ],
+  "processes": [
+    "laser-cutting"
+  ],
+  "industries": [
+    "automotive",
+    "industrial-equipment",
+    "electrical",
+    "renewable-energy",
+    "agriculture"
+  ],
+  "specs": [
+    {
+      "label": "Bed size",
+      "value": "1500 × 3000 mm"
+    },
+    {
+      "label": "HR steel",
+      "value": "Up to 25 mm"
+    },
+    {
+      "label": "Stainless steel",
+      "value": "Up to 6 mm"
+    },
+    {
+      "label": "Tooling required",
+      "value": "None"
+    },
+    {
+      "label": "File formats",
+      "value": "DXF, DWG, STEP, PDF"
+    },
+    {
+      "label": "Manufactured to",
+      "value": "Customer drawing & specification"
+    }
+  ],
+  "featured": true,
+  "isNew": false,
+  "order": 5,
+  "related": [
+    "structural-brackets-reinforcements",
+    "machined-components-features"
+  ],
+  "seo": {
+    "title": "Laser-Cut Profiles & Blanks",
+    "description": "Fibre laser cutting on a 1500 x 3000 mm bed. HR steel to 25 mm, stainless to 6 mm. No tooling, fast turnaround for prototypes and production blanks."
+  }
+}

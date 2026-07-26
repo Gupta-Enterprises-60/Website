@@ -1,0 +1,106 @@
+{
+  "title": "Metal Stamping & Press Work",
+  "navTitle": "Metal Stamping",
+  "kicker": "Manufacturing capability",
+  "summary": "35 power presses from 20 to 250 tonnes, running progressive and deep-draw tooling built in our own tool room.",
+  "intro": "The press shop is where Gupta Enterprises started in 2004, and it is still the core of the business. Thirty-five power presses spanning 20 to 250 tonnes mean a precision clip and a heavy structural draw part can run on the same floor, in the same week, under the same quality system — so you are not re-sourcing a programme when volumes ramp.",
+  "sections": [
+    {
+      "heading": "Capacity that scales with your programme",
+      "body": [
+        "Our press line is deliberately broad rather than deep in any one tonnage. Ten 50-tonne presses handle the mid-range volume work that makes up most automotive bracket and panel demand; six 150-tonne and four 250-tonne machines take on heavier forming and draw operations; and five 20-tonne presses run small precision parts economically.",
+        "The practical benefit is continuity. A part that starts as a 500-piece trial batch does not need a new supplier when it becomes a 50,000-piece annual call-off. Same shop, same tooling, same inspection records."
+      ]
+    },
+    {
+      "heading": "Tooling is the real variable",
+      "body": [
+        "Press capacity is easy to buy. Tooling that holds tolerance across a production run is not. Since 2010 we have designed, built and maintained our own progressive dies, deep-draw tools and trim dies in an in-house tool room.",
+        "This changes what we can commit to. When a die needs a radius adjustment or a punch replaced, it moves twenty metres to the tool room instead of onto a lorry. Revisions take days. A tooling problem never sits in an outside vendor's queue behind their other customers."
+      ]
+    },
+    {
+      "heading": "What we run",
+      "body": [
+        "Progressive die work for higher-volume brackets, clips and retainers; single-stage and transfer forming for larger panels; and multi-stage deep drawing for cups, shells and housings on the 250-tonne H-frame presses.",
+        "Blanks come either from the die itself or from our laser, which is often the faster route for a first production batch while a progressive tool is still being built."
+      ]
+    }
+  ],
+  "stats": [
+    {
+      "value": "35",
+      "label": "Power presses"
+    },
+    {
+      "value": "20 – 250 T",
+      "label": "Tonnage range"
+    },
+    {
+      "value": "In-house",
+      "label": "Die design & build"
+    }
+  ],
+  "specs": [
+    {
+      "label": "Total presses",
+      "value": "35"
+    },
+    {
+      "label": "Tonnage range",
+      "value": "20 – 250 tonnes"
+    },
+    {
+      "label": "250 T presses",
+      "value": "4 × H-frame"
+    },
+    {
+      "label": "150 T presses",
+      "value": "6"
+    },
+    {
+      "label": "100 T presses",
+      "value": "4"
+    },
+    {
+      "label": "75 T presses",
+      "value": "4"
+    },
+    {
+      "label": "50 T presses",
+      "value": "10"
+    },
+    {
+      "label": "30 T presses",
+      "value": "2"
+    },
+    {
+      "label": "20 T presses",
+      "value": "5"
+    },
+    {
+      "label": "Tooling types",
+      "value": "Progressive, deep-draw, trim"
+    }
+  ],
+  "materials": [
+    "CRCA / Cold-rolled steel",
+    "HR steel",
+    "Stainless steel",
+    "Aluminium"
+  ],
+  "applications": [
+    "Mounting brackets",
+    "Body panels and reinforcements",
+    "Clips and retainers",
+    "Drawn cups and housings",
+    "Structural stampings"
+  ],
+  "icon": "layers",
+  "inHouse": true,
+  "order": 1,
+  "seo": {
+    "title": "Metal Stamping — 35 Presses, 20–250 Tonnes",
+    "description": "Metal stamping in Faridabad on 35 power presses from 20 to 250 tonnes, with progressive and deep-draw tooling designed and built in our own tool room."
+  }
+}

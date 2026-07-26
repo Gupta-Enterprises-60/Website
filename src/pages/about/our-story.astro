@@ -1,0 +1,346 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import CTABand from '../../components/sections/CTABand.astro';
+import SmartImage from '../../components/ui/SmartImage.astro';
+import company from '../../data/company.json';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'About us', href: '/about' },
+  { label: 'Our story' },
+];
+---
+
+<BaseLayout
+  title="Our Story — Two Decades of Press Work"
+  description="How Gupta Enterprises grew from a single 2004 press shop into a two-unit precision manufacturer with 35 presses and its own tool room."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Our journey"
+    title="From a Faridabad press shop to a trusted supplier"
+    lead="Two decades, one discipline: sheet-metal work done right. Here is what actually changed along the way — and what deliberately did not."
+    breadcrumbs={crumbs}
+    align="wide"
+  />
+
+  <!-- ===== Timeline ===== -->
+  <section class="section">
+    <div class="container">
+      <ol class="timeline">
+        {
+          company.timeline.map((entry, i) => (
+            <li class:list={['tl', entry.current && 'tl--now']} data-reveal data-reveal-delay={i * 60}>
+              <div class="tl__marker" aria-hidden="true">
+                <span class="tl__dot" />
+              </div>
+              <div class="tl__body">
+                <p class="tl__year">{entry.year}</p>
+                <h2 class="tl__title">{entry.title}</h2>
+                <p class="tl__text">{entry.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== Narrative ===== -->
+  <section class="section section--sunken">
+    <div class="container">
+      <div class="story">
+        <div class="story__text" data-reveal>
+          <p class="eyebrow">The long version</p>
+          <h2 class="story__heading">Twenty years of the same standard</h2>
+          <div class="prose story__prose">
+            {company.story.map((paragraph) => <p>{paragraph}</p>)}
+          </div>
+        </div>
+
+        <aside class="story__aside" data-reveal data-reveal-delay="100">
+          <SmartImage
+            src=""
+            alt=""
+            ratio="3 / 4"
+            placeholderLabel="Founders / shop floor"
+            placeholderHint="A portrait of the founding team, or an early photograph of the original press shop. Portrait orientation."
+            placeholderIcon="users"
+          />
+          <figure class="pull">
+            <blockquote>
+              <p>
+                Quality, cost and lead time stopped being things we negotiated with suppliers and
+                became things we controlled.
+              </p>
+            </blockquote>
+            <figcaption>On bringing tooling in-house, 2010</figcaption>
+          </figure>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== What hasn't changed ===== -->
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="constants" data-reveal>
+        <p class="eyebrow">What has not changed</p>
+        <h2>Three things we have never traded away</h2>
+        <ul class="constants__list">
+          <li>
+            <h3>Every part gets inspected</h3>
+            <p>
+              Not a sample from the batch — every part, against the customer drawing, before it is
+              packed. It has been the rule since the first order and it has never been relaxed for a
+              delivery date.
+            </p>
+          </li>
+          <li>
+            <h3>We build our own tooling</h3>
+            <p>
+              Since 2010, the dies, fixtures and gauges that shape our customers' parts are designed
+              and maintained by the same people accountable for the parts. It is slower to set up
+              and far faster to fix.
+            </p>
+          </li>
+          <li>
+            <h3>We say no when the answer is no</h3>
+            <p>
+              If a tolerance is not achievable with the specified process, or a date is not
+              realistic, our customers hear it at quotation. It costs us some orders. It is why the
+              ones we take tend to become long-term programmes.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <CTABand
+    kicker="Next chapter"
+    title="We would like your programme in it."
+    text="Send a drawing and we will tell you honestly whether we are the right supplier for it — including when we are not."
+  />
+</BaseLayout>
+
+<style>
+  /* ---- Timeline -----------------------------------------------------------
+     Vertical rail on all viewports rather than the horizontal deck layout —
+     it reads better on a phone and gives each milestone room to breathe.
+     ---------------------------------------------------------------------- */
+
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: milestone;
+  }
+
+  .tl {
+    display: grid;
+    grid-template-columns: minmax(0, 200px) 40px minmax(0, 1fr);
+    gap: 0;
+  }
+
+  @media (max-width: 760px) {
+    .tl {
+      grid-template-columns: 32px minmax(0, 1fr);
+    }
+  }
+
+  .tl__marker {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    grid-column: 2;
+  }
+
+  @media (max-width: 760px) {
+    .tl__marker {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      justify-content: flex-start;
+    }
+  }
+
+  /* The rail itself */
+  .tl__marker::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border-strong);
+  }
+
+  .tl:first-child .tl__marker::before {
+    top: 1.55rem;
+  }
+
+  .tl:last-child .tl__marker::before {
+    bottom: auto;
+    height: 1.55rem;
+  }
+
+  .tl__dot {
+    position: relative;
+    z-index: 1;
+    width: 11px;
+    height: 11px;
+    margin-top: 1.05rem;
+    background: var(--ink-900);
+    border: 2px solid var(--white);
+    box-shadow: 0 0 0 1px var(--ink-900);
+  }
+
+  .tl--now .tl__dot {
+    background: var(--ge-red);
+    box-shadow: 0 0 0 1px var(--ge-red), 0 0 0 5px var(--ge-red-wash);
+  }
+
+  .tl__body {
+    padding: 0 0 clamp(2.5rem, 1.5rem + 3vw, 4rem) var(--sp-6);
+    grid-column: 3;
+  }
+
+  @media (max-width: 760px) {
+    .tl__body {
+      grid-column: 2;
+      padding-left: var(--sp-5);
+    }
+  }
+
+  .tl:last-child .tl__body {
+    padding-bottom: 0;
+  }
+
+  .tl__year {
+    grid-column: 1;
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: 1;
+    color: var(--ink-300);
+    margin: 0.5rem 0 var(--sp-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tl--now .tl__year {
+    color: var(--ge-red);
+  }
+
+  /* On wide viewports the year sits in the left column, aligned to the rail. */
+  @media (min-width: 761px) {
+    .tl__year {
+      position: absolute;
+      transform: translateX(calc(-100% - var(--sp-6)));
+      margin-top: 0;
+      text-align: right;
+      width: 200px;
+    }
+    .tl__body {
+      position: relative;
+    }
+  }
+
+  .tl__title {
+    font-size: var(--fs-h3);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .tl__text {
+    font-size: var(--fs-lead);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    margin: 0;
+    max-width: 58ch;
+  }
+
+  /* ---- Narrative ---------------------------------------------------------- */
+
+  .story {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    align-items: start;
+  }
+
+  @media (max-width: 940px) {
+    .story {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .story__heading {
+    margin-bottom: var(--sp-6);
+  }
+
+  .story__prose {
+    max-width: 68ch;
+  }
+
+  .story__aside :global(img),
+  .story__aside :global(.ph) {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .pull {
+    margin: var(--sp-5) 0 0;
+    padding: var(--sp-5);
+    background: var(--ink-900);
+    color: #fff;
+    border-left: 3px solid var(--ge-red);
+  }
+
+  .pull blockquote {
+    margin: 0;
+  }
+
+  .pull p {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: var(--tracking-tight);
+    margin: 0;
+  }
+
+  .pull figcaption {
+    font-size: var(--fs-xs);
+    color: var(--ink-400);
+    margin-top: var(--sp-4);
+    padding-top: var(--sp-3);
+    border-top: 1px solid var(--border-on-dark);
+  }
+
+  /* ---- Constants ----------------------------------------------------------- */
+
+  .constants__list {
+    list-style: none;
+    padding: 0;
+    margin: var(--sp-7) 0 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .constants__list li {
+    padding: var(--sp-6) 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .constants__list h3 {
+    font-size: var(--fs-h4);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .constants__list p {
+    font-size: var(--fs-body);
+    color: var(--text-muted);
+    line-height: var(--lh-relaxed);
+    margin: 0;
+    max-width: 66ch;
+  }
+</style>

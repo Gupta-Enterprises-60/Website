@@ -1,0 +1,90 @@
+{
+  "title": "Welding & Assembly",
+  "navTitle": "Welding",
+  "kicker": "Manufacturing capability",
+  "summary": "12 MIG stations at 400 A and 3 projection welding machines at 75 kVA, all working on dedicated fixtures.",
+  "intro": "Welding is where component tolerances either survive or disappear. Fifteen welding stations — twelve MIG at 400 A and three projection at 75 kVA — all run on dedicated fixtures, so the geometry that matters repeats across the batch instead of depending on which operator is on shift.",
+  "sections": [
+    {
+      "heading": "Fixtures, not freehand",
+      "body": [
+        "Every welded assembly we produce is located on a fixture built in our own tool room for that specific part. Components are clamped in known positions, welded, and released — which means hole-to-hole dimensions and frame squareness are set by the fixture rather than by an operator's judgement.",
+        "This is the difference between a sub-assembly that drops into your line and one that needs rework at goods-inward. It is also why we can build fixtures quickly when a part changes: the tool room is twenty metres from the weld bay."
+      ]
+    },
+    {
+      "heading": "MIG and projection",
+      "body": [
+        "Twelve 400 A MIG stations handle structural and general joining across sheet and tube. Three 75 kVA projection welding machines attach nuts, studs and small components with consistent, repeatable joints and no consumable weld wire.",
+        "Choosing between them is a design conversation we are happy to have at quotation stage — projection welding is often significantly cheaper at volume where the joint allows it."
+      ]
+    },
+    {
+      "heading": "Supplied as finished sub-assemblies",
+      "body": [
+        "Most of our welding output ships as a finished sub-assembly rather than loose parts: seat frames, footrest assemblies, mounting structures.",
+        "Removing an assembly operation from your line is usually worth more than the component-level saving of buying pieces separately — and it puts responsibility for the assembled geometry with the people holding the fixtures."
+      ]
+    }
+  ],
+  "stats": [
+    {
+      "value": "15",
+      "label": "Welding stations"
+    },
+    {
+      "value": "400 A",
+      "label": "MIG station rating"
+    },
+    {
+      "value": "75 kVA",
+      "label": "Projection welders"
+    }
+  ],
+  "specs": [
+    {
+      "label": "MIG welding",
+      "value": "12 stations · 400 A"
+    },
+    {
+      "label": "Projection welding",
+      "value": "3 machines · 75 kVA"
+    },
+    {
+      "label": "Total stations",
+      "value": "15"
+    },
+    {
+      "label": "Fixturing",
+      "value": "Dedicated fixtures, built in-house"
+    },
+    {
+      "label": "Special-purpose",
+      "value": "2 SPM — double-head flaring & boring"
+    },
+    {
+      "label": "Material handling",
+      "value": "2 × 1-tonne crane lifters"
+    }
+  ],
+  "materials": [
+    "CRCA / Cold-rolled steel",
+    "HR steel",
+    "Mild steel tube",
+    "Mild steel bar"
+  ],
+  "applications": [
+    "Seat frame sub-assemblies",
+    "Tubular footrest assemblies",
+    "Bracket and mounting assemblies",
+    "Nut and stud attachment",
+    "Structural weldments"
+  ],
+  "icon": "flame",
+  "inHouse": true,
+  "order": 5,
+  "seo": {
+    "title": "MIG & Projection Welding",
+    "description": "Fixture-based MIG and projection welding in Faridabad. 12 MIG stations at 400 A, 3 projection welders at 75 kVA, supplying finished sub-assemblies."
+  }
+}

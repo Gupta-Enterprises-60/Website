@@ -1,0 +1,26 @@
+{
+  "name": "Power Press — 50 Tonne",
+  "group": "press-shop",
+  "quantity": 10,
+  "capacity": "50 tonnes",
+  "order": 30,
+  "specs": [
+    {
+      "label": "Capacity",
+      "value": "50 T"
+    },
+    {
+      "label": "Quantity",
+      "value": "10"
+    },
+    {
+      "label": "Frame type",
+      "value": "C-frame / pillar type"
+    },
+    {
+      "label": "Tooling",
+      "value": "Progressive, deep-draw & trim dies (in-house)"
+    }
+  ],
+  "notes": "Highest-utilisation tonnage on the floor, covering most mid-range bracket and panel work."
+}

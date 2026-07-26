@@ -1,0 +1,22 @@
+{
+  "name": "Vertical Machining Centre (VMC)",
+  "group": "machining",
+  "quantity": 1,
+  "capacity": "1300 × 800 mm envelope",
+  "order": 20,
+  "specs": [
+    {
+      "label": "Working envelope",
+      "value": "1300 × 800 mm"
+    },
+    {
+      "label": "Capability",
+      "value": "3-axis milling"
+    },
+    {
+      "label": "Applications",
+      "value": "Production parts & tooling"
+    }
+  ],
+  "notes": "Handles secondary machining on pressed and welded parts as well as finished machined components."
+}

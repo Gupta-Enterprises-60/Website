@@ -1,0 +1,393 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Icon from '../components/ui/Icon.astro';
+import { site, addressOneLine, mapUrl } from '../lib/site';
+import '../styles/forms.css';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Contact' }];
+
+const reasons = [
+  'Request a quotation',
+  'Arrange a plant visit or audit',
+  'Request certificate copies / vendor onboarding',
+  'Tooling enquiry',
+  'Careers',
+  'Something else',
+];
+
+const embedSrc = `https://www.google.com/maps?q=${encodeURIComponent(site.contact.mapQuery)}&output=embed`;
+---
+
+<BaseLayout
+  title="Contact Us — Gupta Enterprises, Faridabad"
+  description="Contact Gupta Enterprises in Faridabad, Haryana. Phone, email, WhatsApp and plant address. We reply to every enquiry within one working day."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Contact"
+    title="Talk to the people who run the shop"
+    lead="No call centre, no gatekeeping. Phone, email or WhatsApp reaches the team that quotes and manufactures your part — and we reply to every enquiry within one working day."
+    breadcrumbs={crumbs}
+    align="wide"
+  />
+
+  <!-- ===== Contact channels ===== -->
+  <section class="section--tight">
+    <div class="container">
+      <ul class="channels">
+        <li data-reveal>
+          <Icon name="phone" size={22} stroke={1.7} class="channels__icon" />
+          <span class="channels__label">Call us</span>
+          {
+            site.contact.phones.map((phone, i) => (
+              <a href={`tel:${site.contact.phonesE164[i]}`} class="channels__value">
+                {phone}
+              </a>
+            ))
+          }
+          <span class="channels__note">{site.contact.hours}</span>
+        </li>
+
+        <li data-reveal data-reveal-delay="60">
+          <Icon name="mail" size={22} stroke={1.7} class="channels__icon" />
+          <span class="channels__label">Email</span>
+          <a href={`mailto:${site.contact.email}`} class="channels__value channels__value--break">
+            {site.contact.email}
+          </a>
+          <span class="channels__note">Attach drawings directly if you prefer email to the form.</span>
+        </li>
+
+        <li data-reveal data-reveal-delay="120">
+          <Icon name="whatsapp" size={22} stroke={1.7} class="channels__icon" />
+          <span class="channels__label">WhatsApp</span>
+          <a
+            href={`https://wa.me/${site.contact.whatsapp}`}
+            class="channels__value"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {site.contact.phones[0]}
+          </a>
+          <span class="channels__note">Fastest for a quick question or a photo of a part.</span>
+        </li>
+
+        <li data-reveal data-reveal-delay="180">
+          <Icon name="map-pin" size={22} stroke={1.7} class="channels__icon" />
+          <span class="channels__label">Visit the plant</span>
+          <a href={mapUrl()} class="channels__value channels__value--sm" target="_blank" rel="noopener noreferrer">
+            {addressOneLine()}
+          </a>
+          <span class="channels__note">About an hour from South Delhi. Visitors welcome — call ahead.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== Form + map ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="contact">
+        <div class="contact__form">
+          <div class="section-head">
+            <p class="eyebrow">Send a message</p>
+            <h2>Tell us what you need</h2>
+            <p>
+              For a quotation, the <a href="/rfq">RFQ form</a> collects everything we need in one
+              go. For anything else, this is the right place.
+            </p>
+          </div>
+
+          <form
+            name="contact"
+            method="POST"
+            action="/contact/thank-you"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            class="form"
+            id="contact-form"
+          >
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="hp">
+              <label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+            </p>
+
+            <fieldset class="fieldset">
+              <div class="fields">
+                <div class="field">
+                  <label class="label" for="c-name">Your name<span class="req">*</span></label>
+                  <input class="input" type="text" id="c-name" name="name" required autocomplete="name" />
+                </div>
+
+                <div class="field">
+                  <label class="label" for="c-company">
+                    Company<span class="opt">optional</span>
+                  </label>
+                  <input class="input" type="text" id="c-company" name="company" autocomplete="organization" />
+                </div>
+
+                <div class="field">
+                  <label class="label" for="c-email">Email<span class="req">*</span></label>
+                  <input class="input" type="email" id="c-email" name="email" required autocomplete="email" />
+                </div>
+
+                <div class="field">
+                  <label class="label" for="c-phone">
+                    Phone<span class="opt">optional</span>
+                  </label>
+                  <input class="input" type="tel" id="c-phone" name="phone" autocomplete="tel" />
+                </div>
+
+                <div class="field field--full">
+                  <label class="label" for="c-reason">What is this about?<span class="req">*</span></label>
+                  <select class="select" id="c-reason" name="reason" required>
+                    <option value="">Select…</option>
+                    {reasons.map((reason) => <option value={reason}>{reason}</option>)}
+                  </select>
+                </div>
+
+                <div class="field field--full">
+                  <label class="label" for="c-message">Message<span class="req">*</span></label>
+                  <textarea
+                    class="textarea"
+                    id="c-message"
+                    name="message"
+                    required
+                    rows="6"
+                    placeholder="As much or as little detail as you like."></textarea>
+                </div>
+              </div>
+            </fieldset>
+
+            <div class="form__submit">
+              <button type="submit" class="btn btn--primary btn--lg">
+                Send message
+                <Icon name="arrow-right" size={18} class="icon-arrow" />
+              </button>
+              <p class="form__promise">{site.contact.responsePromise}</p>
+            </div>
+          </form>
+        </div>
+
+        <aside class="contact__aside">
+          <div class="map">
+            <iframe
+              src={embedSrc}
+              title={`Map showing ${site.name} in ${site.contact.city}`}
+              width="100%"
+              height="340"
+              style="border:0"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen></iframe>
+          </div>
+
+          <div class="panel">
+            <p class="panel__title">Plant address</p>
+            <address class="addr">
+              <strong>{site.legalName}</strong>
+              {site.contact.addressLine1}<br />
+              {site.contact.city}, {site.contact.state} {site.contact.postalCode}<br />
+              {site.contact.country}
+            </address>
+            <a href={mapUrl()} class="btn btn--outline btn--sm btn--block" target="_blank" rel="noopener noreferrer">
+              <Icon name="map-pin" size={16} />
+              Open in Google Maps
+            </a>
+          </div>
+
+          <div class="panel panel--visit">
+            <Icon name="users" size={20} stroke={1.7} class="visit__icon" />
+            <p class="visit__title">Come and see it</p>
+            <p class="visit__text">
+              Several of our current Tier-1 relationships started with a plant visit. We will show
+              you the tool room, a press setup and the inspection station — the three things that
+              actually tell you how a supplier runs.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---- Channels ------------------------------------------------------------- */
+
+  .channels {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  @media (max-width: 1000px) {
+    .channels {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .channels {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .channels li {
+    background: var(--white);
+    padding: var(--sp-6);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .channels__icon {
+    color: var(--ge-red-ink);
+    margin-bottom: var(--sp-4);
+  }
+
+  .channels__label {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-400);
+    margin-bottom: 0.35rem;
+  }
+
+  .channels__value {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    color: var(--ink-900);
+    text-decoration: none;
+  }
+
+  .channels__value:hover {
+    color: var(--ge-red-ink);
+  }
+
+  .channels__value--break {
+    font-size: 0.9375rem;
+    word-break: break-word;
+  }
+
+  .channels__value--sm {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .channels__note {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    line-height: 1.5;
+    margin-top: auto;
+    padding-top: var(--sp-4);
+  }
+
+  /* ---- Layout ---------------------------------------------------------------- */
+
+  .contact {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    align-items: start;
+  }
+
+  @media (max-width: 1000px) {
+    .contact {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .contact__form .section-head p a {
+    color: var(--ge-red-ink);
+    font-weight: 500;
+  }
+
+  .contact__aside {
+    display: grid;
+    gap: var(--sp-5);
+  }
+
+  .map {
+    border: 1px solid var(--border);
+    line-height: 0;
+    background: var(--ink-100);
+  }
+
+  .panel {
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ge-red);
+    padding: var(--sp-5);
+  }
+
+  .panel__title {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .addr {
+    font-style: normal;
+    font-size: var(--fs-sm);
+    color: var(--ink-700);
+    line-height: 1.7;
+    margin: 0 0 var(--sp-5);
+  }
+
+  .addr strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--ink-900);
+    margin-bottom: 0.25rem;
+  }
+
+  .panel--visit {
+    background: var(--ink-900);
+    color: #fff;
+    border-color: var(--ink-900);
+  }
+
+  .visit__icon {
+    color: #ff6b66;
+    margin-bottom: var(--sp-3);
+  }
+
+  .visit__title {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .visit__text {
+    font-size: var(--fs-sm);
+    color: var(--ink-300);
+    line-height: 1.65;
+    margin: 0;
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#contact-form');
+  form?.addEventListener('submit', () => {
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (!button) return;
+    button.disabled = true;
+    const label = button.querySelector('span');
+    if (label) label.textContent = 'Sending…';
+  });
+</script>

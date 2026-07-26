@@ -1,0 +1,68 @@
+{
+  "name": "Press Tools, Dies, Fixtures & Gauges",
+  "code": "GE-TD-001",
+  "category": "tools-dies",
+  "summary": "Progressive dies, deep-draw tools, weld fixtures and inspection gauges — designed, built and maintained in our own tool room.",
+  "description": "Our tool room exists first to serve our own press and fabrication lines, and it is the reason we can commit to lead times other suppliers hedge on. We design, build and maintain progressive dies, deep-draw tools, weld fixtures and inspection gauges here — using a BFW VMC with a 700 × 1250 mm bed, four surface grinders, milling, turning and drilling equipment. The same capability is available as a service for customer tooling programmes, whether you need a new die built or an existing one repaired and re-qualified.",
+  "images": [],
+  "placeholderHint": "Photograph an assembled progressive die on the bench, a weld fixture with part located, and the surface grinder in use.",
+  "applications": [
+    "Progressive press tooling",
+    "Deep-draw dies",
+    "Weld and assembly fixtures",
+    "Inspection and checking gauges",
+    "Die repair and maintenance"
+  ],
+  "materials": [
+    "Tool steel"
+  ],
+  "processes": [
+    "tool-room",
+    "cnc-machining"
+  ],
+  "industries": [
+    "automotive",
+    "industrial-equipment"
+  ],
+  "specs": [
+    {
+      "label": "Tool room VMC",
+      "value": "BFW · 700 × 1250 mm bed"
+    },
+    {
+      "label": "Surface grinders",
+      "value": "4"
+    },
+    {
+      "label": "Drilling machines",
+      "value": "4"
+    },
+    {
+      "label": "Milling / MTR",
+      "value": "2"
+    },
+    {
+      "label": "Lathe",
+      "value": "1"
+    },
+    {
+      "label": "Scope",
+      "value": "Design, build & maintenance in-house"
+    },
+    {
+      "label": "Available for",
+      "value": "Customer tooling programmes"
+    }
+  ],
+  "featured": false,
+  "isNew": false,
+  "order": 7,
+  "related": [
+    "deep-drawn-components",
+    "machined-components-features"
+  ],
+  "seo": {
+    "title": "Press Tools, Dies, Fixtures & Gauges",
+    "description": "In-house design, build and maintenance of press tools, dies, weld fixtures and inspection gauges in Faridabad. Available for customer tooling programmes."
+  }
+}

@@ -1,0 +1,602 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeHero from '../components/sections/HomeHero.astro';
+import SectionHead from '../components/sections/SectionHead.astro';
+import CTABand from '../components/sections/CTABand.astro';
+import ProductCard from '../components/ui/ProductCard.astro';
+import CapabilityCard from '../components/ui/CapabilityCard.astro';
+import FeatureGrid from '../components/ui/FeatureGrid.astro';
+import LogoMarquee from '../components/ui/LogoMarquee.astro';
+import SmartImage from '../components/ui/SmartImage.astro';
+import Icon from '../components/ui/Icon.astro';
+
+import home from '../data/home.json';
+import company from '../data/company.json';
+import infrastructure from '../data/infrastructure.json';
+import certifications from '../data/certifications.json';
+import { site } from '../lib/site';
+
+const capabilities = (await getCollection('capabilities')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+const coreCapabilities = capabilities.filter((c) => c.data.inHouse).slice(0, 6);
+
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const featured = products.filter((p) => p.data.featured).slice(0, 3);
+
+const industries = (await getCollection('industries')).sort((a, b) => a.data.order - b.data.order);
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 3);
+
+const dateFmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
+---
+
+<BaseLayout
+  title={site.seo.defaultTitle}
+  description={site.seo.defaultDescription}
+  canonical="/"
+  bareTitle
+>
+  <HomeHero />
+
+  <!-- ================= Introduction ================= -->
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div data-reveal="left">
+          <p class="eyebrow">{home.introSection.kicker}</p>
+          <h2>{home.introSection.title}</h2>
+        </div>
+        <div class="intro__body" data-reveal="right" data-reveal-delay="80">
+          {home.introSection.body.map((p) => <p>{p}</p>)}
+          <a href={home.introSection.cta.href} class="link-arrow">
+            {home.introSection.cta.label}
+            <Icon name="arrow-right" size={16} />
+          </a>
+        </div>
+      </div>
+
+      {/* Value pillars, drawn from the same list — and the same component — as /why-us */}
+      <div class="pillars">
+        <FeatureGrid items={company.whyUs.slice(0, 4)} columns={4} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Capabilities ================= -->
+  <section class="section section--sunken">
+    <div class="container">
+      <SectionHead
+        kicker={home.capabilitiesSection.kicker}
+        title={home.capabilitiesSection.title}
+        lead={home.capabilitiesSection.lead}
+        link={{ label: 'All capabilities', href: '/capabilities' }}
+      />
+      <div class="grid grid--3" data-reveal data-reveal-stagger>
+        {
+          coreCapabilities.map((capability) => (
+            <div>
+              <CapabilityCard capability={capability} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Featured products ================= -->
+  <section class="section">
+    <div class="container">
+      <SectionHead
+        kicker={home.productsSection.kicker}
+        title={home.productsSection.title}
+        lead={home.productsSection.lead}
+        link={{ label: 'View full catalog', href: '/products' }}
+      />
+      <div class="grid grid--3" data-reveal data-reveal-stagger>
+        {
+          featured.map((product) => (
+            <div>
+              <ProductCard product={product} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Infrastructure / machinery ================= -->
+  <section class="section on-dark plant">
+    <div class="container">
+      <div class="split">
+        <div data-reveal="left">
+          <p class="eyebrow">Infrastructure</p>
+          <h2>Two units in Faridabad, built for uninterrupted output</h2>
+          <p class="lead plant__lead">{infrastructure.intro}</p>
+          <div class="btn-row plant__ctas">
+            <a href="/infrastructure" class="btn btn--outline">Explore infrastructure</a>
+            <a href="/infrastructure/machines" class="btn btn--outline">Full machine list</a>
+          </div>
+        </div>
+
+        <div data-reveal="right" data-reveal-delay="80">
+          <ul class="plant__stats">
+            {
+              infrastructure.headline.map((stat) => (
+                <li>
+                  <span class="plant__value">
+                    {stat.value}
+                    {stat.unit && <span class="plant__unit">{stat.unit}</span>}
+                  </span>
+                  <span class="plant__label">{stat.label}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <p class="plant__note" data-reveal>{infrastructure.pressBreakdown.note}</p>
+    </div>
+  </section>
+
+  <!-- ================= Industries ================= -->
+  <section class="section">
+    <div class="container">
+      <SectionHead
+        kicker={home.industriesSection.kicker}
+        title={home.industriesSection.title}
+        lead={home.industriesSection.lead}
+        link={{ label: 'All industries', href: '/industries' }}
+      />
+      <ul class="industries">
+        {
+          industries.map((industry, i) => (
+            <li data-reveal data-reveal-delay={(i % 3) * 60}>
+              <a
+                href={`/industries/${industry.id}`}
+                class:list={['ind-card', industry.data.core && 'ind-card--core']}
+              >
+                <Icon name={industry.data.icon} size={26} stroke={1.6} class="ind-card__icon" />
+                <span class="ind-card__title">{industry.data.title}</span>
+                <span class="ind-card__status">{industry.data.status}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= Process ================= -->
+  <section class="section section--sunken">
+    <div class="container">
+      <SectionHead
+        kicker={home.processSection.kicker}
+        title={home.processSection.title}
+        lead={home.processSection.lead}
+        link={{ label: 'How we work', href: '/process' }}
+      />
+      <ol class="flow">
+        {
+          company.process.map((step, i) => (
+            <li class="flow__step" data-reveal data-reveal-delay={(i % 3) * 60}>
+              <span class="flow__num mono">{step.step}</span>
+              <h3 class="flow__title">{step.title}</h3>
+              <p class="flow__text">{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- ================= Trust: customers + certifications ================= -->
+  <section class="section">
+    <div class="container">
+      <SectionHead
+        kicker={home.trustSection.kicker}
+        title={home.trustSection.title}
+        lead={home.trustSection.lead}
+      />
+
+      <div class="clients" data-reveal>
+        <LogoMarquee items={company.clients} />
+      </div>
+
+      <p class="clients__note mono" data-reveal>
+        8+ OEM &amp; Tier-1 partners · relationships built on consistent quality and on-time delivery
+      </p>
+
+      <div class="certs" data-reveal>
+        {
+          certifications.items.map((cert) => (
+            <a href="/certifications" class="cert">
+              <Icon name={cert.icon} size={24} stroke={1.6} class="cert__icon" />
+              <span class="cert__name">{cert.name}</span>
+              <span class="cert__type">{cert.type}</span>
+            </a>
+          ))
+        }
+        <a href="/quality" class="cert cert--action">
+          <Icon name="clipboard-check" size={24} stroke={1.6} class="cert__icon" />
+          <span class="cert__name">100% inspected</span>
+          <span class="cert__type">Before every dispatch</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Insights ================= -->
+  <section class="section section--sunken">
+    <div class="container">
+      <SectionHead
+        kicker="Insights"
+        title="Guidance for sourcing and engineering teams"
+        lead="Practical articles on quoting, process selection and supplier evaluation — written from the shop floor rather than the marketing desk."
+        link={{ label: 'All articles', href: '/blog' }}
+      />
+      <div class="grid grid--3">
+        {
+          posts.map((post, i) => (
+            <a href={`/blog/${post.id}`} class="card post-card" data-reveal data-reveal-delay={(i % 3) * 70}>
+              <div class="card__media">
+                <SmartImage
+                  src={post.data.cover?.src}
+                  alt={post.data.cover?.alt ?? ''}
+                  ratio="16 / 9"
+                  width={700}
+                  sizes="(max-width:640px) 92vw, (max-width:1000px) 45vw, 400px"
+                  placeholderLabel={post.data.topic}
+                  placeholderIcon="file-text"
+                />
+              </div>
+              <div class="card__body">
+                <p class="post-card__meta">
+                  <span class="chip">{post.data.topic}</span>
+                  <span>{dateFmt.format(post.data.publishedAt)}</span>
+                  {post.data.readingMinutes && <span>· {post.data.readingMinutes} min read</span>}
+                </p>
+                <h3 class="card__title post-card__title">{post.data.title}</h3>
+                <p class="card__text">{post.data.description}</p>
+                <span class="link-arrow card__foot">
+                  Read article
+                  <Icon name="arrow-right" size={15} />
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTABand
+    kicker={home.ctaBand.kicker}
+    title={home.ctaBand.title}
+    text={home.ctaBand.lead}
+    primaryCta={home.ctaBand.primaryCta}
+    secondaryCta={home.ctaBand.secondaryCta}
+    compact
+  />
+</BaseLayout>
+
+<style>
+  /* ---- Introduction ------------------------------------------------------ */
+
+  .intro__body p {
+    font-size: var(--fs-lead);
+    line-height: var(--lh-body);
+    color: var(--ink-700);
+  }
+
+  .intro__body p + p {
+    margin-top: var(--sp-4);
+  }
+
+  .intro__body .link-arrow {
+    margin-top: var(--sp-5);
+  }
+
+  .pillars {
+    margin-top: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+
+  /* ---- Plant band -------------------------------------------------------- */
+
+  .plant__lead {
+    margin-top: var(--sp-5);
+    max-width: 52ch;
+  }
+
+  .plant__ctas {
+    margin-top: var(--sp-6);
+  }
+
+  .plant__stats {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--border-on-dark);
+    border: 1px solid var(--border-on-dark);
+  }
+
+  .plant__stats li {
+    background: var(--ink-900);
+    padding: var(--sp-5);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .plant__value {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    color: #fff;
+    line-height: 1.05;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .plant__unit {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--ink-400);
+    margin-left: 0.35rem;
+    letter-spacing: 0;
+  }
+
+  .plant__label {
+    font-size: var(--fs-xs);
+    color: var(--ink-400);
+    line-height: 1.45;
+  }
+
+  /* ---- Plant note -------------------------------------------------------- */
+
+  .plant__note {
+    margin: clamp(2.5rem, 1.5rem + 3vw, 4rem) 0 0;
+    padding-top: clamp(2rem, 1.25rem + 2.5vw, 3rem);
+    border-top: 1px solid var(--border-on-dark);
+    font-size: var(--fs-sm);
+    color: var(--ink-400);
+    max-width: 76ch;
+    line-height: 1.6;
+  }
+
+  /* ---- Industries -------------------------------------------------------- */
+
+  .industries {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-4);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .industries {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    .industries {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ind-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    height: 100%;
+    padding: var(--sp-6);
+    background: var(--ink-050);
+    border: 1px solid transparent;
+    text-decoration: none;
+    color: var(--ink-900);
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+      transform var(--dur) var(--ease);
+  }
+
+  .ind-card:hover {
+    background: var(--white);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .ind-card__icon {
+    color: var(--ge-red-ink);
+  }
+
+  .ind-card--core {
+    background: var(--ge-red-ink);
+    color: #fff;
+  }
+
+  .ind-card--core:hover {
+    background: var(--ge-red-dark);
+    border-color: var(--ge-red-dark);
+  }
+
+  .ind-card--core .ind-card__icon {
+    color: #fff;
+  }
+
+  .ind-card__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    margin-top: auto;
+  }
+
+  .ind-card__status {
+    font-size: var(--fs-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-500);
+  }
+
+  .ind-card--core .ind-card__status {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* ---- Process flow ------------------------------------------------------- */
+
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: flow;
+  }
+
+  @media (max-width: 900px) {
+    .flow {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .flow {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .flow__step {
+    background: var(--white);
+    padding: var(--sp-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+  }
+
+  .flow__num {
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--ge-red-ink);
+    letter-spacing: 0.08em;
+  }
+
+  .flow__title {
+    font-size: 1.0625rem;
+    margin: var(--sp-1) 0 0;
+  }
+
+  .flow__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ---- Clients & certifications -------------------------------------------- */
+
+  /* The marquee bleeds past the container so logos scroll in from the viewport
+     edge rather than appearing out of thin air mid-page. */
+  .clients {
+    margin-inline: calc(var(--gutter) * -1);
+  }
+
+  @media (min-width: 1400px) {
+    .clients {
+      margin-inline: calc((100vw - var(--container)) / -2 - var(--gutter));
+    }
+  }
+
+  .clients__note {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    margin: var(--sp-4) 0 0;
+  }
+
+  .certs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--sp-4);
+    margin-top: clamp(2.5rem, 1.6rem + 3vw, 4rem);
+  }
+
+  @media (max-width: 900px) {
+    .certs {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 480px) {
+    .certs {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .cert {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: var(--sp-5);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--ge-red);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .cert:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .cert__icon {
+    color: var(--ge-red-ink);
+    margin-bottom: var(--sp-2);
+  }
+
+  .cert__name {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .cert__type {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+  }
+
+  /* ---- Post cards ---------------------------------------------------------- */
+
+  .post-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    margin: 0;
+  }
+
+  .post-card__title {
+    font-size: 1.0625rem;
+    line-height: 1.35;
+  }
+</style>

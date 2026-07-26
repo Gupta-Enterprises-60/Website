@@ -1,0 +1,173 @@
+---
+import Breadcrumbs from './Breadcrumbs.astro';
+import Icon from '../ui/Icon.astro';
+import type { Crumb } from '../../lib/seo';
+
+/**
+ * Standard hero for every page below the home page.
+ *
+ * Typographic rather than photographic by default — following the reference
+ * layout, where the top of an inner page is a confident headline in white
+ * space, not a stock image with text on top. An optional stat rail sits to the
+ * right on the 5:7 split.
+ */
+export interface Props {
+  kicker?: string;
+  title: string;
+  lead?: string;
+  breadcrumbs?: Crumb[];
+  stats?: { value: string; label: string }[];
+  variant?: 'light' | 'dark' | 'sunken';
+  align?: 'split' | 'wide';
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+}
+
+const {
+  kicker,
+  title,
+  lead,
+  breadcrumbs,
+  stats = [],
+  variant = 'light',
+  align = 'split',
+  primaryCta,
+  secondaryCta,
+} = Astro.props;
+
+const hasRail = stats.length > 0;
+---
+
+<section class:list={['page-hero', `page-hero--${variant}`, variant === 'dark' && 'on-dark']}>
+  <div class="container">
+    {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} class="page-hero__crumbs" />}
+
+    <div class:list={['page-hero__body', hasRail && align === 'split' && 'page-hero__body--split']}>
+      <div class="page-hero__main">
+        {kicker && <p class="eyebrow">{kicker}</p>}
+        <h1>{title}</h1>
+        {lead && <p class="page-hero__lead">{lead}</p>}
+
+        {
+          (primaryCta || secondaryCta) && (
+            <div class="btn-row page-hero__ctas">
+              {primaryCta && (
+                <a href={primaryCta.href} class="btn btn--primary">
+                  {primaryCta.label}
+                  <Icon name="arrow-right" size={18} class="icon-arrow" />
+                </a>
+              )}
+              {secondaryCta && (
+                <a href={secondaryCta.href} class="btn btn--outline">
+                  {secondaryCta.label}
+                </a>
+              )}
+            </div>
+          )
+        }
+
+        <slot />
+      </div>
+
+      {
+        hasRail && (
+          <aside class="page-hero__rail">
+            <dl>
+              {stats.map((stat) => (
+                <div class="page-hero__stat">
+                  <dt>{stat.label}</dt>
+                  <dd>{stat.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </aside>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    padding-block: clamp(2rem, 1.2rem + 3vw, 3.25rem) clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-hero--sunken {
+    background: var(--ink-050);
+  }
+
+  .page-hero--dark {
+    border-bottom-color: transparent;
+  }
+
+  .page-hero__crumbs {
+    margin-bottom: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+  }
+
+  .page-hero__body--split {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: clamp(2rem, 1rem + 4vw, 5rem);
+    align-items: end;
+  }
+
+  @media (max-width: 900px) {
+    .page-hero__body--split {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sp-7);
+      align-items: start;
+    }
+  }
+
+  .page-hero__main h1 {
+    max-width: 20ch;
+  }
+
+  .page-hero__lead {
+    font-size: var(--fs-lead);
+    line-height: var(--lh-body);
+    color: var(--text-muted);
+    max-width: 62ch;
+    margin-top: var(--sp-5);
+  }
+
+  .page-hero__ctas {
+    margin-top: var(--sp-6);
+  }
+
+  /* ---- Stat rail --------------------------------------------------------
+     Mirrors the profile deck's right-hand figure list: hairline separators,
+     label above value, monospaced numerals.
+     -------------------------------------------------------------------- */
+
+  .page-hero__rail dl {
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .page-hero__stat {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-hero__stat dt {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+  }
+
+  .page-hero__stat dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+</style>

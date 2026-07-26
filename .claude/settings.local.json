@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /Users/kunal/Downloads/GUPTA_WEBSITE/ 2>/dev/null && echo \"---4_claude_web---\" && ls -la /Users/kunal/Downloads/GUPTA_WEBSITE/4_claude_web/ 2>/dev/null)",
+      "Read(//Users/kunal/Downloads/GUPTA_WEBSITE/**)",
+      "Bash(npm -v)",
+      "Bash(python3 -c ' *)",
+      "Bash(sips -g all ge-logo.png)",
+      "Bash(npm install *)",
+      "Bash(npx astro *)",
+      "Bash(npm approve-scripts *)",
+      "Bash(echo \"=== exit:$? ===\")",
+      "Bash(node -e \"require\\('sharp'\\);console.log\\('sharp OK'\\)\")",
+      "Bash(node -e ' *)",
+      "Bash(npm run *)",
+      "Bash(node scripts/generate-brand-assets.mjs)",
+      "Bash(sips -g pixelWidth -g pixelHeight public/images/og/og-default.png public/apple-touch-icon.png)",
+      "Bash(cat)",
+      "Bash(python3 /tmp/audit.py)",
+      "Bash(xargs -n1 basename)",
+      "Bash(node -e \"console.log\\(JSON.stringify\\(require\\('./node_modules/@fontsource-variable/inter/package.json'\\).exports,null,1\\)\\)\")",
+      "Bash(python3 -)",
+      "Bash(python3 scripts/search.py \"scroll reveal parallax hero\" --domain gsap --max-results 4)",
+      "Bash(python3 scripts/search.py \"hero video background autoplay accessibility performance\" --domain ux --max-results 5)",
+      "Bash(ffmpeg -y -f lavfi -i \"testsrc=size=1280x720:rate=25:duration=6\" -vf \"hue=s=0.3,eq=brightness=-0.15\" -c:v libx264 -pix_fmt yuv420p -an public/media/_test-hero.mp4)",
+      "Bash(awk '{print $5, $9}')",
+      "Bash(node *)",
+      "Bash(python3 *)",
+      "Bash(pkill -f \"astro dev\")"
+    ]
+  }
+}

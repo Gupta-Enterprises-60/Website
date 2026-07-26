@@ -1,0 +1,32 @@
+{
+  "title": "Electrical",
+  "summary": "Enclosures, mounting plates, busbar supports and pressed components for electrical equipment manufacturers.",
+  "intro": "Electrical equipment relies heavily on precise sheet-metal work: enclosures that seal properly, mounting plates that locate components accurately, and pressed parts produced in high volume at low unit cost.",
+  "body": [
+    "Our press and laser capability maps directly onto these requirements. Progressive tooling produces small pressed components economically at volume; the laser handles enclosure panels and mounting plates without tooling investment; and projection welding attaches studs and nuts consistently — a common requirement in electrical assemblies.",
+    "We can work in CRCA, HR steel, stainless and aluminium, and manage coated finishes through qualified partners where a specific finish or shade is specified.",
+    "This is a target sector for us rather than a core one today. We say that plainly: we bring proven sheet-metal capability and automotive quality discipline, and we will be honest at enquiry stage about any electrical-specific certification or testing we cannot yet provide ourselves."
+  ],
+  "core": false,
+  "status": "Target sector",
+  "componentTypes": [
+    "Enclosure panels and covers",
+    "Mounting and gear plates",
+    "Busbar supports and brackets",
+    "Small pressed components",
+    "Stud- and nut-welded assemblies"
+  ],
+  "capabilitiesUsed": [
+    "metal-stamping",
+    "laser-cutting",
+    "welding",
+    "powder-coating",
+    "sheet-metal-fabrication"
+  ],
+  "icon": "zap",
+  "order": 3,
+  "seo": {
+    "title": "Electrical Equipment Components",
+    "description": "Sheet-metal enclosures, mounting plates, busbar supports and pressed components for electrical equipment makers. Press, laser and welding capability."
+  }
+}

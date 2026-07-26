@@ -1,0 +1,32 @@
+{
+  "intro": "Company literature for your supplier file, vendor registration pack or internal sourcing review. Everything here is free to download — no form, no gate.",
+
+  "items": [
+    {
+      "id": "company-profile",
+      "title": "Company Profile",
+      "description": "Full 22-page company profile — capabilities, machine list, infrastructure, quality process, certifications, customers and financial summary.",
+      "file": "/downloads/gupta-enterprises-company-profile.pdf",
+      "format": "PDF",
+      "sizeLabel": "1.0 MB",
+      "pages": "22 pages",
+      "category": "Company",
+      "featured": true,
+      "updated": "2024"
+    }
+  ],
+
+  "onRequest": {
+    "title": "Available on request",
+    "text": "The following are sent directly rather than published, either because they carry registration details or because we prefer to send the current revision. Ask with your enquiry and we will include them with the quotation.",
+    "items": [
+      "ISO 9001:2015 certificate",
+      "MSME / Udyam registration certificate",
+      "GST registration certificate",
+      "Machine list with make and capacity detail",
+      "Inspection and gauging equipment list",
+      "Vendor registration form completion",
+      "Bank and statutory details for onboarding"
+    ]
+  }
+}

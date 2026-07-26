@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "kicker": "ISO 9001:2015 · Established 2004 · Faridabad, India",
+    "title": "Send us the drawing. We'll handle everything from the die to the dispatch note.",
+    "lead": "Gupta Enterprises manufactures precision sheet-metal, tubular and deep-draw components for automotive OEMs and Tier-1 suppliers — with the press shop, laser, machining, welding and tool room all under our own roof.",
+    "primaryCta": {
+      "label": "Request a quote",
+      "href": "/rfq"
+    },
+    "secondaryCta": {
+      "label": "See our capabilities",
+      "href": "/capabilities"
+    },
+    "image": {
+      "src": "",
+      "alt": "Gupta Enterprises press shop floor, Faridabad"
+    },
+    "video": {
+      "src": "videos/sample-10s.mp4",
+      "webm": "",
+      "poster": ""
+    },
+    "placeholderHint": "Wide shot down the press line in Unit 1 — landscape, 2400 × 1350 px or larger.",
+    "quickStats": [
+      {
+        "value": "35",
+        "label": "Power presses · 20–250 T"
+      },
+      {
+        "value": "100%",
+        "label": "Parts inspected before dispatch"
+      },
+      {
+        "value": "8+",
+        "label": "OEM & Tier-1 partners"
+      }
+    ]
+  },
+  "introSection": {
+    "kicker": "Who we are",
+    "title": "One shop. Full control. From die design to dispatch.",
+    "body": [
+      "Most component suppliers hand your tooling to one vendor, your cutting to another and your finishing to a third. Every handover is a place where a date slips and nobody owns the problem.",
+      "We built Gupta Enterprises the other way. Since 2010 we have designed and built our own dies, fixtures and gauges. Everything that shapes your part's quality, cost and timeline stays in-house — which is why we can commit to a lead time and hold it."
+    ],
+    "cta": {
+      "label": "About Gupta Enterprises",
+      "href": "/about"
+    }
+  },
+  "capabilitiesSection": {
+    "kicker": "Manufacturing capabilities",
+    "title": "Everything your part needs, under one roof",
+    "lead": "Six in-house capabilities take a component from raw sheet or tube to an inspected, dispatch-ready part."
+  },
+  "productsSection": {
+    "kicker": "Products",
+    "title": "Components we manufacture today",
+    "lead": "A representative selection from current production. If your part is not shown here, it is almost certainly still within our process range — send the drawing and we will tell you."
+  },
+  "industriesSection": {
+    "kicker": "Industries we serve",
+    "title": "Automotive is our core. The capability travels further.",
+    "lead": "Two decades of automotive tolerances, volumes and audit expectations transfer directly into adjacent high-growth sectors."
+  },
+  "whySection": {
+    "kicker": "Why Gupta Enterprises",
+    "title": "Built to be a supplier you don't have to manage",
+    "lead": "Procurement teams do not need another vendor to chase. Here is what changes when tooling, fabrication and inspection sit in one place."
+  },
+  "processSection": {
+    "kicker": "Our process",
+    "title": "From enquiry to dispatch — one controlled flow",
+    "lead": "Because tooling, fabrication and inspection are all in-house, we control quality and lead time at every step."
+  },
+  "trustSection": {
+    "kicker": "Our customers",
+    "title": "Trusted across the automotive supply chain",
+    "lead": "We supply components to leading Indian automotive parts manufacturers — many of them repeat, multi-year customers."
+  },
+  "ctaBand": {
+    "kicker": "Let's talk",
+    "title": "Send us your drawings — we'll take it from there.",
+    "lead": "From RFQ to first article to volume supply. Upload a PDF, DWG, DXF or STEP file and we will come back within one working day with feasibility and a costed quotation.",
+    "primaryCta": {
+      "label": "Request a quote",
+      "href": "/rfq"
+    },
+    "secondaryCta": {
+      "label": "Contact us",
+      "href": "/contact"
+    }
+  }
+}

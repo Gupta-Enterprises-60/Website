@@ -1,0 +1,289 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { site } from '../../lib/site';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title="Enquiry Received — Thank You"
+  description="Your enquiry has reached Gupta Enterprises. We acknowledge every enquiry within one working day."
+  noindex
+>
+  <section class="section section--lg">
+    <div class="container container--narrow">
+      <div class="done">
+        <span class="done__mark">
+          <Icon name="check" size={30} stroke={2.5} />
+        </span>
+        <h1 class="done__title">Your enquiry has reached us.</h1>
+        <p class="done__lead">
+          Thank you — the drawing and requirement are in. A real person will acknowledge this within
+          one working day, and you will hear from us either way, including if we decide we are not
+          the right supplier for the part.
+        </p>
+
+        <div class="done__meta">
+          <p class="done__meta-title">What happens next</p>
+          <ol class="steps">
+            <li>
+              <span class="mono">01</span>
+              <span>We review manufacturability, tooling needs and material availability.</span>
+            </li>
+            <li>
+              <span class="mono">02</span>
+              <span>
+                We come back with a costed quotation — 2 to 3 working days for a part that fits an
+                existing process, longer where new tooling is needed.
+              </span>
+            </li>
+            <li>
+              <span class="mono">03</span>
+              <span>
+                If anything on the drawing is ambiguous, we will ask before quoting rather than
+                assume.
+              </span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="done__urgent">
+          <p class="done__urgent-title">Need it sooner?</p>
+          <p class="done__urgent-text">
+            Call or message us directly — a phone call moves faster than an email queue.
+          </p>
+          <div class="done__contacts">
+            {
+              site.contact.phones.map((phone, i) => (
+                <a href={`tel:${site.contact.phonesE164[i]}`} class="done__contact">
+                  <Icon name="phone" size={16} />
+                  {phone}
+                </a>
+              ))
+            }
+            <a
+              href={`https://wa.me/${site.contact.whatsapp}`}
+              class="done__contact"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="whatsapp" size={16} />
+              WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <div class="done__actions">
+          <a href="/" class="btn btn--outline">
+            <Icon name="arrow-left" size={17} />
+            Back to home
+          </a>
+          <a href="/downloads" class="btn btn--outline">Download company profile</a>
+        </div>
+      </div>
+
+      <!-- Something useful to read while they wait -->
+      {
+        posts.length > 0 && (
+          <div class="reading">
+            <p class="reading__title">While you wait — worth a read</p>
+            <ul>
+              {posts.map((post) => (
+                <li>
+                  <a href={`/blog/${post.id}`}>
+                    <span>{post.data.title}</span>
+                    <Icon name="arrow-right" size={15} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .done {
+    text-align: center;
+  }
+
+  .done__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    background: var(--ge-red-ink);
+    color: #fff;
+    margin-bottom: var(--sp-6);
+  }
+
+  .done__title {
+    font-size: clamp(1.875rem, 1.4rem + 2.2vw, 3rem);
+    margin: 0 0 var(--sp-5);
+  }
+
+  .done__lead {
+    font-size: var(--fs-lead);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    max-width: 60ch;
+    margin: 0 auto;
+  }
+
+  /* ---- Next steps ---------------------------------------------------------- */
+
+  .done__meta {
+    text-align: left;
+    margin: clamp(2.5rem, 1.6rem + 3vw, 4rem) 0 0;
+    padding: var(--sp-6);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ge-red);
+  }
+
+  .done__meta-title {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--sp-4);
+  }
+
+  .steps li {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 0.75rem;
+    font-size: var(--fs-sm);
+    color: var(--ink-700);
+    line-height: 1.65;
+  }
+
+  .steps .mono {
+    color: var(--ge-red-ink);
+    font-size: var(--fs-xs);
+    padding-top: 0.15rem;
+  }
+
+  /* ---- Urgent -------------------------------------------------------------- */
+
+  .done__urgent {
+    text-align: left;
+    margin-top: var(--sp-5);
+    padding: var(--sp-6);
+    background: var(--ink-900);
+    color: #fff;
+  }
+
+  .done__urgent-title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 var(--sp-2);
+  }
+
+  .done__urgent-text {
+    font-size: var(--fs-sm);
+    color: var(--ink-300);
+    margin: 0 0 var(--sp-5);
+  }
+
+  .done__contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+
+  .done__contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--border-on-dark);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+
+  .done__contact:hover {
+    background: #fff;
+    color: var(--ink-900);
+  }
+
+  .done__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--sp-3);
+    margin-top: var(--sp-7);
+  }
+
+  /* ---- Reading ------------------------------------------------------------- */
+
+  .reading {
+    margin-top: clamp(3rem, 2rem + 3vw, 4.5rem);
+    padding-top: var(--sp-6);
+    border-top: 1px solid var(--border);
+  }
+
+  .reading__title {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .reading ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .reading li {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .reading a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    padding: var(--sp-4) 0;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--ink-800);
+    text-decoration: none;
+  }
+
+  .reading a:hover {
+    color: var(--ge-red-ink);
+  }
+
+  .reading a :global(svg) {
+    flex: none;
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .reading a:hover :global(svg) {
+    transform: translateX(4px);
+  }
+</style>

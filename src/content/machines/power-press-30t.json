@@ -1,0 +1,26 @@
+{
+  "name": "Power Press — 30 Tonne",
+  "group": "press-shop",
+  "quantity": 2,
+  "capacity": "30 tonnes",
+  "order": 20,
+  "specs": [
+    {
+      "label": "Capacity",
+      "value": "30 T"
+    },
+    {
+      "label": "Quantity",
+      "value": "2"
+    },
+    {
+      "label": "Frame type",
+      "value": "C-frame / pillar type"
+    },
+    {
+      "label": "Tooling",
+      "value": "Progressive, deep-draw & trim dies (in-house)"
+    }
+  ],
+  "notes": "General forming and blanking capacity."
+}

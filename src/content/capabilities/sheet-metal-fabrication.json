@@ -1,0 +1,99 @@
+{
+  "title": "Sheet Metal Fabrication",
+  "navTitle": "Sheet Metal Fabrication",
+  "kicker": "Manufacturing capability",
+  "summary": "Cutting, forming, drawing, machining and welding sheet-metal components end to end — one supplier, one inspection record.",
+  "intro": "Sheet-metal fabrication at Gupta Enterprises is not a single machine, it is the full route: laser or die blanking, press forming and drawing, secondary machining, fixture welding, and inspection against your drawing before anything is packed. Because every one of those steps happens in our own two units, a multi-process part stays on one purchase order instead of being shuttled between three vendors.",
+  "sections": [
+    {
+      "heading": "The whole route, under one roof",
+      "body": [
+        "The usual failure mode in fabricated components is not any single operation — it is the handovers. A blank cut by one vendor, formed by another and welded by a third accumulates tolerance at every transfer, and when the finished part does not fit, nobody owns it.",
+        "We removed the handovers. Cutting, forming, machining, welding and inspection are ours, which means when something drifts we can trace it to the operation that caused it and correct it there."
+      ]
+    },
+    {
+      "heading": "Gauge and size range",
+      "body": [
+        "Our laser cuts HR steel to 25 mm and stainless to 6 mm on a 1500 × 3000 mm bed, while the press line forms from thin-gauge precision parts up to heavy structural work on 250-tonne capacity.",
+        "For parts needing machined features, our CNC/VMC line adds bores, faces and tapped holes within a 1300 × 800 mm envelope — as a secondary operation on a formed part, not a separate outsourced job."
+      ]
+    },
+    {
+      "heading": "Finished parts or sub-assemblies",
+      "body": [
+        "We can supply loose components, but most of our current work is welded sub-assemblies — seat frames, footrest assemblies, mounting structures — delivered ready to fit.",
+        "Taking an assembly operation off your line is usually worth more than the few rupees saved buying components separately, and it puts the geometry risk with the people holding the weld fixtures."
+      ]
+    }
+  ],
+  "stats": [
+    {
+      "value": "25 mm",
+      "label": "HR steel cutting capacity"
+    },
+    {
+      "value": "250 T",
+      "label": "Maximum press capacity"
+    },
+    {
+      "value": "6",
+      "label": "In-house process steps"
+    }
+  ],
+  "specs": [
+    {
+      "label": "Cutting",
+      "value": "Fibre laser · 1500 × 3000 mm bed"
+    },
+    {
+      "label": "HR steel",
+      "value": "Up to 25 mm"
+    },
+    {
+      "label": "Stainless steel",
+      "value": "Up to 6 mm"
+    },
+    {
+      "label": "Forming",
+      "value": "35 presses · 20 – 250 T"
+    },
+    {
+      "label": "Machining",
+      "value": "3-axis VMC · 1300 × 800 mm"
+    },
+    {
+      "label": "Joining",
+      "value": "12 MIG + 3 projection stations"
+    },
+    {
+      "label": "Tooling",
+      "value": "Designed & built in-house"
+    },
+    {
+      "label": "Inspection",
+      "value": "100% against customer drawing"
+    }
+  ],
+  "materials": [
+    "CRCA / Cold-rolled steel",
+    "HR steel",
+    "Stainless steel",
+    "Aluminium",
+    "Mild steel tube"
+  ],
+  "applications": [
+    "Brackets and mounting plates",
+    "Enclosures and covers",
+    "Structural reinforcements",
+    "Welded sub-assemblies",
+    "Formed panels"
+  ],
+  "icon": "layers",
+  "inHouse": true,
+  "order": 2,
+  "seo": {
+    "title": "Sheet Metal Fabrication, End to End",
+    "description": "End-to-end sheet metal fabrication in Faridabad: laser cutting to 25 mm, press forming to 250 tonnes, CNC machining, fixture welding and 100% inspection."
+  }
+}

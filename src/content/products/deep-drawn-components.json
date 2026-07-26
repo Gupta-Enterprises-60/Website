@@ -1,0 +1,62 @@
+{
+  "name": "Deep-Drawn Components",
+  "code": "GE-SM-002",
+  "category": "sheet-metal-parts",
+  "summary": "Cups, housings and drawn profiles formed on 150 – 250 tonne presses with deep-draw tooling built and maintained in-house.",
+  "description": "Deep-drawn sheet-metal components — cups, shells, housings and drawn profiles — produced on the heavier end of our press line. Deep drawing is where tooling quality decides everything: draw ratio, blank holder force and die radius all have to be right, and they have to stay right across the batch. Because we design, build and maintain the draw tooling ourselves, we can correct a thinning or wrinkling problem at source instead of negotiating it with a tool vendor. Send the part geometry and material and we will confirm feasibility and the number of draw stages required.",
+  "images": [],
+  "placeholderHint": "Photograph a representative drawn component alongside its die — landscape, plain background.",
+  "applications": [
+    "Housings and enclosures",
+    "Drawn cups and shells",
+    "Formed covers",
+    "Structural drawn profiles"
+  ],
+  "materials": [
+    "CRCA / Cold-rolled steel",
+    "HR steel",
+    "Stainless steel"
+  ],
+  "processes": [
+    "deep-drawing",
+    "metal-stamping",
+    "tool-room"
+  ],
+  "industries": [
+    "automotive",
+    "industrial-equipment"
+  ],
+  "specs": [
+    {
+      "label": "Press range used",
+      "value": "150 – 250 tonnes"
+    },
+    {
+      "label": "Frame type",
+      "value": "250 T H-frame for heavy draw"
+    },
+    {
+      "label": "Tooling",
+      "value": "Multi-stage deep-draw dies, built in-house"
+    },
+    {
+      "label": "Feasibility",
+      "value": "Draw ratio & stage count confirmed at quotation"
+    },
+    {
+      "label": "Manufactured to",
+      "value": "Customer drawing & specification"
+    }
+  ],
+  "featured": false,
+  "isNew": true,
+  "order": 4,
+  "related": [
+    "structural-brackets-reinforcements",
+    "press-tools-dies-fixtures"
+  ],
+  "seo": {
+    "title": "Deep-Drawn Sheet-Metal Components",
+    "description": "Deep-drawn cups, housings and formed profiles on 150-250 tonne presses with multi-stage draw tooling built in-house. Faridabad, India."
+  }
+}

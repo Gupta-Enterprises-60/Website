@@ -1,0 +1,1062 @@
+# =============================================================================
+# Sveltia CMS — content configuration for the Gupta Enterprises website
+# -----------------------------------------------------------------------------
+# This file drives the admin panel at /admin. Every collection below reads and
+# writes the exact same files that the Astro build consumes, so publishing a
+# change through the admin panel commits it to the repository and triggers a
+# rebuild. There is no database.
+#
+# IMPORTANT — before first use, set `repo` below to your GitHub repository in
+# owner/name form. See README.md → "Setting up the admin panel".
+# =============================================================================
+
+backend:
+  name: github
+  repo: OWNER/REPOSITORY # <-- CHANGE THIS, e.g. guptaenterprises/website
+  branch: main
+  # Netlify's built-in GitHub OAuth provider handles the login handshake, so no
+  # OAuth app of your own is needed. Enable it in the Netlify dashboard under
+  # Site configuration → Access & security → OAuth → Install provider → GitHub.
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+  commit_messages:
+    create: 'content: add {{collection}} "{{slug}}"'
+    update: 'content: update {{collection}} "{{slug}}"'
+    delete: 'content: delete {{collection}} "{{slug}}"'
+    uploadMedia: 'content: upload {{path}}'
+    deleteMedia: 'content: delete {{path}}'
+
+# Run `npm run cms` alongside `npm run dev` to edit content against local files.
+local_backend: true
+
+# Where uploaded photographs, videos and PDFs are written, and how the site
+# refers to them afterwards.
+media_folder: public/images
+public_folder: /images
+
+# Every change lands as a draft first; nothing goes live until Published.
+publish_mode: editorial_workflow
+
+site_url: https://www.guptagroups.in
+display_url: https://www.guptagroups.in
+logo_url: /images/brand/ge-logo.png
+
+collections:
+  # ===========================================================================
+  # PRODUCTS
+  # ===========================================================================
+  - name: products
+    label: Products
+    label_singular: Product
+    description: >-
+      The product catalog. Each entry is one component family. Filters on the
+      website are driven by Category, Industries, Processes and Materials — use
+      the exact values from the dropdowns so filtering keeps working.
+    folder: src/content/products
+    extension: json
+    format: json
+    create: true
+    slug: '{{slug}}'
+    identifier_field: name
+    summary: '{{code}} — {{name}}'
+    sortable_fields: [order, name, code, featured]
+    view_groups:
+      - label: Category
+        field: category
+    fields:
+      - { name: name, label: Product name, widget: string, hint: 'Shown as the page heading, e.g. "Structural Brackets, Panels & Reinforcements".' }
+      - { name: code, label: Product code, widget: string, hint: 'Your internal reference, e.g. GE-SM-001. Shown as the SKU.' }
+      - name: category
+        label: Category
+        widget: select
+        options:
+          - { label: Sheet Metal Parts, value: sheet-metal-parts }
+          - { label: Tubular Parts, value: tubular-parts }
+          - { label: Welded Assemblies, value: welded-assemblies }
+          - { label: Machined Components, value: machined-components }
+          - { label: Tools, Dies & Fixtures, value: tools-dies }
+      - { name: summary, label: Short summary, widget: text, hint: 'One sentence. Appears on catalog cards and in search results.' }
+      - { name: description, label: Full description, widget: text, hint: 'Two or three paragraphs. Say what the part is, how it is made and what problem it solves for the buyer.' }
+
+      - name: images
+        label: Photographs
+        label_singular: Photograph
+        widget: list
+        required: false
+        summary: '{{fields.alt}}'
+        hint: 'Leave empty and the site shows a labelled placeholder — never a stock photo. First image is the main one.'
+        fields:
+          - { name: src, label: Image, widget: image }
+          - { name: alt, label: Alt text, widget: string, hint: 'Describe the part for screen readers and image search. Not "product photo".' }
+          - { name: caption, label: Caption, widget: string, required: false }
+
+      - { name: placeholderHint, label: Photo brief, widget: string, required: false, hint: 'Shown inside the placeholder while no photo exists — a note to yourself about what to shoot.' }
+      - { name: drawing, label: Drawing (PDF), widget: file, required: false, hint: 'Optional public drawing. Do not upload anything confidential.' }
+
+      - { name: applications, label: Applications, widget: list, required: false, default: [], hint: 'Where the part is used. One per line.' }
+
+      - name: materials
+        label: Materials
+        widget: select
+        multiple: true
+        required: false
+        default: []
+        options:
+          - CRCA / Cold-rolled steel
+          - HR steel
+          - Mild steel tube
+          - Mild steel bar
+          - Stainless steel
+          - Tool steel
+          - Aluminium
+
+      - name: processes
+        label: Manufacturing processes
+        widget: select
+        multiple: true
+        required: false
+        default: []
+        hint: 'Drives the process filter and links to the capability pages.'
+        options:
+          - { label: Metal stamping, value: metal-stamping }
+          - { label: Deep drawing, value: deep-drawing }
+          - { label: Laser cutting, value: laser-cutting }
+          - { label: CNC / VMC machining, value: cnc-machining }
+          - { label: Tube cutting, bending & flaring, value: tube-fabrication }
+          - { label: MIG & projection welding, value: welding }
+          - { label: Tool & die making, value: tool-room }
+          - { label: Powder coating & finishing, value: powder-coating }
+
+      - name: industries
+        label: Industries
+        widget: relation
+        collection: industries
+        search_fields: [title]
+        display_fields: [title]
+        value_field: '{{filename}}'
+        multiple: true
+        required: false
+        default: []
+
+      - name: specs
+        label: Technical specification
+        label_singular: Specification row
+        widget: list
+        required: false
+        default: []
+        summary: '{{fields.label}}: {{fields.value}}'
+        fields:
+          - { name: label, label: Label, widget: string }
+          - { name: value, label: Value, widget: string }
+
+      - { name: featured, label: Featured on homepage, widget: boolean, default: false }
+      - { name: isNew, label: Show "New" badge, widget: boolean, default: false }
+      - { name: order, label: Sort order, widget: number, default: 100, value_type: int, hint: 'Lower numbers appear first.' }
+
+      - name: related
+        label: Related products
+        widget: relation
+        collection: products
+        search_fields: [name, code]
+        display_fields: [name]
+        value_field: '{{filename}}'
+        multiple: true
+        required: false
+        default: []
+
+      - name: seo
+        label: SEO
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: title, label: Page title, widget: string, required: false, hint: 'Under ~60 characters. Leave blank to use the product name.' }
+          - { name: description, label: Meta description, widget: text, required: false, hint: '140–160 characters. Leave blank to use the summary.' }
+
+  # ===========================================================================
+  # CAPABILITIES
+  # ===========================================================================
+  - name: capabilities
+    label: Capabilities
+    label_singular: Capability
+    description: 'The manufacturing capability pages (stamping, laser, machining, welding, tooling and so on).'
+    folder: src/content/capabilities
+    extension: json
+    format: json
+    create: true
+    slug: '{{slug}}'
+    identifier_field: title
+    summary: '{{title}}'
+    sortable_fields: [order, title]
+    fields:
+      - { name: title, label: Full title, widget: string }
+      - { name: navTitle, label: Short title, widget: string, required: false, hint: 'Used in navigation and cards where space is tight.' }
+      - { name: kicker, label: Kicker, widget: string, default: Manufacturing capability }
+      - { name: summary, label: Short summary, widget: text }
+      - { name: intro, label: Lead paragraph, widget: text }
+
+      - name: sections
+        label: Body sections
+        label_singular: Section
+        widget: list
+        required: false
+        default: []
+        summary: '{{fields.heading}}'
+        fields:
+          - { name: heading, label: Heading, widget: string }
+          - { name: body, label: Paragraphs, widget: list, hint: 'One paragraph per item.' }
+
+      - name: stats
+        label: Headline figures
+        widget: list
+        required: false
+        default: []
+        summary: '{{fields.value}} — {{fields.label}}'
+        hint: 'Shown in the page hero. Two or three works best.'
+        fields:
+          - { name: value, label: Value, widget: string }
+          - { name: label, label: Label, widget: string }
+
+      - name: specs
+        label: Specification table
+        widget: list
+        required: false
+        default: []
+        summary: '{{fields.label}}: {{fields.value}}'
+        fields:
+          - { name: label, label: Label, widget: string }
+          - { name: value, label: Value, widget: string }
+
+      - { name: materials, label: Materials, widget: list, required: false, default: [] }
+      - { name: applications, label: Typical applications, widget: list, required: false, default: [] }
+      - { name: equipment, label: Equipment references, widget: list, required: false, default: [] }
+
+      - name: image
+        label: Process photograph
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: src, label: Image, widget: image, required: false }
+          - { name: alt, label: Alt text, widget: string, required: false }
+          - { name: caption, label: Caption, widget: string, required: false }
+
+      - name: icon
+        label: Icon
+        widget: select
+        default: cog
+        options: [cog, layers, zap, flame, wrench, droplet, compass, handshake, gauge, package, factory]
+
+      - { name: inHouse, label: Performed in-house, widget: boolean, default: true, hint: 'Turn OFF for anything delivered through partners — the page then shows an explicit disclosure block.' }
+      - { name: partnerNote, label: Partner disclosure, widget: text, required: false, hint: 'Required when "Performed in-house" is off. Explain honestly how the work is delivered.' }
+      - { name: order, label: Sort order, widget: number, default: 100, value_type: int }
+
+      - name: seo
+        label: SEO
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: title, label: Page title, widget: string, required: false }
+          - { name: description, label: Meta description, widget: text, required: false }
+
+  # ===========================================================================
+  # MACHINES
+  # ===========================================================================
+  - name: machines
+    label: Machine list
+    label_singular: Machine
+    description: 'Every machine on the floor. Drives the machine list page and the equipment counts elsewhere.'
+    folder: src/content/machines
+    extension: json
+    format: json
+    create: true
+    slug: '{{slug}}'
+    identifier_field: name
+    summary: '{{name}} ×{{quantity}}'
+    sortable_fields: [order, name, group, quantity]
+    view_groups:
+      - label: Group
+        field: group
+    fields:
+      - { name: name, label: Machine name, widget: string }
+      - name: group
+        label: Group
+        widget: select
+        options:
+          - { label: Press shop, value: press-shop }
+          - { label: Laser cutting, value: laser }
+          - { label: CNC & machining, value: machining }
+          - { label: Welding & special-purpose, value: welding }
+          - { label: Tool room, value: tool-room }
+          - { label: Material handling, value: material-handling }
+          - { label: Power backup, value: power }
+      - { name: quantity, label: Quantity, widget: number, default: 1, value_type: int, min: 1 }
+      - { name: capacity, label: Capacity, widget: string, required: false, hint: 'e.g. "250 tonnes", "1500 × 3000 mm bed".' }
+      - { name: make, label: Make, widget: string, required: false }
+      - name: specs
+        label: Specification rows
+        widget: list
+        required: false
+        default: []
+        summary: '{{fields.label}}: {{fields.value}}'
+        fields:
+          - { name: label, label: Label, widget: string }
+          - { name: value, label: Value, widget: string }
+      - { name: notes, label: Notes, widget: text, required: false, hint: 'One or two sentences on what this machine lets you do for a customer.' }
+      - name: image
+        label: Photograph
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: src, label: Image, widget: image, required: false }
+          - { name: alt, label: Alt text, widget: string, required: false }
+          - { name: caption, label: Caption, widget: string, required: false }
+      - { name: order, label: Sort order, widget: number, default: 100, value_type: int }
+
+  # ===========================================================================
+  # INDUSTRIES
+  # ===========================================================================
+  - name: industries
+    label: Industries
+    label_singular: Industry
+    description: 'Sectors served. Be accurate with Status — it is what makes these pages credible.'
+    folder: src/content/industries
+    extension: json
+    format: json
+    create: true
+    slug: '{{slug}}'
+    identifier_field: title
+    summary: '{{title}} — {{status}}'
+    sortable_fields: [order, title]
+    fields:
+      - { name: title, label: Industry, widget: string }
+      - { name: kicker, label: Kicker, widget: string, default: Industries we serve }
+      - { name: summary, label: Short summary, widget: text }
+      - { name: intro, label: Lead paragraph, widget: text }
+      - { name: body, label: Body paragraphs, widget: list, required: false, default: [], hint: 'One paragraph per item.' }
+      - { name: core, label: Core sector, widget: boolean, default: false, hint: 'Only true for sectors we actually supply in volume today.' }
+      - name: status
+        label: Status
+        widget: select
+        default: Target sector
+        options: ['Core sector', 'Active growth sector', 'Target sector']
+        hint: '"Target sector" means we have the capability but not yet a track record. Say so — buyers respect it.'
+      - { name: componentTypes, label: Component types, widget: list, required: false, default: [] }
+      - name: capabilitiesUsed
+        label: Capabilities applied
+        widget: relation
+        collection: capabilities
+        search_fields: [title]
+        display_fields: [title]
+        value_field: '{{filename}}'
+        multiple: true
+        required: false
+        default: []
+      - name: icon
+        label: Icon
+        widget: select
+        default: factory
+        options: [car, settings, zap, sun, bot, tractor, factory, package, layers]
+      - name: image
+        label: Photograph
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: src, label: Image, widget: image, required: false }
+          - { name: alt, label: Alt text, widget: string, required: false }
+          - { name: caption, label: Caption, widget: string, required: false }
+      - { name: order, label: Sort order, widget: number, default: 100, value_type: int }
+      - name: seo
+        label: SEO
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: title, label: Page title, widget: string, required: false }
+          - { name: description, label: Meta description, widget: text, required: false }
+
+  # ===========================================================================
+  # BLOG
+  # ===========================================================================
+  - name: posts
+    label: Articles
+    label_singular: Article
+    description: 'Insight articles. These are what bring buyers to the site from search — write for procurement and engineering readers, not for keywords.'
+    folder: src/content/posts
+    extension: md
+    format: frontmatter
+    create: true
+    slug: '{{slug}}'
+    identifier_field: title
+    summary: '{{title}}'
+    sortable_fields: [publishedAt, title, topic]
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: description, label: Summary, widget: text, hint: 'Also used as the meta description. 140–160 characters is ideal.' }
+      - { name: publishedAt, label: Published, widget: datetime, date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true }
+      - { name: updatedAt, label: Updated, widget: datetime, date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true, required: false }
+      - { name: author, label: Author, widget: string, default: Gupta Enterprises }
+      - name: topic
+        label: Topic
+        widget: select
+        default: Manufacturing
+        options: [Manufacturing, Sourcing, Quality, Engineering, Company]
+      - { name: readingMinutes, label: Reading time (minutes), widget: number, required: false, value_type: int }
+      - name: cover
+        label: Cover image
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: src, label: Image, widget: image, required: false }
+          - { name: alt, label: Alt text, widget: string, required: false }
+          - { name: caption, label: Caption, widget: string, required: false }
+      - { name: draft, label: Draft (hidden from the site), widget: boolean, default: false }
+      - { name: body, label: Article body, widget: markdown }
+      - name: seo
+        label: SEO
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: title, label: Page title, widget: string, required: false }
+          - { name: description, label: Meta description, widget: text, required: false }
+
+  # ===========================================================================
+  # JOBS
+  # ===========================================================================
+  - name: jobs
+    label: Job openings
+    label_singular: Job opening
+    folder: src/content/jobs
+    extension: json
+    format: json
+    create: true
+    slug: '{{slug}}'
+    identifier_field: title
+    summary: '{{title}} ({{department}})'
+    fields:
+      - { name: title, label: Job title, widget: string }
+      - { name: department, label: Department, widget: string }
+      - { name: location, label: Location, widget: string, default: 'Faridabad, Haryana' }
+      - name: type
+        label: Employment type
+        widget: select
+        default: Full-time
+        options: [Full-time, Part-time, Contract, Apprenticeship, Internship]
+      - { name: experience, label: Experience required, widget: string, hint: 'e.g. "3 – 8 years".' }
+      - { name: summary, label: Summary, widget: text }
+      - { name: responsibilities, label: Responsibilities, widget: list, required: false, default: [] }
+      - { name: requirements, label: Requirements, widget: list, required: false, default: [] }
+      - { name: open, label: Currently open, widget: boolean, default: true, hint: 'Turn off to remove the role from the site without deleting it.' }
+      - { name: postedAt, label: Posted, widget: datetime, date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true, required: false }
+
+  # ===========================================================================
+  # SINGLE-PAGE CONTENT
+  # ===========================================================================
+  - name: pages
+    label: Website pages
+    description: 'Copy and figures for individual pages. These are single documents rather than lists.'
+    files:
+      # ---------------------------------------------------------------- HOME
+      - name: home
+        label: Homepage
+        file: src/data/home.json
+        description: 'Hero, section headings and the closing call to action on the homepage.'
+        fields:
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: kicker, label: Kicker, widget: string }
+              - { name: title, label: Headline, widget: text }
+              - { name: lead, label: Lead paragraph, widget: text }
+              - name: primaryCta
+                label: Primary button
+                widget: object
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: href, label: Link, widget: string }
+              - name: secondaryCta
+                label: Secondary button
+                widget: object
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: href, label: Link, widget: string }
+              - name: image
+                label: Hero photograph
+                widget: object
+                fields:
+                  - { name: src, label: Image, widget: image, required: false, hint: 'Landscape, 2400 px wide or larger. Leave empty for a labelled placeholder.' }
+                  - { name: alt, label: Alt text, widget: string, required: false }
+              - name: video
+                label: Hero background video
+                widget: object
+                collapsed: true
+                hint: 'Optional. Setting a video switches the hero to a full-bleed clip with the headline over it. Leave empty to keep the photograph layout.'
+                fields:
+                  - { name: src, label: Video file (MP4 or GIF), widget: file, required: false, media_folder: '../../public/videos', public_folder: '/videos', hint: 'Silent shop-floor clip, 10–20 s, 1920 px wide, under ~6 MB. H.264 MP4.' }
+                  - { name: webm, label: WebM version, widget: file, required: false, media_folder: '../../public/videos', public_folder: '/videos', hint: 'Optional. Served first where supported — usually 30–50% smaller than the MP4.' }
+                  - { name: poster, label: Poster frame, widget: image, required: false, hint: 'Shown before playback starts and to reduced-motion visitors. Defaults to the hero photograph.' }
+              - { name: placeholderHint, label: Photo brief, widget: string, required: false }
+              - name: quickStats
+                label: Proof strip figures
+                widget: list
+                summary: '{{fields.value}} — {{fields.label}}'
+                fields:
+                  - { name: value, label: Value, widget: string }
+                  - { name: label, label: Label, widget: string }
+
+          - name: introSection
+            label: Introduction section
+            widget: object
+            collapsed: true
+            fields:
+              - { name: kicker, label: Kicker, widget: string }
+              - { name: title, label: Heading, widget: string }
+              - { name: body, label: Paragraphs, widget: list }
+              - name: cta
+                label: Link
+                widget: object
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: href, label: Link, widget: string }
+
+          - name: capabilitiesSection
+            label: Capabilities section
+            widget: object
+            collapsed: true
+            fields:
+              - { name: kicker, label: Kicker, widget: string }
+              - { name: title, label: Heading, widget: string }
+              - { name: lead, label: Lead, widget: text }
+          - name: productsSection
+            label: Products section
+            widget: object
+            collapsed: true
+            fields:
+              - { name: kicker, label: Kicker, widget: string }
+              - { name: title, label: Heading, widget: string }
+              - { name: lead, label: Lead, widget: text }
+          - name: industriesSection
+            label: Industries section
+            widget: object
+            collapsed: true
+            fields:
+              - { name: kicker, label: Kicker, widget: string }
+              - { name: title, label: Heading, widget: string }
+              - { name: lead, label: Lead, widget: text }
+          - name: whySection
+            label: Why us section
+            widget: object
+            collapsed: true
+            fields:
+              - { name: kicker, label: Kicker, widget: string }
+              - { name: title, label: Heading, widget: string }
+              - { name: lead, label: Lead, widget: text }
+          - name: processSection
+            label: Process section
+            widget: object
+            collapsed: true
+            fields:
+              - { name: kicker, label: Kicker, widget: string }
+              - { name: title, label: Heading, widget: string }
+              - { name: lead, label: Lead, widget: text }
+          - name: trustSection
+            label: Customers section
+            widget: object
+            collapsed: true
+            fields:
+              - { name: kicker, label: Kicker, widget: string }
+              - { name: title, label: Heading, widget: string }
+              - { name: lead, label: Lead, widget: text }
+          - name: ctaBand
+            label: Closing call to action
+            widget: object
+            collapsed: true
+            fields:
+              - { name: kicker, label: Kicker, widget: string }
+              - { name: title, label: Heading, widget: string }
+              - { name: lead, label: Lead, widget: text }
+              - name: primaryCta
+                label: Primary button
+                widget: object
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: href, label: Link, widget: string }
+              - name: secondaryCta
+                label: Secondary button
+                widget: object
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: href, label: Link, widget: string }
+
+      # ------------------------------------------------------------- COMPANY
+      - name: company
+        label: Company information
+        file: src/data/company.json
+        description: 'About and Our Story content, values, timeline, turnover figures, why-us points and the process steps.'
+        fields:
+          - { name: intro, label: Company introduction, widget: text }
+          - { name: positioning, label: Positioning statement, widget: text }
+          - { name: mission, label: Mission statement, widget: text }
+          - { name: missionPoints, label: Mission points, widget: list }
+          - { name: vision, label: Vision statement, widget: text }
+          - { name: story, label: Our Story paragraphs, widget: list, hint: 'One paragraph per item. Appears on /about/our-story.' }
+
+          - name: values
+            label: Core values
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - name: icon
+                label: Icon
+                widget: select
+                options: [shield-check, clock, compass, handshake, headset, trending-up, target, cog, layers, zap]
+              - { name: title, label: Title, widget: string }
+              - { name: text, label: Text, widget: text }
+
+          - name: timeline
+            label: Timeline
+            widget: list
+            summary: '{{fields.year}} — {{fields.title}}'
+            fields:
+              - { name: year, label: Year, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: text, label: Text, widget: text }
+              - { name: current, label: Mark as current, widget: boolean, default: false, required: false }
+
+          - name: growth
+            label: Turnover figures
+            widget: object
+            hint: 'Keep this current — a stale financial year is the first thing a sceptical buyer notices.'
+            fields:
+              - { name: unit, label: Unit, widget: string }
+              - { name: caption, label: Chart caption, widget: string }
+              - name: series
+                label: Years
+                widget: list
+                summary: '{{fields.period}}: {{fields.value}}'
+                fields:
+                  - { name: period, label: Financial year, widget: string }
+                  - { name: value, label: Turnover, widget: number, value_type: float }
+              - { name: footnote, label: Footnote, widget: text }
+
+          - name: whyUs
+            label: Why choose us
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - name: icon
+                label: Icon
+                widget: select
+                options: [layers, gauge, clipboard-check, zap, cog, repeat, target, shield-check, handshake]
+              - { name: title, label: Title, widget: string }
+              - { name: text, label: Text, widget: text }
+              - { name: proof, label: Proof figure, widget: string, hint: 'A short factual figure, e.g. "35 presses".' }
+
+          - name: process
+            label: Process steps
+            widget: list
+            summary: '{{fields.step}} — {{fields.title}}'
+            fields:
+              - { name: step, label: Number, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: text, label: Text, widget: text }
+              - { name: output, label: What the customer gets, widget: string }
+
+          - name: futureVision
+            label: Future vision
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - name: icon
+                label: Icon
+                widget: select
+                options: [compass, globe, trending-up, target]
+              - { name: title, label: Title, widget: string }
+              - { name: text, label: Text, widget: text }
+
+          - name: clients
+            label: Customers
+            widget: list
+            summary: '{{fields.name}}'
+            hint: 'Only list customers who are happy to be named. Logos scroll as a marquee on the homepage; entries without a logo show the company name as text instead.'
+            fields:
+              - { name: name, label: Company name, widget: string }
+              - { name: logo, label: Logo, widget: image, required: false, media_folder: '../../public/images/clients', public_folder: '/images/clients', hint: 'Transparent PNG or SVG, roughly 240 × 88 px. Shown desaturated and restored to full colour on hover.' }
+          - { name: clientsNote, label: Customers note, widget: text }
+          - { name: currentPrograms, label: Current production programmes, widget: list }
+
+      # ------------------------------------------------------ INFRASTRUCTURE
+      - name: infrastructure
+        label: Infrastructure
+        file: src/data/infrastructure.json
+        description: 'Units, floor area, press breakdown, power backup, and the photo/video shot briefs.'
+        fields:
+          - { name: intro, label: Introduction, widget: text }
+          - name: units
+            label: Manufacturing units
+            widget: list
+            summary: '{{fields.name}} — {{fields.area}} {{fields.areaUnit}}'
+            fields:
+              - { name: name, label: Unit name, widget: string }
+              - { name: area, label: Area, widget: string }
+              - { name: areaUnit, label: Unit of area, widget: string, default: sq yards }
+              - { name: purpose, label: Purpose, widget: string }
+              - { name: houses, label: What it houses, widget: list }
+          - name: headline
+            label: Headline figures
+            widget: list
+            summary: '{{fields.value}} {{fields.unit}} — {{fields.label}}'
+            fields:
+              - { name: value, label: Value, widget: string }
+              - { name: unit, label: Unit, widget: string, required: false }
+              - { name: label, label: Label, widget: string }
+          - name: power
+            label: Power backup
+            widget: object
+            fields:
+              - { name: total, label: Total capacity, widget: string }
+              - { name: sets, label: Generator sets, widget: list }
+              - { name: note, label: Note, widget: text }
+          - name: pressBreakdown
+            label: Press capacity
+            widget: object
+            fields:
+              - { name: caption, label: Caption, widget: string }
+              - { name: total, label: Total presses, widget: number, value_type: int }
+              - name: rows
+                label: Tonnage bands
+                widget: list
+                summary: '{{fields.tonnage}} × {{fields.count}}'
+                fields:
+                  - { name: tonnage, label: Tonnage, widget: string }
+                  - { name: count, label: Number of presses, widget: number, value_type: int }
+                  - { name: highlight, label: Highlight in red, widget: boolean, default: false, required: false }
+              - { name: note, label: Note, widget: text }
+          - name: gallerySections
+            label: Gallery sections
+            widget: list
+            summary: '{{fields.title}}'
+            hint: 'Each section groups gallery photographs. The shot list appears as a brief until real photos are uploaded.'
+            fields:
+              - { name: id, label: ID, widget: string, hint: 'Lowercase, no spaces. Photos reference this.' }
+              - { name: title, label: Title, widget: string }
+              - { name: description, label: Description, widget: string }
+              - { name: shotList, label: Shot list, widget: list }
+          - name: videoSections
+            label: Video sections
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { name: id, label: ID, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: description, label: Description, widget: string }
+              - { name: duration, label: Suggested length, widget: string }
+
+      # -------------------------------------------------------------- QUALITY
+      - name: quality
+        label: Quality assurance
+        file: src/data/quality.json
+        fields:
+          - { name: intro, label: Introduction, widget: text }
+          - name: headline
+            label: Headline claim
+            widget: object
+            fields:
+              - { name: value, label: Figure, widget: string }
+              - { name: label, label: Label, widget: text }
+              - { name: stages, label: Stages, widget: list }
+          - name: stages
+            label: Inspection stages
+            widget: list
+            summary: '{{fields.step}} — {{fields.title}}'
+            fields:
+              - { name: step, label: Number, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: text, label: Text, widget: text }
+              - { name: checks, label: Checks performed, widget: list }
+          - name: instruments
+            label: Measurement instruments
+            widget: list
+            summary: '{{fields.name}}'
+            fields:
+              - { name: name, label: Instrument, widget: string }
+              - { name: use, label: What it is used for, widget: string }
+          - name: commitments
+            label: Quality commitments
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - name: icon
+                label: Icon
+                widget: select
+                options: [clipboard-check, file-check, search, wrench, shield-check, microscope]
+              - { name: title, label: Title, widget: string }
+              - { name: text, label: Text, widget: text }
+          - { name: note, label: Closing note, widget: text }
+
+      # ------------------------------------------------------- CERTIFICATIONS
+      - name: certifications
+        label: Certifications
+        file: src/data/certifications.json
+        fields:
+          - { name: intro, label: Introduction, widget: text }
+          - name: items
+            label: Certifications & registrations
+            widget: list
+            summary: '{{fields.name}}'
+            fields:
+              - { name: id, label: ID, widget: string, hint: 'Lowercase, no spaces.' }
+              - { name: name, label: Name, widget: string }
+              - { name: type, label: Type, widget: string }
+              - name: icon
+                label: Icon
+                widget: select
+                options: [award, landmark, receipt, shield-check, file-check]
+              - { name: summary, label: Short summary, widget: text }
+              - { name: detail, label: Full detail, widget: text }
+              - { name: scope, label: Scope, widget: string }
+              - { name: certificateAvailable, label: Copy available on request, widget: boolean, default: true }
+              - { name: certificateFile, label: Certificate file, widget: file, required: false, hint: 'Upload the PDF to publish it for direct download.' }
+          - name: workingToward
+            label: What we do not yet hold
+            widget: object
+            hint: 'Being straight about this is a selling point, not a weakness. Keep it.'
+            fields:
+              - { name: title, label: Heading, widget: string }
+              - { name: text, label: Text, widget: text }
+          - { name: note, label: Closing note, widget: text }
+
+      # ------------------------------------------------------------ DOWNLOADS
+      - name: downloads
+        label: Downloads
+        file: src/data/downloads.json
+        description: 'Brochures and catalogs offered for download, plus the list of documents sent on request.'
+        fields:
+          - { name: intro, label: Introduction, widget: text }
+          - name: items
+            label: Downloadable documents
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { name: id, label: ID, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: description, label: Description, widget: text }
+              - { name: file, label: File, widget: file }
+              - { name: format, label: Format, widget: string, default: PDF }
+              - { name: sizeLabel, label: File size, widget: string, hint: 'e.g. "1.0 MB". Typed in rather than detected.' }
+              - { name: pages, label: Length, widget: string, required: false }
+              - { name: category, label: Category, widget: string, default: Company }
+              - { name: featured, label: Feature at the top, widget: boolean, default: false }
+              - { name: updated, label: Updated, widget: string, required: false }
+          - name: onRequest
+            label: Available on request
+            widget: object
+            fields:
+              - { name: title, label: Heading, widget: string }
+              - { name: text, label: Text, widget: text }
+              - { name: items, label: Items, widget: list }
+
+      # ----------------------------------------------------------------- FAQS
+      - name: faqs
+        label: FAQs
+        file: src/data/faqs.json
+        description: 'Grouped questions and answers. These are marked up for search engines, so answers should be genuinely useful and self-contained.'
+        fields:
+          - { name: intro, label: Introduction, widget: text }
+          - name: groups
+            label: Question groups
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { name: id, label: ID, widget: string, hint: 'Lowercase, no spaces. Used for the jump links.' }
+              - { name: title, label: Group title, widget: string }
+              - name: items
+                label: Questions
+                widget: list
+                summary: '{{fields.q}}'
+                fields:
+                  - { name: q, label: Question, widget: string }
+                  - { name: a, label: Answer, widget: text }
+
+      # -------------------------------------------------------------- GALLERY
+      - name: gallery
+        label: Factory gallery
+        file: src/data/gallery.json
+        description: 'Upload real photographs of the plant here. Assign each one to a section so it appears in the right place.'
+        fields:
+          - { name: intro, label: Introduction, widget: text }
+          - name: items
+            label: Photographs
+            label_singular: Photograph
+            widget: list
+            required: false
+            default: []
+            summary: '{{fields.alt}}'
+            fields:
+              - { name: src, label: Image, widget: image }
+              - { name: alt, label: Alt text, widget: string, hint: 'Describe what is in the photo. Used by screen readers and image search.' }
+              - { name: caption, label: Caption, widget: string, required: false }
+              - name: section
+                label: Section
+                widget: select
+                options:
+                  - { label: Shop floor, value: shop-floor }
+                  - { label: Machinery, value: machines }
+                  - { label: Tool room, value: tool-room }
+                  - { label: Quality inspection, value: quality }
+                  - { label: Material & warehouse, value: warehouse }
+                  - { label: Packing & dispatch, value: dispatch }
+                  - { label: Our team, value: team }
+
+      # --------------------------------------------------------------- VIDEOS
+      - name: videos
+        label: Factory videos
+        file: src/data/videos.json
+        description: 'Upload MP4 files of the shop floor in operation. Keep files under about 20 MB so pages stay fast.'
+        fields:
+          - { name: intro, label: Introduction, widget: text }
+          - name: items
+            label: Videos
+            label_singular: Video
+            widget: list
+            required: false
+            default: []
+            summary: '{{fields.title}}'
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: description, label: Description, widget: text, required: false }
+              - { name: src, label: Video file (MP4), widget: file }
+              - { name: poster, label: Poster image, widget: image, required: false, hint: 'A still shown before playback. Strongly recommended.' }
+              - name: section
+                label: Section
+                widget: select
+                required: false
+                options:
+                  - { label: Press shop, value: press-shop }
+                  - { label: Laser cutting, value: laser-cutting }
+                  - { label: Welding, value: welding }
+                  - { label: Plant walkthrough, value: plant-tour }
+              - { name: duration, label: Length, widget: string, required: false }
+
+  # ===========================================================================
+  # SETTINGS
+  # ===========================================================================
+  - name: settings
+    label: Settings
+    description: 'Company details, contact information and site-wide SEO defaults. Changing these updates every page at once.'
+    files:
+      - name: site
+        label: Company & contact details
+        file: src/data/site.json
+        fields:
+          - { name: name, label: Company name, widget: string }
+          - { name: legalName, label: Legal name, widget: string }
+          - { name: shortName, label: Short name, widget: string }
+          - { name: url, label: Website URL, widget: string }
+          - { name: tagline, label: Tagline, widget: string }
+          - { name: descriptionShort, label: Short description, widget: text }
+          - { name: founded, label: Year founded, widget: string }
+          - { name: locale, label: Locale, widget: hidden, default: en_IN }
+          - { name: lang, label: Language, widget: hidden, default: en }
+
+          - name: contact
+            label: Contact details
+            widget: object
+            fields:
+              - { name: addressLine1, label: Address line 1, widget: string }
+              - { name: addressLine2, label: Address line 2, widget: string, required: false }
+              - { name: city, label: City, widget: string }
+              - { name: state, label: State, widget: string }
+              - { name: postalCode, label: PIN code, widget: string }
+              - { name: country, label: Country, widget: string }
+              - { name: countryCode, label: Country code, widget: string, default: IN }
+              - { name: phones, label: Phone numbers (display), widget: list, hint: 'Formatted for reading, e.g. "+91 95607 44339".' }
+              - { name: phonesE164, label: Phone numbers (dialling), widget: list, hint: 'Digits only with country code, e.g. "+919560744339". Must be in the same order as above.' }
+              - { name: email, label: Main email, widget: string }
+              - { name: salesEmail, label: Sales email, widget: string }
+              - { name: careersEmail, label: Careers email, widget: string }
+              - { name: whatsapp, label: WhatsApp number, widget: string, hint: 'Digits only, no plus sign, e.g. "919560744339".' }
+              - { name: hours, label: Business hours, widget: string }
+              - { name: responsePromise, label: Response promise, widget: string }
+              - { name: mapQuery, label: Map search text, widget: string }
+              - name: geo
+                label: Coordinates
+                widget: object
+                collapsed: true
+                fields:
+                  - { name: latitude, label: Latitude, widget: string }
+                  - { name: longitude, label: Longitude, widget: string }
+
+          - name: social
+            label: Social profiles
+            widget: object
+            hint: 'Leave blank to hide the icon. Full URLs only.'
+            fields:
+              - { name: linkedin, label: LinkedIn URL, widget: string, required: false }
+              - { name: indiamart, label: IndiaMART URL, widget: string, required: false }
+              - { name: youtube, label: YouTube URL, widget: string, required: false }
+
+          - name: forms
+            label: Form settings
+            widget: object
+            collapsed: true
+            fields:
+              - { name: provider, label: Form provider, widget: hidden, default: netlify }
+              - { name: notifyEmail, label: Send enquiries to, widget: string }
+              - { name: maxUploadMb, label: Max upload size (MB), widget: number, value_type: int, default: 8 }
+              - { name: acceptedDrawingTypes, label: Accepted file types, widget: string }
+
+          - name: seo
+            label: SEO defaults
+            widget: object
+            collapsed: true
+            fields:
+              - { name: titleTemplate, label: Title template, widget: string, hint: 'Use %s where the page title goes.' }
+              - { name: defaultTitle, label: Homepage title, widget: string }
+              - { name: defaultDescription, label: Default meta description, widget: text }
+              - { name: defaultImage, label: Default share image, widget: image, hint: '1200 × 630 px.' }
+              - { name: twitter, label: Twitter handle, widget: string, required: false }
+
+      - name: taxonomy
+        label: Categories, materials & processes
+        file: src/data/taxonomy.json
+        description: >-
+          The vocabulary that drives catalog filtering. Editing an ID here will
+          break existing products that reference it — change labels freely, but
+          leave IDs alone unless you also update every product.
+        fields:
+          - name: categories
+            label: Product categories
+            widget: list
+            summary: '{{fields.name}}'
+            fields:
+              - { name: id, label: ID, widget: string, hint: 'Do not change once products use it.' }
+              - { name: name, label: Name, widget: string }
+              - { name: shortName, label: Short name, widget: string }
+              - { name: summary, label: Summary, widget: text }
+              - { name: examples, label: Example parts, widget: string }
+              - name: icon
+                label: Icon
+                widget: select
+                options: [layers, git-merge, flame, cog, wrench, box, package]
+              - { name: order, label: Order, widget: number, value_type: int }
+          - name: materials
+            label: Materials
+            widget: list
+            summary: '{{fields.name}}'
+            fields:
+              - { name: id, label: ID, widget: string }
+              - { name: name, label: Name, widget: string }
+          - name: processes
+            label: Manufacturing processes
+            widget: list
+            summary: '{{fields.name}}'
+            fields:
+              - { name: id, label: ID, widget: string }
+              - { name: name, label: Name, widget: string }

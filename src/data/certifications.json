@@ -1,0 +1,46 @@
+{
+  "intro": "Certified, registered and compliant — with copies of every certificate available on request. For procurement teams running supplier onboarding, this page contains what your vendor-registration form usually asks for.",
+
+  "items": [
+    {
+      "id": "iso-9001",
+      "name": "ISO 9001:2015",
+      "type": "Quality Management System",
+      "icon": "award",
+      "summary": "Quality Management System certified across production and inspection.",
+      "detail": "Our ISO 9001:2015 certification covers the press shop, laser cutting, machining, welding and tool room operations, together with incoming, in-process and final inspection. It is the framework behind our 100% inspection commitment — documented procedures, traceable records and defined corrective action.",
+      "scope": "Manufacture of sheet-metal, tubular and deep-draw components, tools and dies",
+      "certificateAvailable": true,
+      "certificateFile": ""
+    },
+    {
+      "id": "msme-udyam",
+      "name": "MSME · Udyam",
+      "type": "Government of India registration",
+      "icon": "landmark",
+      "summary": "Registered micro & small enterprise under the Government of India Udyam scheme.",
+      "detail": "Udyam registration confirms our status as a registered micro & small enterprise. For buyers, this can carry procurement advantages under Indian public and corporate MSME sourcing policies, including preferential payment terms under the MSMED Act.",
+      "scope": "Manufacturing enterprise, Faridabad, Haryana",
+      "certificateAvailable": true,
+      "certificateFile": ""
+    },
+    {
+      "id": "gst",
+      "name": "GST Registered",
+      "type": "Tax compliance",
+      "icon": "receipt",
+      "summary": "Fully tax-compliant and ready for domestic B2B invoicing.",
+      "detail": "We are GST registered and issue compliant tax invoices with e-way billing for domestic B2B supply, so your accounts-payable and input-credit processes are straightforward from the first order.",
+      "scope": "Domestic B2B supply across India",
+      "certificateAvailable": true,
+      "certificateFile": ""
+    }
+  ],
+
+  "workingToward": {
+    "title": "Working toward export readiness",
+    "text": "We are building the quality systems, documentation standards and export packaging practices that international OEM and Tier-1 programmes require. We would rather state that plainly than claim certifications we do not yet hold. If you have a specific standard your supply base must meet — IATF 16949, a customer-specific quality manual, or a particular PPAP level — tell us at enquiry stage and we will tell you honestly where we stand against it."
+  },
+
+  "note": "Copies of all certificates and registrations are available on request. Ask for them with your first RFQ and we will send them with the quotation."
+}

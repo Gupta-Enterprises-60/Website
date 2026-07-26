@@ -1,0 +1,22 @@
+{
+  "name": "Special-Purpose Machines (SPM)",
+  "group": "welding",
+  "quantity": 2,
+  "capacity": "Flaring + boring",
+  "order": 30,
+  "specs": [
+    {
+      "label": "Quantity",
+      "value": "2"
+    },
+    {
+      "label": "Type",
+      "value": "Double-head flaring SPM, boring SPM"
+    },
+    {
+      "label": "Purpose",
+      "value": "High-volume tube-end operations"
+    }
+  ],
+  "notes": "Dedicated single-purpose machines that speed high-volume flaring and boring operations on tubular parts."
+}

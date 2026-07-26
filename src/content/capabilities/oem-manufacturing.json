@@ -1,0 +1,91 @@
+{
+  "title": "OEM & Contract Manufacturing",
+  "navTitle": "OEM Manufacturing",
+  "kicker": "Manufacturing capability",
+  "summary": "Build-to-print component programmes for automotive OEMs and Tier-1 suppliers — from first article to volume call-off.",
+  "intro": "Most of what we make is build-to-print: your drawing, your specification, your part number, manufactured and inspected to your requirements. We have run that model since 2004 with eight-plus OEM and Tier-1 partners, most of whom are repeat, multi-year customers.",
+  "sections": [
+    {
+      "heading": "What build-to-print means here",
+      "body": [
+        "You own the design. We own manufacturability, tooling, production and inspection against your drawing. Where a tolerance is not achievable with the specified process or a feature will cause a tooling problem, you hear it at quotation — not after the first article fails.",
+        "We do not reinterpret drawings quietly. Ambiguities get raised and resolved in writing before production starts, because a wrong assumption discovered at PPAP is expensive for both of us."
+      ]
+    },
+    {
+      "heading": "First article to volume, one supplier",
+      "body": [
+        "A component programme usually starts small: a handful of parts to prove fit and function. Our laser can produce those without tooling. As the programme is confirmed, the tool room builds the production die and the part transfers onto the press line — same plant, same quality system, same people.",
+        "You are not re-qualifying a new supplier at the exact moment your programme starts to matter."
+      ]
+    },
+    {
+      "heading": "Multi-process parts on one purchase order",
+      "body": [
+        "A typical automotive sub-assembly might need blanking, forming, a machined feature, projection-welded nuts and a coating. Sourced separately that is five vendors, five schedules and no single point of accountability.",
+        "We hold all of that in-house apart from coating, which we manage through qualified finishing partners under our own purchase order and inspection. One PO, one delivery, one inspection record."
+      ]
+    }
+  ],
+  "stats": [
+    {
+      "value": "8+",
+      "label": "OEM & Tier-1 partners"
+    },
+    {
+      "value": "20+",
+      "label": "Years build-to-print"
+    },
+    {
+      "value": "100%",
+      "label": "Inspected before dispatch"
+    }
+  ],
+  "specs": [
+    {
+      "label": "Model",
+      "value": "Build-to-print / contract manufacturing"
+    },
+    {
+      "label": "Accepted files",
+      "value": "PDF, DWG, DXF, STEP"
+    },
+    {
+      "label": "Tooling",
+      "value": "Designed & built in-house"
+    },
+    {
+      "label": "Volumes",
+      "value": "Prototype batches to volume call-off"
+    },
+    {
+      "label": "Quality system",
+      "value": "ISO 9001:2015"
+    },
+    {
+      "label": "Confidentiality",
+      "value": "NDA signed on request"
+    }
+  ],
+  "materials": [
+    "CRCA / Cold-rolled steel",
+    "HR steel",
+    "Stainless steel",
+    "Mild steel tube",
+    "Aluminium"
+  ],
+  "applications": [
+    "Automotive component programmes",
+    "Seating structure supply",
+    "Bracket and reinforcement families",
+    "Tubular assembly programmes",
+    "Multi-process sub-assemblies"
+  ],
+  "icon": "handshake",
+  "inHouse": true,
+  "order": 6,
+  "seo": {
+    "title": "OEM & Contract Manufacturing",
+    "description": "Build-to-print component manufacturing for automotive OEMs and Tier-1 suppliers. ISO 9001:2015, in-house tooling, first article to volume supply. Faridabad, India."
+  }
+}

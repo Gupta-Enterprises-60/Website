@@ -1,0 +1,32 @@
+{
+  "title": "Agriculture",
+  "summary": "Robust pressed, formed and welded components for agricultural machinery and implements.",
+  "intro": "Agricultural equipment components have a different failure profile to automotive parts: less about micron tolerances, more about surviving shock loads, abrasion and weather over long service intervals in the field.",
+  "body": [
+    "That means heavier gauges, larger formed parts and welded assemblies that hold up under load — work suited to our 150-tonne and 250-tonne press capacity and our 25 mm HR steel cutting range.",
+    "Typical components include mounting brackets and hitch components, guards and shields, formed structural parts, and welded frame sub-assemblies.",
+    "This is a target sector for us. The relevant capability — heavy pressing, structural cutting, fixture welding, coated finishes through partners — is already in place and proven on automotive structural work."
+  ],
+  "core": false,
+  "status": "Target sector",
+  "componentTypes": [
+    "Mounting brackets and hitch components",
+    "Guards and shields",
+    "Heavy formed structural parts",
+    "Welded frame sub-assemblies",
+    "Implement fabrications"
+  ],
+  "capabilitiesUsed": [
+    "metal-stamping",
+    "sheet-metal-fabrication",
+    "welding",
+    "laser-cutting",
+    "powder-coating"
+  ],
+  "icon": "tractor",
+  "order": 6,
+  "seo": {
+    "title": "Agricultural Machinery Components",
+    "description": "Robust pressed, formed and welded components for agricultural machinery and implements. Heavy press capacity to 250 tonnes and 25 mm structural laser cutting."
+  }
+}

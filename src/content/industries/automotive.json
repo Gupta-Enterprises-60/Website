@@ -1,0 +1,33 @@
+{
+  "title": "Automotive",
+  "summary": "Our core sector since 2004 — seating structures, footrest assemblies, brackets and reinforcements for OEMs and Tier-1 suppliers.",
+  "intro": "Automotive is not one of the sectors we serve; it is the sector we were built for. Every process, tolerance discipline and inspection routine in the business was shaped by two decades of supplying Indian automotive OEMs and Tier-1 manufacturers.",
+  "body": [
+    "We currently supply eight-plus OEM and Tier-1 partners across the Indian automotive supply chain, most of them repeat, multi-year customers. Current production includes seat assemblies for utility-vehicle programmes, two-wheeler footrest assemblies in matched RH/LH pairs, seat structure components, and coated and tubular parts.",
+    "What automotive work demands is not exotic capability — it is consistency under call-off pressure. Parts that measure the same in week forty as in week one, delivered against a schedule that does not move, with inspection records that survive an audit. That is what our 100% inspection commitment, in-house tool room and 144 kVA of standby power exist to protect.",
+    "It also means we understand the commercial reality: PPAP expectations, drawing revisions arriving mid-programme, and the fact that a line stoppage costs a customer more in an hour than our entire order value. We plan accordingly."
+  ],
+  "core": true,
+  "status": "Core sector",
+  "componentTypes": [
+    "Seat frames and structures",
+    "Footrest assemblies (RH/LH)",
+    "Mounting brackets and reinforcements",
+    "Body and trim panels",
+    "Tubular sub-assemblies",
+    "Clips, retainers and small stampings"
+  ],
+  "capabilitiesUsed": [
+    "metal-stamping",
+    "welding",
+    "sheet-metal-fabrication",
+    "oem-manufacturing",
+    "cnc-machining"
+  ],
+  "icon": "car",
+  "order": 1,
+  "seo": {
+    "title": "Automotive Component Manufacturing",
+    "description": "Precision sheet-metal and tubular components for Indian automotive OEMs and Tier-1 suppliers since 2004. Seat structures, footrests, brackets."
+  }
+}

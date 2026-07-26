@@ -1,0 +1,383 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/sections/Breadcrumbs.astro';
+import CTABand from '../../components/sections/CTABand.astro';
+import SmartImage from '../../components/ui/SmartImage.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { articleSchema } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props;
+const d = post.data;
+const { Content, headings } = await render(post);
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Insights', href: '/blog' },
+  { label: d.title },
+];
+
+const related = (await getCollection('posts', ({ data }) => !data.draft))
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 2);
+
+const dateFmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+// Only h2s make the contents list — h3s would make it noisy at this length.
+const toc = headings.filter((h) => h.depth === 2);
+
+const schema = [articleSchema(d, `/blog/${post.id}`)];
+---
+
+<BaseLayout
+  title={d.seo?.title ?? d.title}
+  description={d.seo?.description ?? d.description}
+  breadcrumbs={crumbs}
+  schema={schema}
+  ogType="article"
+>
+  <div class="container article-top">
+    <Breadcrumbs items={crumbs} />
+  </div>
+
+  <!-- ===== Article header ===== -->
+  <header class="section--tight">
+    <div class="container">
+      <div class="ahead">
+        <p class="ahead__meta">
+          <span class="chip chip--accent">{d.topic}</span>
+          <span>{dateFmt.format(d.publishedAt)}</span>
+          {d.readingMinutes && <span>· {d.readingMinutes} min read</span>}
+        </p>
+        <h1 class="ahead__title">{d.title}</h1>
+        <p class="ahead__lead">{d.description}</p>
+        <p class="ahead__byline">
+          <Icon name="factory" size={15} />
+          <span>{d.author}</span>
+          {
+            d.updatedAt && (
+              <span class="ahead__updated">Updated {dateFmt.format(d.updatedAt)}</span>
+            )
+          }
+        </p>
+      </div>
+    </div>
+  </header>
+
+  {
+    d.cover?.src && (
+      <div class="container">
+        <figure class="cover">
+          <SmartImage
+            src={d.cover.src}
+            alt={d.cover.alt}
+            ratio="21 / 9"
+            width={1600}
+            loading="eager"
+            sizes="(max-width: 1320px) 100vw, 1320px"
+          />
+          {d.cover.caption && <figcaption>{d.cover.caption}</figcaption>}
+        </figure>
+      </div>
+    )
+  }
+
+  <!-- ===== Body ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="article">
+        {
+          toc.length > 2 && (
+            <aside class="toc">
+              <div class="toc__inner">
+                <p class="toc__title">On this page</p>
+                <nav aria-label="Table of contents">
+                  <ol>
+                    {toc.map((heading) => (
+                      <li>
+                        <a href={`#${heading.slug}`}>{heading.text}</a>
+                      </li>
+                    ))}
+                  </ol>
+                </nav>
+              </div>
+            </aside>
+          )
+        }
+
+        <article class="prose article__body">
+          <Content />
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Related ===== -->
+  {
+    related.length > 0 && (
+      <section class="section section--sunken">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow">Keep reading</p>
+            <h2>Related articles</h2>
+          </div>
+          <div class="grid grid--2">
+            {related.map((item, i) => (
+              <a href={`/blog/${item.id}`} class="rel" data-reveal data-reveal-delay={i * 70}>
+                <p class="rel__meta">
+                  <span class="chip">{item.data.topic}</span>
+                  <span>{dateFmt.format(item.data.publishedAt)}</span>
+                </p>
+                <h3 class="rel__title">{item.data.title}</h3>
+                <p class="rel__text">{item.data.description}</p>
+                <span class="link-arrow rel__cta">
+                  Read article
+                  <Icon name="arrow-right" size={15} />
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CTABand />
+</BaseLayout>
+
+<style>
+  .article-top {
+    padding-top: var(--sp-5);
+  }
+
+  /* ---- Header --------------------------------------------------------------- */
+
+  .ahead {
+    max-width: 74ch;
+    padding-top: var(--sp-5);
+  }
+
+  .ahead__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    margin: 0 0 var(--sp-5);
+  }
+
+  .ahead__title {
+    font-size: clamp(1.875rem, 1.35rem + 2.6vw, 3.25rem);
+    margin: 0 0 var(--sp-5);
+  }
+
+  .ahead__lead {
+    font-size: var(--fs-lead);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    margin: 0 0 var(--sp-6);
+  }
+
+  .ahead__byline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: var(--sp-4);
+    border-top: 1px solid var(--border);
+    font-size: var(--fs-sm);
+    color: var(--ink-700);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .ahead__byline :global(svg) {
+    color: var(--ge-red-ink);
+  }
+
+  .ahead__updated {
+    font-weight: 400;
+    color: var(--text-subtle);
+    font-size: var(--fs-xs);
+    margin-left: auto;
+  }
+
+  /* ---- Cover ---------------------------------------------------------------- */
+
+  .cover {
+    margin: var(--sp-7) 0 0;
+  }
+
+  .cover :global(img) {
+    width: 100%;
+    object-fit: cover;
+    border: 1px solid var(--border);
+  }
+
+  .cover figcaption {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    margin-top: var(--sp-3);
+  }
+
+  /* ---- Body layout ---------------------------------------------------------- */
+
+  .article {
+    display: grid;
+    grid-template-columns: minmax(0, 240px) minmax(0, 1fr);
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    align-items: start;
+  }
+
+  /* When there is no table of contents the body simply centres. */
+  .article:not(:has(.toc)) {
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: center;
+  }
+
+  .article:not(:has(.toc)) .article__body {
+    margin-inline: auto;
+  }
+
+  @media (max-width: 940px) {
+    .article {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .toc__inner {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    padding-left: var(--sp-5);
+    border-left: 2px solid var(--border);
+  }
+
+  @media (max-width: 940px) {
+    .toc__inner {
+      position: static;
+      padding: var(--sp-5);
+      border-left: 0;
+      border-top: 3px solid var(--ge-red);
+      background: var(--ink-050);
+    }
+  }
+
+  .toc__title {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .toc ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: toc;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .toc li {
+    counter-increment: toc;
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+  }
+
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--ink-300);
+    padding-top: 0.15rem;
+  }
+
+  .toc a {
+    font-size: var(--fs-sm);
+    color: var(--ink-600);
+    text-decoration: none;
+    line-height: 1.45;
+  }
+
+  .toc a:hover {
+    color: var(--ge-red-ink);
+  }
+
+  .article__body {
+    /* Anchor targets clear the sticky header */
+    scroll-margin-top: calc(var(--header-h) + 1.5rem);
+  }
+
+  .article__body :global(h2) {
+    scroll-margin-top: calc(var(--header-h) + 1.5rem);
+  }
+
+  .article__body :global(h3) {
+    scroll-margin-top: calc(var(--header-h) + 1.5rem);
+  }
+
+  /* ---- Related --------------------------------------------------------------- */
+
+  .rel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    height: 100%;
+    padding: var(--sp-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ge-red);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .rel:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .rel__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    margin: 0;
+  }
+
+  .rel__title {
+    font-size: var(--fs-h4);
+    margin: 0;
+  }
+
+  .rel__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .rel__cta {
+    margin-top: auto;
+    padding-top: var(--sp-3);
+  }
+</style>

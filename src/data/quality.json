@@ -1,0 +1,69 @@
+{
+  "intro": "Every part we dispatch has been measured against your drawing. Not a sample from the batch — every part. It is the single commitment that has kept eight-plus Tier-1 customers re-ordering, and it is built into an ISO 9001:2015 quality management system covering production and inspection.",
+
+  "headline": {
+    "value": "100%",
+    "label": "of parts inspected against customer specification before dispatch",
+    "stages": ["Incoming", "In-process", "Final inspection"]
+  },
+
+  "stages": [
+    {
+      "step": "01",
+      "title": "Incoming inspection",
+      "text": "Raw material — sheet, coil, tube and bar — is checked against specification and supplier documentation before it is released to the shop floor. Material that does not conform does not enter production.",
+      "checks": ["Grade & specification verification", "Thickness / diameter measurement", "Visual surface condition", "Supplier documentation review"]
+    },
+    {
+      "step": "02",
+      "title": "In-process inspection",
+      "text": "Checks are made at each transfer between operations — after blanking, forming, drawing, machining and welding — so a die drift or fixture shift is caught at the station that caused it rather than at final inspection.",
+      "checks": ["First-article approval on setup", "Dimensional checks at each transfer", "Fixture and die condition monitoring", "In-process gauging against control points"]
+    },
+    {
+      "step": "03",
+      "title": "Final inspection",
+      "text": "Finished parts and sub-assemblies are measured against the customer drawing, then packed. Inspection records accompany the dispatch documentation your goods-inward team needs.",
+      "checks": ["Full dimensional verification to drawing", "Thread and hole gauging", "Surface finish assessment", "Assembly fit and geometry confirmation"]
+    }
+  ],
+
+  "instruments": [
+    { "name": "Height gauge", "use": "Vertical dimension and step measurement from the surface plate" },
+    { "name": "Vernier calliper", "use": "General internal, external and depth dimensions" },
+    { "name": "Micrometer", "use": "Close-tolerance thickness and diameter measurement" },
+    { "name": "Dial gauge", "use": "Runout, flatness and comparative measurement" },
+    { "name": "Thread plug gauge", "use": "Internal thread go/no-go verification" },
+    { "name": "Thread ring gauge", "use": "External thread go/no-go verification" },
+    { "name": "Plain plug gauge", "use": "Hole diameter go/no-go verification" },
+    { "name": "Radius gauge", "use": "Formed and machined radius confirmation" },
+    { "name": "Filler gauge", "use": "Gap, clearance and fit assessment" },
+    { "name": "Roughness tester", "use": "Surface finish measurement against specification" },
+    { "name": "Surface plate", "use": "Reference datum for layout and height gauging" }
+  ],
+
+  "commitments": [
+    {
+      "icon": "clipboard-check",
+      "title": "Inspection against your drawing",
+      "text": "We measure to the specification you supply, not to a generic internal standard. Where a drawing is ambiguous, we raise it before production rather than interpret it."
+    },
+    {
+      "icon": "file-check",
+      "title": "Documentation on request",
+      "text": "Inspection records, material details and dimensional reports can accompany dispatch. Tell us what your goods-inward process requires and we will format to it."
+    },
+    {
+      "icon": "search",
+      "title": "Open to audit",
+      "text": "Customer and third-party audits of our process, tool room and inspection facilities are welcome. Several of our current Tier-1 relationships began with exactly that visit."
+    },
+    {
+      "icon": "wrench",
+      "title": "Corrective action, not excuses",
+      "text": "If a non-conformance reaches you, we investigate root cause at the operation that produced it, correct the tooling or process, and report back."
+    }
+  ],
+
+  "note": "Copies of our ISO 9001:2015 certificate, MSME/Udyam registration and GST registration are available on request — or download the company profile for a summary."
+}

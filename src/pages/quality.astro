@@ -1,0 +1,540 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import SectionHead from '../components/sections/SectionHead.astro';
+import CTABand from '../components/sections/CTABand.astro';
+import SmartImage from '../components/ui/SmartImage.astro';
+import Icon from '../components/ui/Icon.astro';
+import quality from '../data/quality.json';
+import certifications from '../data/certifications.json';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Quality assurance' }];
+---
+
+<BaseLayout
+  title="Quality Assurance — 100% Inspection"
+  description="Every part inspected against your drawing before dispatch — incoming, in-process and final — under an ISO 9001:2015 quality management system."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Quality assurance"
+    title="Quality checked, part by part"
+    lead={quality.intro}
+    breadcrumbs={crumbs}
+    stats={[
+      { label: 'Parts inspected', value: '100%' },
+      { label: 'Inspection stages', value: '3' },
+      { label: 'Gauging instruments', value: String(quality.instruments.length) },
+      { label: 'Quality system', value: 'ISO 9001:2015' },
+    ]}
+  />
+
+  <!-- ===== The commitment ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <aside class="pledge" data-reveal>
+          <p class="pledge__label">Inspected to spec</p>
+          <p class="pledge__value">{quality.headline.value}</p>
+          <p class="pledge__text">{quality.headline.label}</p>
+          <ul class="pledge__stages">
+            {quality.headline.stages.map((stage) => <li>{stage}</li>)}
+          </ul>
+        </aside>
+
+        <div data-reveal data-reveal-delay="80">
+          <p class="eyebrow">What "100%" actually means</p>
+          <h2>Not a sample from the batch. Every part.</h2>
+          <p class="body-text">
+            Plenty of suppliers describe their inspection as "100%" and mean a sampling plan with a
+            statistically justified AQL. We mean each piece is measured against your drawing before
+            it is packed, with first-article approval taken at every setup and in-process checks at
+            each transfer between operations.
+          </p>
+          <p class="body-text">
+            This is affordable at the volumes we run, and it is why customers who started with a
+            trial order are still with us years later. It also means a die that begins to drift is
+            caught at the operation causing it, not by your goods-inward team three weeks later.
+          </p>
+          <p class="body-text">
+            If your process requires a documented sampling plan instead, we will work to it — but
+            the default here is everything.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Stages ===== -->
+  <section class="section section--sunken">
+    <div class="container">
+      <SectionHead
+        kicker="Inspection stages"
+        title="Three checkpoints, one standard"
+        lead="Material is verified before it enters production, geometry is checked between operations, and the finished part is measured against your drawing before it is packed."
+      />
+
+      <div class="stages">
+        {
+          quality.stages.map((stage, i) => (
+            <article class="stage" data-reveal data-reveal-delay={i * 70}>
+              <p class="stage__num mono">{stage.step}</p>
+              <h3 class="stage__title">{stage.title}</h3>
+              <p class="stage__text">{stage.text}</p>
+              <ul class="stage__checks">
+                {stage.checks.map((check) => (
+                  <li>
+                    <Icon name="check" size={14} />
+                    <span>{check}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Instruments ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div data-reveal>
+          <p class="eyebrow">Measurement & gauging</p>
+          <h2>What we measure with</h2>
+          <p class="lead inst__lead">
+            Eleven instrument types covering dimensional, thread, radius, surface-finish and
+            comparative measurement — from the surface plate that provides the datum to the
+            roughness tester that confirms a finish specification.
+          </p>
+
+          <figure class="inst__figure">
+            <SmartImage
+              src=""
+              alt=""
+              ratio="4 / 3"
+              placeholderLabel="Inspection station"
+              placeholderHint="Inspector measuring a part on the surface plate with a height gauge, plus a shot of the gauge board."
+              placeholderIcon="microscope"
+            />
+          </figure>
+        </div>
+
+        <div data-reveal data-reveal-delay="80">
+          <ul class="inst">
+            {
+              quality.instruments.map((instrument) => (
+                <li>
+                  <span class="inst__name">{instrument.name}</span>
+                  <span class="inst__use">{instrument.use}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <p class="inst__note">
+            <Icon name="ruler" size={15} />
+            Gauges are calibrated and calibration status is recorded. Ask to see the register during
+            an audit — we would rather you checked.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Commitments ===== -->
+  <section class="section on-dark">
+    <div class="container">
+      <SectionHead
+        kicker="What you can expect"
+        title="Four commitments we will put in writing"
+        lead="These are not aspirations. If we fail any of them on your programme, we would expect you to hold us to it."
+        wide
+      />
+
+      <div class="grid grid--2">
+        {
+          quality.commitments.map((commitment, i) => (
+            <article class="commit" data-reveal data-reveal-delay={(i % 2) * 70}>
+              <span class="commit__icon">
+                <Icon name={commitment.icon} size={21} stroke={1.7} />
+              </span>
+              <div>
+                <h3 class="commit__title">{commitment.title}</h3>
+                <p class="commit__text">{commitment.text}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Certifications teaser ===== -->
+  <section class="section">
+    <div class="container">
+      <SectionHead
+        kicker="Certifications"
+        title="Certified, registered and compliant"
+        lead={quality.note}
+        link={{ label: 'All certifications', href: '/certifications' }}
+      />
+
+      <div class="grid grid--3">
+        {
+          certifications.items.map((cert, i) => (
+            <a href="/certifications" class="cert" data-reveal data-reveal-delay={i * 70}>
+              <Icon name={cert.icon} size={26} stroke={1.55} class="cert__icon" />
+              <h3 class="cert__name">{cert.name}</h3>
+              <p class="cert__type">{cert.type}</p>
+              <p class="cert__summary">{cert.summary}</p>
+              <span class="link-arrow cert__cta">
+                Details
+                <Icon name="arrow-right" size={15} />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+
+      <aside class="honest" data-reveal>
+        <Icon name="shield-check" size={22} stroke={1.7} class="honest__icon" />
+        <div>
+          <p class="honest__title">{certifications.workingToward.title}</p>
+          <p class="honest__text">{certifications.workingToward.text}</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <CTABand
+    kicker="Audit us"
+    title="Come and check the records yourself."
+    text="Customer and third-party audits of our process, tool room and inspection facilities are welcome. Several of our current Tier-1 relationships began with exactly that visit."
+    primaryCta={{ label: 'Arrange an audit', href: '/contact' }}
+    secondaryCta={{ label: 'Request a quote', href: '/rfq' }}
+  />
+</BaseLayout>
+
+<style>
+  .body-text {
+    font-size: var(--fs-lead);
+    line-height: var(--lh-relaxed);
+    color: var(--ink-700);
+    margin: var(--sp-5) 0 0;
+    max-width: 66ch;
+  }
+
+  /* ---- Pledge panel ------------------------------------------------------------- */
+
+  .pledge {
+    background: var(--ink-900);
+    color: #fff;
+    padding: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
+    border-left: 4px solid var(--ge-red);
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+  }
+
+  @media (max-width: 900px) {
+    .pledge {
+      position: static;
+    }
+  }
+
+  .pledge__label {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: #ff6b66;
+    margin: 0 0 var(--sp-4);
+  }
+
+  .pledge__value {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 2.4rem + 4.6vw, 6rem);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 0.92;
+    margin: 0;
+  }
+
+  .pledge__text {
+    font-size: var(--fs-sm);
+    color: var(--ink-300);
+    line-height: 1.65;
+    margin: var(--sp-5) 0 var(--sp-5);
+  }
+
+  .pledge__stages {
+    list-style: none;
+    padding: var(--sp-4) 0 0;
+    margin: 0;
+    border-top: 1px solid var(--border-on-dark);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.8rem;
+  }
+
+  .pledge__stages li {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #ff6b66;
+  }
+
+  .pledge__stages li:not(:last-child)::after {
+    content: ' ·';
+    color: var(--ink-600);
+  }
+
+  /* ---- Stages ------------------------------------------------------------------ */
+
+  .stages {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  @media (max-width: 900px) {
+    .stages {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .stage {
+    background: var(--white);
+    padding: var(--sp-6);
+  }
+
+  .stage__num {
+    font-size: var(--fs-xs);
+    color: var(--ge-red-ink);
+    letter-spacing: 0.1em;
+    margin: 0 0 var(--sp-3);
+  }
+
+  .stage__title {
+    font-size: var(--fs-h4);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .stage__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0 0 var(--sp-5);
+  }
+
+  .stage__checks {
+    list-style: none;
+    padding: var(--sp-4) 0 0;
+    margin: 0;
+    border-top: 1px solid var(--border);
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .stage__checks li {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr);
+    gap: 0.55rem;
+    align-items: start;
+    font-size: var(--fs-xs);
+    color: var(--ink-700);
+    line-height: 1.5;
+  }
+
+  .stage__checks :global(svg) {
+    color: var(--ge-red-ink);
+    margin-top: 0.15rem;
+  }
+
+  /* ---- Instruments --------------------------------------------------------------- */
+
+  .inst__lead {
+    margin-top: var(--sp-5);
+    max-width: 50ch;
+  }
+
+  .inst__figure {
+    margin: var(--sp-6) 0 0;
+  }
+
+  .inst__figure :global(img),
+  .inst__figure :global(.ph) {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .inst {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .inst li {
+    display: grid;
+    grid-template-columns: minmax(0, 160px) minmax(0, 1fr);
+    gap: var(--sp-4);
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (max-width: 520px) {
+    .inst li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.15rem;
+    }
+  }
+
+  .inst__name {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--ink-900);
+  }
+
+  .inst__use {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .inst__note {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    line-height: 1.6;
+    margin: var(--sp-5) 0 0;
+  }
+
+  .inst__note :global(svg) {
+    margin-top: 0.15rem;
+  }
+
+  /* ---- Commitments ----------------------------------------------------------------- */
+
+  .commit {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--sp-4);
+    padding: var(--sp-6);
+    border: 1px solid var(--border-on-dark);
+    height: 100%;
+  }
+
+  .commit__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: rgba(255, 107, 102, 0.12);
+    color: #ff6b66;
+    flex: none;
+  }
+
+  .commit__title {
+    color: #fff;
+    font-size: var(--fs-h4);
+    margin: 0 0 var(--sp-2);
+  }
+
+  .commit__text {
+    font-size: var(--fs-sm);
+    color: var(--ink-300);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* ---- Certifications ---------------------------------------------------------------- */
+
+  .cert {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    height: 100%;
+    padding: var(--sp-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--ge-red);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .cert:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .cert__icon {
+    color: var(--ge-red-ink);
+    margin-bottom: var(--sp-3);
+  }
+
+  .cert__name {
+    font-size: var(--fs-h4);
+    margin: 0;
+  }
+
+  .cert__type {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    margin: 0 0 var(--sp-2);
+  }
+
+  .cert__summary {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .cert__cta {
+    margin-top: auto;
+    padding-top: var(--sp-4);
+  }
+
+  /* ---- Honest note ------------------------------------------------------------------- */
+
+  .honest {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: var(--sp-4);
+    align-items: start;
+    margin-top: clamp(2.5rem, 1.6rem + 3vw, 4rem);
+    padding: var(--sp-6);
+    background: var(--ink-050);
+    border-left: 4px solid var(--ge-red);
+  }
+
+  .honest__icon {
+    color: var(--ge-red-ink);
+    margin-top: 0.2rem;
+  }
+
+  .honest__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .honest__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+    max-width: 80ch;
+  }
+</style>

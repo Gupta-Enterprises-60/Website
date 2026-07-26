@@ -1,0 +1,395 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import CTABand from '../../components/sections/CTABand.astro';
+import SmartImage from '../../components/ui/SmartImage.astro';
+import Placeholder from '../../components/ui/Placeholder.astro';
+import Icon from '../../components/ui/Icon.astro';
+import gallery from '../../data/gallery.json';
+import infrastructure from '../../data/infrastructure.json';
+import { hasImage } from '../../lib/images';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Infrastructure', href: '/infrastructure' },
+  { label: 'Factory gallery' },
+];
+
+type GalleryItem = { src: string; alt: string; caption?: string; section?: string };
+const items = (gallery.items as GalleryItem[]).filter((item) => hasImage(item.src));
+
+/**
+ * Each section renders either the real photographs assigned to it, or the shot
+ * brief from infrastructure.json as labelled placeholders. Nothing invented,
+ * nothing stock — and the brief tells whoever holds the camera what to take.
+ */
+const sections = infrastructure.gallerySections.map((section) => ({
+  ...section,
+  photos: items.filter((item) => item.section === section.id),
+}));
+
+const hasAnyPhotos = items.length > 0;
+---
+
+<BaseLayout
+  title="Factory Gallery — Faridabad Plant"
+  description="Photographs from both Faridabad units: press shop, laser cell, tool room, quality inspection, warehouse, dispatch and the team behind every part."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Factory gallery"
+    title="See the plant, not a stock photo library"
+    lead={gallery.intro}
+    breadcrumbs={crumbs}
+    align="wide"
+    primaryCta={{ label: 'Arrange a visit', href: '/contact' }}
+    secondaryCta={{ label: 'Watch factory videos', href: '/infrastructure/videos' }}
+  />
+
+  {
+    !hasAnyPhotos && (
+      <section class="section--tight">
+        <div class="container">
+          <aside class="notice" data-reveal>
+            <Icon name="image" size={22} stroke={1.7} class="notice__icon" />
+            <div>
+              <p class="notice__title">Photography in progress</p>
+              <p class="notice__text">
+                We are photographing both units properly rather than filling this page with stock
+                imagery of someone else's factory. Each section below lists what will appear here.
+                In the meantime, you are welcome to
+                <a href="/contact">visit the plant</a> — it is the more useful version anyway.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="container">
+      {
+        sections.map((section, index) => (
+          <section class="gsection" id={section.id}>
+            <header class="gsection__head" data-reveal>
+              <div>
+                <p class="gsection__index mono">{String(index + 1).padStart(2, '0')}</p>
+                <h2 class="gsection__title">{section.title}</h2>
+                <p class="gsection__desc">{section.description}</p>
+              </div>
+              {section.photos.length > 0 && (
+                <span class="gsection__count mono">{section.photos.length} photos</span>
+              )}
+            </header>
+
+            <ul class="ggrid" data-reveal>
+              {section.photos.length > 0
+                ? section.photos.map((photo, i) => (
+                    <li class:list={['gitem', i === 0 && 'gitem--wide']}>
+                      <button
+                        type="button"
+                        class="gitem__btn"
+                        data-lightbox
+                        data-caption={photo.caption ?? photo.alt}
+                        aria-label={`Enlarge: ${photo.alt}`}
+                      >
+                        <SmartImage
+                          src={photo.src}
+                          alt={photo.alt}
+                          ratio={i === 0 ? '16 / 9' : '4 / 3'}
+                          width={1200}
+                          sizes="(max-width: 640px) 92vw, (max-width: 1000px) 45vw, 420px"
+                          class="gitem__img"
+                        />
+                        <span class="gitem__zoom" aria-hidden="true">
+                          <Icon name="plus" size={16} />
+                        </span>
+                      </button>
+                      {photo.caption && <p class="gitem__caption">{photo.caption}</p>}
+                    </li>
+                  ))
+                : section.shotList.map((shot, i) => (
+                    <li class:list={['gitem', i === 0 && 'gitem--wide']}>
+                      <Placeholder
+                        label={`Shot ${i + 1}`}
+                        hint={shot}
+                        icon="image"
+                        ratio={i === 0 ? '16 / 9' : '4 / 3'}
+                      />
+                    </li>
+                  ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </section>
+
+  <CTABand
+    kicker="Better than photographs"
+    title="Come and walk the floor."
+    text="An hour from South Delhi. We will show you the tool room, a press setup and the inspection station — the three things that actually tell you how a supplier runs."
+    primaryCta={{ label: 'Arrange a visit', href: '/contact' }}
+    secondaryCta={{ label: 'Request a quote', href: '/rfq' }}
+  />
+</BaseLayout>
+
+<!-- Lightbox: a single dialog reused for every image -->
+<dialog class="lb" data-lb aria-label="Enlarged photograph">
+  <button type="button" class="lb__close" data-lb-close aria-label="Close">
+    <Icon name="x" size={22} />
+  </button>
+  <img class="lb__img" data-lb-img alt="" />
+  <p class="lb__caption" data-lb-caption></p>
+</dialog>
+
+<style>
+  /* ---- Notice ---------------------------------------------------------------- */
+
+  .notice {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: var(--sp-4);
+    align-items: start;
+    padding: var(--sp-6);
+    background: var(--ink-050);
+    border-left: 4px solid var(--ge-red);
+  }
+
+  .notice__icon {
+    color: var(--ge-red-ink);
+    margin-top: 0.2rem;
+  }
+
+  .notice__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 var(--sp-2);
+  }
+
+  .notice__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+    max-width: 78ch;
+  }
+
+  .notice__text a {
+    color: var(--ge-red-ink);
+    font-weight: 500;
+  }
+
+  /* ---- Sections ---------------------------------------------------------------- */
+
+  .gsection {
+    scroll-margin-top: calc(var(--header-h) + 2rem);
+  }
+
+  .gsection + .gsection {
+    margin-top: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+
+  .gsection__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--sp-5);
+    padding-bottom: var(--sp-5);
+    margin-bottom: var(--sp-5);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .gsection__index {
+    font-size: var(--fs-xs);
+    color: var(--ge-red-ink);
+    margin: 0 0 var(--sp-2);
+    letter-spacing: 0.1em;
+  }
+
+  .gsection__title {
+    font-size: var(--fs-h3);
+    margin: 0 0 var(--sp-2);
+  }
+
+  .gsection__desc {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    margin: 0;
+    max-width: 62ch;
+  }
+
+  .gsection__count {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    white-space: nowrap;
+  }
+
+  /* ---- Grid ------------------------------------------------------------------ */
+
+  .ggrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-4);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .ggrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    .ggrid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* The first image in each section spans two columns — it breaks the grid's
+     regularity just enough to stop the page reading as a contact sheet. */
+  .gitem--wide {
+    grid-column: span 2;
+  }
+
+  @media (max-width: 520px) {
+    .gitem--wide {
+      grid-column: span 1;
+    }
+  }
+
+  .gitem__btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--ink-100);
+    cursor: zoom-in;
+  }
+
+  .gitem__btn :global(.gitem__img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  .gitem__btn:hover :global(.gitem__img) {
+    transform: scale(1.03);
+  }
+
+  .gitem__zoom {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: rgba(11, 13, 16, 0.78);
+    color: #fff;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .gitem__btn:hover .gitem__zoom,
+  .gitem__btn:focus-visible .gitem__zoom {
+    opacity: 1;
+    transform: none;
+  }
+
+  .gitem__caption {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    line-height: 1.45;
+    margin: var(--sp-2) 0 0;
+  }
+
+  /* ---- Lightbox -------------------------------------------------------------- */
+
+  .lb {
+    width: min(1100px, 94vw);
+    max-width: none;
+    max-height: 92vh;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .lb::backdrop {
+    background: rgba(11, 13, 16, 0.9);
+  }
+
+  .lb__img {
+    width: 100%;
+    max-height: 82vh;
+    object-fit: contain;
+    background: var(--ink-900);
+  }
+
+  .lb__caption {
+    font-size: var(--fs-sm);
+    color: #fff;
+    text-align: center;
+    margin: var(--sp-3) 0 0;
+  }
+
+  .lb__close {
+    position: absolute;
+    top: -2.6rem;
+    right: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .lb__close:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+</style>
+
+<script>
+  /* Lightbox. Uses <dialog> so focus trapping, Escape handling and inertness
+     come from the platform rather than from us. */
+  const dialog = document.querySelector<HTMLDialogElement>('[data-lb]');
+
+  if (dialog) {
+    const img = dialog.querySelector<HTMLImageElement>('[data-lb-img]');
+    const caption = dialog.querySelector<HTMLElement>('[data-lb-caption]');
+
+    document.querySelectorAll<HTMLButtonElement>('[data-lightbox]').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const source = trigger.querySelector('img');
+        if (!source || !img) return;
+
+        img.src = source.currentSrc || source.src;
+        img.srcset = source.srcset;
+        img.alt = source.alt;
+
+        if (caption) caption.textContent = trigger.dataset.caption ?? '';
+        dialog.showModal();
+      });
+    });
+
+    dialog.querySelector('[data-lb-close]')?.addEventListener('click', () => dialog.close());
+
+    // Click outside the image closes the dialog.
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+</script>

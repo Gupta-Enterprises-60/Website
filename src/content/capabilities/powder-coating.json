@@ -1,0 +1,90 @@
+{
+  "title": "Powder Coating & Surface Finishing",
+  "navTitle": "Powder Coating",
+  "kicker": "Managed finishing service",
+  "summary": "Coated and plated finishes supplied on our purchase order through qualified finishing partners, inspected by us before dispatch.",
+  "intro": "We supply coated and plated parts as a finished item — but we want to be straightforward about how. Surface finishing is the one step in our route that does not happen on our own shop floor. We manage it through qualified finishing partners, under our purchase order, with the finished parts returning to us for inspection before they reach you.",
+  "sections": [
+    {
+      "heading": "Why we say this plainly",
+      "body": [
+        "Plenty of suppliers list powder coating alongside their in-house capabilities without mentioning that it is subcontracted. We would rather tell you, because how a step is sourced affects your risk assessment and your audit.",
+        "What we do control is the commercial and quality interface. You place one order with us, we manage the finishing vendor, and we take responsibility for the coated part that arrives at your door."
+      ]
+    },
+    {
+      "heading": "What we manage",
+      "body": [
+        "Partner selection and qualification, colour and specification matching to your requirement, transport in both directions, and incoming inspection of the coated parts before they are packed for dispatch.",
+        "Coating defects — thickness variation, coverage gaps, colour mismatch, handling damage — are caught here rather than at your goods-inward, because a rejected batch at your end costs both of us far more than an inspection at ours."
+      ]
+    },
+    {
+      "heading": "Finishes available",
+      "body": [
+        "Powder coating in standard and custom shades, along with plated and painted finishes depending on the application and specification.",
+        "Tell us the finish specification — RAL or equivalent shade, coating thickness, salt-spray requirement — and we will confirm at quotation what is achievable and what documentation the finisher can supply."
+      ]
+    }
+  ],
+  "stats": [
+    {
+      "value": "Managed",
+      "label": "Through qualified partners"
+    },
+    {
+      "value": "Inspected",
+      "label": "By us before dispatch"
+    },
+    {
+      "value": "One PO",
+      "label": "Single point of accountability"
+    }
+  ],
+  "specs": [
+    {
+      "label": "Sourcing model",
+      "value": "Qualified finishing partners"
+    },
+    {
+      "label": "Commercial interface",
+      "value": "Single Gupta Enterprises purchase order"
+    },
+    {
+      "label": "Finishes",
+      "value": "Powder coating, plating, painting"
+    },
+    {
+      "label": "Shade matching",
+      "value": "RAL or customer-specified"
+    },
+    {
+      "label": "Inspection",
+      "value": "On return, before dispatch"
+    },
+    {
+      "label": "Documentation",
+      "value": "Available per finisher capability"
+    }
+  ],
+  "materials": [
+    "CRCA / Cold-rolled steel",
+    "HR steel",
+    "Mild steel tube",
+    "Aluminium"
+  ],
+  "applications": [
+    "Coated brackets and panels",
+    "Finished tubular assemblies",
+    "Painted structural components",
+    "Plated fasteners and small parts"
+  ],
+  "icon": "droplet",
+  "inHouse": false,
+  "partnerNote": "Surface finishing is the one operation in our route that is not performed on our own shop floor. We manage it through qualified partners under our purchase order and inspect the coated parts before dispatch. If in-house coating is a requirement for your supply base, tell us at enquiry stage and we will say so plainly rather than let it surface during an audit.",
+  "order": 9,
+  "seo": {
+    "title": "Powder Coating & Surface Finishing",
+    "description": "Coated, plated and painted finishes supplied through qualified finishing partners under a single Gupta Enterprises purchase order, inspected before dispatch."
+  }
+}

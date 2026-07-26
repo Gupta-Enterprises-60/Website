@@ -1,0 +1,106 @@
+{
+  "intro": "The questions procurement and engineering teams ask us most often, answered directly. If yours is not here, ask it — we reply within one working day.",
+
+  "groups": [
+    {
+      "id": "getting-started",
+      "title": "Working with us",
+      "items": [
+        {
+          "q": "What information do you need to quote my part?",
+          "a": "A drawing is the minimum — PDF, DWG, DXF or STEP all work. Beyond that, the three things that most affect the price are annual volume, material grade and finish requirement. If you also tell us your target price and delivery date, we can tell you at quotation stage whether they are achievable rather than discovering it later."
+        },
+        {
+          "q": "How quickly will I get a quotation?",
+          "a": "We acknowledge every enquiry within one working day. A straightforward part quoted from an existing process typically comes back in two to three working days. Parts needing new tooling take longer, because we cost the die properly rather than guess at it."
+        },
+        {
+          "q": "Do you take on low-volume or prototype work?",
+          "a": "Yes. Our press range starts at 20 tonnes and our laser cuts profiles without any tooling at all, so prototype and low-volume batches are practical. Many of our longest-running programmes began as a small first order — and because the same shop runs 250-tonne production, you are not re-sourcing when volumes ramp."
+        },
+        {
+          "q": "What is your minimum order quantity?",
+          "a": "We do not enforce a blanket MOQ. What matters is whether the setup and tooling cost can be recovered sensibly across the order. For laser-cut and machined parts, small batches are straightforward. For pressed parts requiring a new die, we will discuss how to amortise the tooling before you commit."
+        },
+        {
+          "q": "Can you work to our drawings and our specification?",
+          "a": "That is how we work by default. We manufacture to the customer drawing and inspect against it. Where a drawing is ambiguous or a tolerance is not achievable with the specified process, we raise it before production starts rather than interpreting it ourselves."
+        }
+      ]
+    },
+    {
+      "id": "capability",
+      "title": "Capability & capacity",
+      "items": [
+        {
+          "q": "What is the largest part you can press?",
+          "a": "Our press range runs from 20 to 250 tonnes, with 250-tonne H-frame capacity for heavy draw and forming work. The practical size limit depends on the part's depth of draw and blank size as much as tonnage — send the drawing and we will confirm against the specific press."
+        },
+        {
+          "q": "What material thicknesses can you laser cut?",
+          "a": "HR steel up to 25 mm and stainless steel up to 6 mm, on a 1500 × 3000 mm bed. Clean, accurate profiles come straight off the bed, which usually removes a secondary finishing operation."
+        },
+        {
+          "q": "Do you make your own tooling?",
+          "a": "Yes — since 2010. Progressive dies, deep-draw tools, weld fixtures and inspection gauges are designed, built and maintained in our own tool room. It is the reason a die revision takes days here rather than weeks, and why tooling problems never sit in an outside vendor's queue."
+        },
+        {
+          "q": "Can you handle welded sub-assemblies rather than just components?",
+          "a": "Yes. We run 12 MIG stations at 400 A and 3 projection welding machines at 75 kVA, all working on dedicated fixtures. Supplying a finished sub-assembly rather than loose components removes an assembly operation from your own line."
+        },
+        {
+          "q": "What happens if there is a power cut?",
+          "a": "Production continues. We have 144 kVA of standby generation — 62 kVA and 82 kVA DG sets — covering the press shop, laser, welding and machining lines. Grid outages are a real risk in North Indian industrial belts; they are not a reason your delivery slips."
+        }
+      ]
+    },
+    {
+      "id": "quality",
+      "title": "Quality & compliance",
+      "items": [
+        {
+          "q": "Are you certified?",
+          "a": "We hold ISO 9001:2015 certification covering production and inspection, and we are MSME/Udyam registered and GST registered. Copies of all certificates are available on request — ask with your first RFQ and we will send them with the quotation."
+        },
+        {
+          "q": "How much of the batch do you inspect?",
+          "a": "All of it. 100% of parts are inspected against customer specification before dispatch, with documented incoming, in-process and final stages. First-article approval is taken at every setup."
+        },
+        {
+          "q": "Can we audit your facility?",
+          "a": "Yes, and we encourage it. Customer and third-party audits of our process, tool room and inspection facilities are welcome. Several of our current Tier-1 relationships started with exactly that visit."
+        },
+        {
+          "q": "Do you hold IATF 16949?",
+          "a": "Not currently. We hold ISO 9001:2015 and are building toward the documentation standards that international and IATF-governed programmes require. We would rather tell you that plainly than imply otherwise — if IATF certification is a hard gate for your supply base, say so at enquiry stage and we will tell you honestly where we stand."
+        },
+        {
+          "q": "Will you supply inspection documentation with the parts?",
+          "a": "Yes. Inspection records, material details and dimensional reports can accompany dispatch. Tell us the format your goods-inward process needs and we will work to it."
+        }
+      ]
+    },
+    {
+      "id": "commercial",
+      "title": "Commercial & logistics",
+      "items": [
+        {
+          "q": "Do you export?",
+          "a": "Our current customer base is Indian OEMs and Tier-1 suppliers. We are actively building the quality systems, documentation and export packaging standards that international programmes require, and we welcome enquiries from overseas buyers — with the honest caveat that we will discuss timelines and compliance requirements openly before committing."
+        },
+        {
+          "q": "Where are you located and can we visit?",
+          "a": "Plot No. 60, Bazri Industrial Area, Faridabad, Haryana 121004 — roughly an hour from South Delhi and well connected to the NCR automotive belt. Visitors are welcome; contact us to arrange a time and we will walk you through both units."
+        },
+        {
+          "q": "Who owns the tooling you build for my part?",
+          "a": "That is agreed at quotation. Where you pay for the tooling, it is yours. We will state ownership, storage and maintenance responsibility explicitly in the quotation so there is no ambiguity later."
+        },
+        {
+          "q": "Is my drawing kept confidential?",
+          "a": "Yes. Drawings and specifications you send are used only to quote and manufacture your part. We are happy to sign your NDA before you share anything — send it with your enquiry."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "CNC Turning & Drilling",
+  "group": "machining",
+  "quantity": 1,
+  "capacity": "Turned & drilled features",
+  "order": 30,
+  "specs": [
+    {
+      "label": "Capability",
+      "value": "Turning & drilling"
+    },
+    {
+      "label": "Applications",
+      "value": "Cylindrical features, bores, tapped holes"
+    }
+  ],
+  "notes": "Supports cylindrical and hole features on production parts and tooling components."
+}

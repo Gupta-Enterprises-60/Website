@@ -1,0 +1,92 @@
+{
+  "title": "Custom Fabrication",
+  "navTitle": "Custom Fabrication",
+  "kicker": "Manufacturing capability",
+  "summary": "One-off and small-batch fabricated parts and assemblies for jobs that do not fit a standard production route.",
+  "intro": "Not every requirement is a production programme. Machine guards, jigs, trolleys, mounting frames, replacement parts for equipment nobody supports any more — the jobs that are too specific for a catalogue and too small for a dedicated line. Our combination of laser, press, machining and welding handles them without needing a special setup.",
+  "sections": [
+    {
+      "heading": "The awkward jobs",
+      "body": [
+        "Most fabricators are set up either for high-volume repetition or for heavy structural work. A one-off precision frame, a set of six inspection jigs, or a replacement component for a machine whose OEM has moved on falls between the two.",
+        "We can take those on because our shop already runs a wide capability range at low setup cost — the laser needs no tooling, and our tool room builds fixtures as a matter of routine."
+      ]
+    },
+    {
+      "heading": "From a sketch if necessary",
+      "body": [
+        "A full drawing set is ideal, but we can work from a marked-up sketch, a sample part or a measured existing component. Where dimensions need establishing, our inspection equipment — surface plate, height gauge, micrometers and gauges — lets us measure and document the part properly before we make it.",
+        "We will produce the drawing as part of the job and send it to you for approval before cutting metal."
+      ]
+    },
+    {
+      "heading": "Reverse engineering and replacements",
+      "body": [
+        "Where an original part is obsolete, we can measure the existing component, confirm material and produce a functional replacement to the same fit.",
+        "We are explicit about what we can and cannot verify: unless the original specification is available, we can match geometry and general material class, but not undocumented heat treatment or proprietary coatings. That gets stated in the quotation rather than assumed."
+      ]
+    }
+  ],
+  "stats": [
+    {
+      "value": "1 piece",
+      "label": "Practical minimum order"
+    },
+    {
+      "value": "6",
+      "label": "Processes available in-house"
+    },
+    {
+      "value": "No tooling",
+      "label": "Required for most jobs"
+    }
+  ],
+  "specs": [
+    {
+      "label": "Typical batch size",
+      "value": "1 – 100 pieces"
+    },
+    {
+      "label": "Input accepted",
+      "value": "Drawing, sketch or sample part"
+    },
+    {
+      "label": "Processes",
+      "value": "Laser, press, machining, welding"
+    },
+    {
+      "label": "Fixtures",
+      "value": "Built in-house as required"
+    },
+    {
+      "label": "Reverse engineering",
+      "value": "Measured & documented before manufacture"
+    },
+    {
+      "label": "Manufactured to",
+      "value": "Approved drawing"
+    }
+  ],
+  "materials": [
+    "HR steel",
+    "CRCA / Cold-rolled steel",
+    "Stainless steel",
+    "Mild steel tube",
+    "Mild steel bar",
+    "Aluminium"
+  ],
+  "applications": [
+    "Machine guards and covers",
+    "Jigs, fixtures and trolleys",
+    "Mounting frames and stands",
+    "Obsolete replacement parts",
+    "Small-batch structural assemblies"
+  ],
+  "icon": "wrench",
+  "inHouse": true,
+  "order": 8,
+  "seo": {
+    "title": "Custom Fabrication — One-Off & Small Batch",
+    "description": "Custom metal fabrication in Faridabad for one-off and small-batch jobs: jigs, guards, frames, replacement parts. Laser, press, machining and welding in-house."
+  }
+}

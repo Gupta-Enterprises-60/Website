@@ -1,0 +1,228 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import CTABand from '../../components/sections/CTABand.astro';
+import SmartImage from '../../components/ui/SmartImage.astro';
+import Icon from '../../components/ui/Icon.astro';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Insights' }];
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
+);
+
+const [lead, ...rest] = posts;
+const topics = [...new Set(posts.map((p) => p.data.topic))];
+
+const dateFmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<BaseLayout
+  title="Insights — Sourcing & Manufacturing"
+  description="Practical articles for procurement and engineering teams: accurate quotes, choosing between dies and laser cutting, and auditing a component supplier."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Insights"
+    title="Guidance for sourcing and engineering teams"
+    lead="Written from the shop floor rather than the marketing desk. Practical, specific, and occasionally unflattering about our own industry — including us."
+    breadcrumbs={crumbs}
+    align="wide"
+  />
+
+  {
+    posts.length === 0 ? (
+      <section class="section">
+        <div class="container">
+          <p class="lead">No articles published yet.</p>
+        </div>
+      </section>
+    ) : (
+      <>
+        <!-- ===== Lead article ===== -->
+        <section class="section">
+          <div class="container">
+            <a href={`/blog/${lead.id}`} class="feature" data-reveal>
+              <div class="feature__media">
+                <SmartImage
+                  src={lead.data.cover?.src}
+                  alt={lead.data.cover?.alt ?? ''}
+                  ratio="16 / 10"
+                  width={1200}
+                  loading="eager"
+                  sizes="(max-width: 900px) 92vw, 620px"
+                  class="feature__img"
+                  placeholderLabel={lead.data.topic}
+                  placeholderHint="Optional article image — a relevant shop-floor photograph works best."
+                  placeholderIcon="file-text"
+                />
+              </div>
+              <div class="feature__body">
+                <p class="meta">
+                  <span class="chip chip--accent">Latest</span>
+                  <span class="chip">{lead.data.topic}</span>
+                </p>
+                <h2 class="feature__title">{lead.data.title}</h2>
+                <p class="feature__text">{lead.data.description}</p>
+                <p class="meta meta--foot">
+                  <span>{dateFmt.format(lead.data.publishedAt)}</span>
+                  {lead.data.readingMinutes && <span>· {lead.data.readingMinutes} min read</span>}
+                </p>
+                <span class="link-arrow feature__cta">
+                  Read article
+                  <Icon name="arrow-right" size={16} />
+                </span>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <!-- ===== Remaining articles ===== -->
+        {rest.length > 0 && (
+          <section class="section section--sunken">
+            <div class="container">
+              <div class="section-head section-head--wide">
+                <p class="eyebrow">All articles</p>
+                <h2>More from the shop floor</h2>
+                <p>Topics: {topics.join(' · ')}</p>
+              </div>
+
+              <div class="grid grid--3">
+                {rest.map((post, i) => (
+                  <a href={`/blog/${post.id}`} class="card post" data-reveal data-reveal-delay={(i % 3) * 70}>
+                    <div class="card__media">
+                      <SmartImage
+                        src={post.data.cover?.src}
+                        alt={post.data.cover?.alt ?? ''}
+                        ratio="16 / 9"
+                        width={700}
+                        sizes="(max-width: 640px) 92vw, (max-width: 1000px) 45vw, 400px"
+                        placeholderLabel={post.data.topic}
+                        placeholderIcon="file-text"
+                      />
+                    </div>
+                    <div class="card__body">
+                      <p class="meta">
+                        <span class="chip">{post.data.topic}</span>
+                        <span>{dateFmt.format(post.data.publishedAt)}</span>
+                      </p>
+                      <h3 class="post__title">{post.data.title}</h3>
+                      <p class="card__text">{post.data.description}</p>
+                      <span class="link-arrow card__foot">
+                        Read article
+                        <Icon name="arrow-right" size={15} />
+                      </span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+      </>
+    )
+  }
+
+  <CTABand
+    kicker="Have a question we haven't answered?"
+    title="Ask it directly."
+    text="We would rather answer a specific question about your part than write another general article."
+    primaryCta={{ label: 'Contact us', href: '/contact' }}
+    secondaryCta={{ label: 'Read the FAQs', href: '/faqs' }}
+  />
+</BaseLayout>
+
+<style>
+  /* ---- Feature ------------------------------------------------------------ */
+
+  .feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ge-red);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow var(--dur) var(--ease);
+  }
+
+  .feature:hover {
+    box-shadow: var(--shadow-lg);
+  }
+
+  @media (max-width: 900px) {
+    .feature {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .feature__media {
+    overflow: hidden;
+    background: var(--ink-100);
+  }
+
+  .feature__media :global(.feature__img),
+  .feature__media :global(.ph) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  .feature:hover .feature__media :global(.feature__img) {
+    transform: scale(1.03);
+  }
+
+  .feature__body {
+    padding: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .feature__title {
+    font-size: clamp(1.375rem, 1.1rem + 1.5vw, 2.125rem);
+    margin: var(--sp-4) 0 var(--sp-4);
+  }
+
+  .feature__text {
+    font-size: var(--fs-lead);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+
+  .feature__cta {
+    margin-top: var(--sp-5);
+  }
+
+  /* ---- Meta ---------------------------------------------------------------- */
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    margin: 0;
+  }
+
+  .meta--foot {
+    margin-top: var(--sp-5);
+    padding-top: var(--sp-4);
+    border-top: 1px solid var(--border);
+    width: 100%;
+  }
+
+  .post__title {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,770 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/sections/Breadcrumbs.astro';
+import CTABand from '../../components/sections/CTABand.astro';
+import SectionHead from '../../components/sections/SectionHead.astro';
+import SmartImage from '../../components/ui/SmartImage.astro';
+import ProductCard from '../../components/ui/ProductCard.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { categoryById, processName, processCapability } from '../../lib/site';
+import { productSchema } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const products = await getCollection('products');
+  return products.map((product) => ({ params: { slug: product.id }, props: { product } }));
+}
+
+const { product } = Astro.props as { product: CollectionEntry<'products'> };
+const d = product.data;
+const category = categoryById(d.category);
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Products', href: '/products' },
+  ...(category ? [{ label: category.name, href: `/products/category/${category.id}` }] : []),
+  { label: d.name },
+];
+
+// Resolve industry entries so we can link them and show proper titles.
+const allIndustries = await getCollection('industries');
+const industries = allIndustries.filter((i) => d.industries.includes(i.id));
+
+// Related products: explicit references first, topped up from the same
+// category. A reference to a product that has since been deleted resolves to
+// undefined rather than failing the build — the CMS makes that easy to do by
+// accident, and a dangling link should not take the whole site down.
+const allProducts = await getCollection('products');
+const explicit = d.related
+  .map((ref) => allProducts.find((p) => p.id === ref.id))
+  .filter((p): p is CollectionEntry<'products'> => Boolean(p));
+
+const fallback = allProducts.filter(
+  (p) => p.id !== product.id && p.data.category === d.category && !explicit.some((e) => e.id === p.id)
+);
+const related = [...explicit, ...fallback].slice(0, 3);
+
+const schema = [
+  productSchema(
+    {
+      name: d.name,
+      code: d.code,
+      summary: d.summary,
+      description: d.description,
+      materials: d.materials,
+      categoryName: category?.name,
+    },
+    `/products/${product.id}`,
+    []
+  ),
+];
+
+// Pre-fills the RFQ form so the buyer does not retype what they were reading.
+const rfqHref = `/rfq?product=${encodeURIComponent(d.name)}&code=${encodeURIComponent(d.code)}`;
+---
+
+<BaseLayout
+  title={d.seo?.title ?? d.name}
+  description={d.seo?.description ?? d.summary}
+  breadcrumbs={crumbs}
+  schema={schema}
+>
+  <div class="container product-top">
+    <Breadcrumbs items={crumbs} />
+  </div>
+
+  <!-- ===== Product header ===== -->
+  <section class="section--tight product-head">
+    <div class="container">
+      <div class="phead">
+        <!-- Gallery -->
+        <div class="gallery">
+          <figure class="gallery__main">
+            <SmartImage
+              src={d.images[0]?.src}
+              alt={d.images[0]?.alt ?? d.name}
+              ratio="4 / 3"
+              width={1200}
+              loading="eager"
+              fetchpriority="high"
+              sizes="(max-width: 900px) 92vw, 620px"
+              placeholderLabel="Product photograph"
+              placeholderHint={d.placeholderHint ?? 'Photograph the part on a plain background, landscape orientation.'}
+              placeholderIcon="box"
+              class="gallery__img"
+            />
+            {d.images[0]?.caption && <figcaption>{d.images[0].caption}</figcaption>}
+          </figure>
+
+          {
+            d.images.length > 1 && (
+              <ul class="gallery__thumbs" data-thumbs>
+                {d.images.map((image, i) => (
+                  <li>
+                    <button
+                      type="button"
+                      class:list={['thumb', i === 0 && 'is-active']}
+                      data-thumb-index={i}
+                      data-src={image.src}
+                      data-alt={image.alt}
+                      data-caption={image.caption ?? ''}
+                      aria-label={`View image ${i + 1}: ${image.alt}`}
+                    >
+                      <SmartImage
+                        src={image.src}
+                        alt=""
+                        ratio="1 / 1"
+                        width={200}
+                        sizes="90px"
+                        class="thumb__img"
+                      />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )
+          }
+        </div>
+
+        <!-- Summary -->
+        <div class="psummary">
+          <div class="psummary__meta">
+            <span class="chip chip--dark mono">{d.code}</span>
+            {category && (
+              <a href={`/products/category/${category.id}`} class="chip">{category.name}</a>
+            )}
+            {d.isNew && <span class="chip chip--accent">New</span>}
+          </div>
+
+          <h1 class="psummary__title">{d.name}</h1>
+          <p class="psummary__lead">{d.summary}</p>
+
+          <ul class="psummary__facts">
+            {
+              d.materials.length > 0 && (
+                <li>
+                  <span class="psummary__fact-label">Material</span>
+                  <span class="psummary__fact-value">{d.materials.join(' · ')}</span>
+                </li>
+              )
+            }
+            {
+              d.processes.length > 0 && (
+                <li>
+                  <span class="psummary__fact-label">Process</span>
+                  <span class="psummary__fact-value">
+                    {d.processes.map((p) => processName(p)).join(' · ')}
+                  </span>
+                </li>
+              )
+            }
+            {
+              industries.length > 0 && (
+                <li>
+                  <span class="psummary__fact-label">Industries</span>
+                  <span class="psummary__fact-value">
+                    {industries.map((i) => i.data.title).join(' · ')}
+                  </span>
+                </li>
+              )
+            }
+          </ul>
+
+          <div class="psummary__actions">
+            <a href={rfqHref} class="btn btn--primary btn--lg">
+              Enquire about this part
+              <Icon name="arrow-right" size={18} class="icon-arrow" />
+            </a>
+            {
+              d.drawing && (
+                <a href={d.drawing} class="btn btn--outline btn--lg" download>
+                  <Icon name="download" size={18} />
+                  Drawing (PDF)
+                </a>
+              )
+            }
+          </div>
+
+          <p class="psummary__note">
+            <Icon name="clock" size={15} />
+            Manufactured to your drawing and specification. Quoted on material, volume and finish —
+            reply within one working day.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Detail ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="pdetail">
+        <div class="pdetail__main">
+          <section class="pdetail__block">
+            <h2 class="pdetail__heading">Description</h2>
+            <p class="pdetail__para">{d.description}</p>
+          </section>
+
+          {
+            d.applications.length > 0 && (
+              <section class="pdetail__block">
+                <h2 class="pdetail__heading">Applications</h2>
+                <ul class="tick-list">
+                  {d.applications.map((application) => (
+                    <li>
+                      <Icon name="check" size={16} />
+                      <span>{application}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+
+          {
+            d.processes.length > 0 && (
+              <section class="pdetail__block">
+                <h2 class="pdetail__heading">How it is made</h2>
+                <ul class="proc-list">
+                  {d.processes.map((proc, i) => {
+                    // Not every process has a capability page — see
+                    // processCapability() in src/lib/site.ts.
+                    const capability = processCapability(proc);
+                    return (
+                      <li>
+                        <span class="proc__num mono">{String(i + 1).padStart(2, '0')}</span>
+                        {capability ? (
+                          <a href={`/capabilities/${capability}`} class="proc__name">
+                            {processName(proc)}
+                            <Icon name="arrow-up-right" size={14} />
+                          </a>
+                        ) : (
+                          <span class="proc__name proc__name--plain">{processName(proc)}</span>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+                <p class="proc__note">
+                  Every step above happens in our own units, apart from surface finishing, which is
+                  managed through qualified partners and inspected by us before dispatch.
+                </p>
+              </section>
+            )
+          }
+
+          {
+            industries.length > 0 && (
+              <section class="pdetail__block">
+                <h2 class="pdetail__heading">Industries served</h2>
+                <ul class="ind-list">
+                  {industries.map((industry) => (
+                    <li>
+                      <a href={`/industries/${industry.id}`}>
+                        <Icon name={industry.data.icon} size={19} stroke={1.7} />
+                        <span>
+                          <strong>{industry.data.title}</strong>
+                          <em>{industry.data.status}</em>
+                        </span>
+                        <Icon name="arrow-right" size={15} class="ind-list__arrow" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+        </div>
+
+        <aside class="pdetail__aside">
+          <div class="pdetail__sticky">
+            {
+              d.specs.length > 0 && (
+                <div class="panel">
+                  <p class="panel__title">Technical specification</p>
+                  <ul class="spec-list">
+                    {d.specs.map((spec) => (
+                      <li>
+                        <span class="spec__label">{spec.label}</span>
+                        <span class="spec__value">{spec.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            }
+
+            <div class="panel panel--cta">
+              <p class="panel__cta-title">Request a quotation</p>
+              <p class="panel__cta-text">
+                Send your drawing with material grade, annual volume and finish requirement. We
+                reply within one working day.
+              </p>
+              <a href={rfqHref} class="btn btn--primary btn--block">
+                Request a quote
+                <Icon name="arrow-right" size={17} class="icon-arrow" />
+              </a>
+              <a href="/contact" class="panel__secondary">Or talk to us directly</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Related ===== -->
+  {
+    related.length > 0 && (
+      <section class="section section--sunken">
+        <div class="container">
+          <SectionHead
+            kicker="Related products"
+            title="You may also need"
+            link={{ label: 'Full catalog', href: '/products' }}
+          />
+          <div class="grid grid--3">
+            {related.map((item, i) => (
+              <div data-reveal data-reveal-delay={(i % 3) * 70}>
+                <ProductCard product={item} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CTABand />
+</BaseLayout>
+
+<style>
+  .product-top {
+    padding-top: var(--sp-5);
+  }
+
+  .product-head {
+    padding-top: var(--sp-5);
+  }
+
+  .phead {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 1rem + 4vw, 4.5rem);
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .phead {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ---- Gallery ------------------------------------------------------------------- */
+
+  .gallery__main {
+    margin: 0;
+    border: 1px solid var(--border);
+    background: var(--ink-050);
+  }
+
+  .gallery__main :global(.gallery__img),
+  .gallery__main :global(.ph) {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .gallery__main figcaption {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    padding: var(--sp-3) var(--sp-4);
+    border-top: 1px solid var(--border);
+    background: var(--white);
+  }
+
+  .gallery__thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    list-style: none;
+    padding: 0;
+    margin: var(--sp-3) 0 0;
+  }
+
+  .thumb {
+    display: block;
+    width: 84px;
+    padding: 0;
+    border: 1px solid var(--border);
+    background: var(--ink-050);
+    transition: border-color var(--dur) var(--ease);
+  }
+
+  .thumb:hover {
+    border-color: var(--ink-400);
+  }
+
+  .thumb.is-active {
+    border-color: var(--ge-red);
+    box-shadow: inset 0 0 0 1px var(--ge-red);
+  }
+
+  .thumb :global(.thumb__img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ---- Summary -------------------------------------------------------------------- */
+
+  .psummary__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-5);
+  }
+
+  .psummary__meta a.chip {
+    text-decoration: none;
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+
+  .psummary__meta a.chip:hover {
+    border-color: var(--ink-900);
+    color: var(--ink-900);
+  }
+
+  .psummary__title {
+    font-size: clamp(1.75rem, 1.3rem + 2vw, 2.75rem);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .psummary__lead {
+    font-size: var(--fs-lead);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    margin: 0 0 var(--sp-6);
+  }
+
+  .psummary__facts {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--sp-6);
+    border-top: 1px solid var(--border);
+  }
+
+  .psummary__facts li {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: var(--sp-4);
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (max-width: 480px) {
+    .psummary__facts li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.2rem;
+    }
+  }
+
+  .psummary__fact-label {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-400);
+    padding-top: 0.15rem;
+  }
+
+  .psummary__fact-value {
+    font-size: var(--fs-sm);
+    color: var(--ink-800);
+    line-height: 1.5;
+  }
+
+  .psummary__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+
+  .psummary__note {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    line-height: 1.6;
+    margin: var(--sp-5) 0 0;
+  }
+
+  .psummary__note :global(svg) {
+    margin-top: 0.15rem;
+  }
+
+  /* ---- Detail ---------------------------------------------------------------------- */
+
+  .pdetail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 330px);
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    align-items: start;
+  }
+
+  @media (max-width: 940px) {
+    .pdetail {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .pdetail__block + .pdetail__block {
+    margin-top: var(--sp-9);
+  }
+
+  .pdetail__heading {
+    font-size: var(--fs-h3);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .pdetail__para {
+    font-size: var(--fs-lead);
+    line-height: var(--lh-relaxed);
+    color: var(--ink-700);
+    margin: 0;
+    max-width: 68ch;
+  }
+
+  .tick-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-3) var(--sp-5);
+  }
+
+  @media (max-width: 560px) {
+    .tick-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .tick-list li {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    font-size: var(--fs-sm);
+    color: var(--ink-700);
+    line-height: 1.55;
+  }
+
+  .tick-list :global(svg) {
+    color: var(--ge-red-ink);
+    margin-top: 0.2rem;
+  }
+
+  .proc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .proc-list li {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: var(--sp-3);
+    align-items: center;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .proc__num {
+    font-size: var(--fs-xs);
+    color: var(--ink-400);
+  }
+
+  .proc__name {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--ink-800);
+    text-decoration: none;
+  }
+
+  a.proc__name:hover {
+    color: var(--ge-red-ink);
+  }
+
+  .proc__name--plain {
+    color: var(--ink-700);
+  }
+
+  .proc__note {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    line-height: 1.6;
+    margin: var(--sp-4) 0 0;
+    max-width: 70ch;
+  }
+
+  .ind-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-3);
+  }
+
+  @media (max-width: 560px) {
+    .ind-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ind-list a {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr) 16px;
+    align-items: center;
+    gap: 0.7rem;
+    padding: var(--sp-4);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+  }
+
+  .ind-list a:hover {
+    background: var(--ink-050);
+    border-color: var(--border-strong);
+  }
+
+  .ind-list :global(svg) {
+    color: var(--ge-red-ink);
+  }
+
+  .ind-list strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+
+  .ind-list em {
+    display: block;
+    font-style: normal;
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+  }
+
+  .ind-list__arrow {
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .ind-list a:hover .ind-list__arrow {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ---- Aside ------------------------------------------------------------------------ */
+
+  .pdetail__sticky {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    display: grid;
+    gap: var(--sp-5);
+  }
+
+  @media (max-width: 940px) {
+    .pdetail__sticky {
+      position: static;
+    }
+  }
+
+  .panel {
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ge-red);
+    padding: var(--sp-5);
+  }
+
+  .panel__title {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .panel--cta {
+    background: var(--ink-900);
+    color: #fff;
+    border-color: var(--ink-900);
+  }
+
+  .panel__cta-title {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .panel__cta-text {
+    font-size: var(--fs-sm);
+    color: var(--ink-300);
+    line-height: 1.6;
+    margin: 0 0 var(--sp-5);
+  }
+
+  .panel__secondary {
+    display: block;
+    text-align: center;
+    font-size: var(--fs-xs);
+    color: var(--ink-400);
+    margin-top: var(--sp-3);
+  }
+
+  .panel__secondary:hover {
+    color: #fff;
+  }
+</style>
+
+<script>
+  /* Thumbnail selection. Swaps the main image source in place — the srcset the
+     build produced for each thumbnail is reused, so no new request is made for
+     images already in cache. */
+  const thumbs = document.querySelector<HTMLElement>('[data-thumbs]');
+  if (thumbs) {
+    const main = document.querySelector<HTMLImageElement>('.gallery__main img');
+    const caption = document.querySelector<HTMLElement>('.gallery__main figcaption');
+    const buttons = Array.from(thumbs.querySelectorAll<HTMLButtonElement>('.thumb'));
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const img = button.querySelector('img');
+        if (!main || !img) return;
+
+        main.src = img.currentSrc || img.src;
+        main.srcset = img.srcset;
+        main.alt = button.dataset.alt ?? '';
+
+        const text = button.dataset.caption ?? '';
+        if (caption) {
+          caption.textContent = text;
+          caption.hidden = text === '';
+        }
+
+        buttons.forEach((b) => b.classList.toggle('is-active', b === button));
+      });
+    });
+  }
+</script>

@@ -1,0 +1,158 @@
+---
+import Icon from './Icon.astro';
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  capability: CollectionEntry<'capabilities'>;
+  /** Compact form drops the stat row — used in dense grids. */
+  compact?: boolean;
+}
+
+const { capability, compact = false } = Astro.props;
+const d = capability.data;
+---
+
+<a href={`/capabilities/${capability.id}`} class:list={['c-card', compact && 'c-card--compact']}>
+  <span class="c-card__icon">
+    <Icon name={d.icon} size={22} stroke={1.75} />
+  </span>
+
+  <span class="c-card__body">
+    <span class="c-card__head">
+      <span class="c-card__title">{d.navTitle ?? d.title}</span>
+      {!d.inHouse && <span class="c-card__flag">Partner-managed</span>}
+    </span>
+    <span class="c-card__text">{d.summary}</span>
+
+    {
+      !compact && d.stats.length > 0 && (
+        <span class="c-card__stats">
+          {d.stats.slice(0, 2).map((s) => (
+            <span class="c-card__stat">
+              <span class="c-card__stat-value">{s.value}</span>
+              <span class="c-card__stat-label">{s.label}</span>
+            </span>
+          ))}
+        </span>
+      )
+    }
+
+    <span class="link-arrow c-card__cta">
+      Explore
+      <Icon name="arrow-right" size={15} />
+    </span>
+  </span>
+</a>
+
+<style>
+  .c-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--sp-4);
+    padding: var(--sp-6);
+    /* Fill the grid cell so a row of cards shares one height — otherwise the
+       card shrinks to its own copy and the row sits ragged. */
+    height: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ge-red);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .c-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .c-card--compact {
+    padding: var(--sp-5);
+  }
+
+  .c-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: var(--ge-red-ink);
+    color: #fff;
+    border-radius: var(--radius);
+    flex: none;
+  }
+
+  .c-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    min-width: 0;
+  }
+
+  .c-card__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .c-card__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    color: var(--text);
+  }
+
+  .c-card__flag {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-500);
+    border: 1px solid var(--border-strong);
+    padding: 0.1rem 0.4rem;
+  }
+
+  /* Absorbs the slack from uneven summary lengths, so the stat row and the
+     "Explore" link land on the same baseline right across the row. */
+  .c-card__text {
+    flex: 1 0 auto;
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .c-card__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-5);
+    margin-top: var(--sp-2);
+    padding-top: var(--sp-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .c-card__stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .c-card__stat-value {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    color: var(--text);
+  }
+
+  .c-card__stat-label {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    line-height: 1.35;
+  }
+
+  .c-card__cta {
+    margin-top: auto;
+    padding-top: var(--sp-4);
+  }
+</style>

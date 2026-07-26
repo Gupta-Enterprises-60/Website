@@ -1,0 +1,407 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import SectionHead from '../components/sections/SectionHead.astro';
+import CTABand from '../components/sections/CTABand.astro';
+import Icon from '../components/ui/Icon.astro';
+import certifications from '../data/certifications.json';
+import { site, addressOneLine } from '../lib/site';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Certifications' }];
+
+/** The fields a vendor-registration form almost always asks for. */
+const onboarding = [
+  { label: 'Legal entity name', value: site.legalName },
+  { label: 'Registered address', value: addressOneLine() },
+  { label: 'Year established', value: site.founded },
+  { label: 'Business type', value: 'Manufacturer — sheet metal, tubular & tooling' },
+  { label: 'Quality system', value: 'ISO 9001:2015 certified' },
+  { label: 'MSME status', value: 'Registered — Udyam' },
+  { label: 'GST', value: 'Registered' },
+  { label: 'Employees', value: '50+' },
+  { label: 'Plant area', value: '1,100 sq yards across 2 units' },
+  { label: 'Latest audited turnover', value: '₹25.35 Cr (FY 2022–23)' },
+];
+---
+
+<BaseLayout
+  title="Certifications — ISO 9001:2015, MSME, GST"
+  description="ISO 9001:2015 certified across production and inspection, plus MSME/Udyam and GST registration. Certificate copies and onboarding details on request."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Certifications & compliance"
+    title="Certified, registered and compliant"
+    lead={certifications.intro}
+    breadcrumbs={crumbs}
+    align="wide"
+    primaryCta={{ label: 'Request certificate copies', href: '/contact' }}
+  />
+
+  <!-- ===== Certificates ===== -->
+  <section class="section">
+    <div class="container">
+      <ul class="certs">
+        {
+          certifications.items.map((cert, i) => (
+            <li class="cert" id={cert.id} data-reveal data-reveal-delay={i * 70}>
+              <div class="cert__head">
+                <span class="cert__icon">
+                  <Icon name={cert.icon} size={24} stroke={1.6} />
+                </span>
+                <div>
+                  <h2 class="cert__name">{cert.name}</h2>
+                  <p class="cert__type">{cert.type}</p>
+                </div>
+                {cert.certificateAvailable && (
+                  <span class="cert__badge">
+                    <Icon name="check" size={13} />
+                    Copy on request
+                  </span>
+                )}
+              </div>
+
+              <p class="cert__detail">{cert.detail}</p>
+
+              <dl class="cert__meta">
+                <div>
+                  <dt>Scope</dt>
+                  <dd>{cert.scope}</dd>
+                </div>
+              </dl>
+
+              {cert.certificateFile ? (
+                <a href={cert.certificateFile} class="btn btn--outline btn--sm" download>
+                  <Icon name="download" size={16} />
+                  Download certificate
+                </a>
+              ) : (
+                <a href="/contact" class="link-arrow">
+                  Request a copy
+                  <Icon name="arrow-right" size={15} />
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="note" data-reveal>
+        <Icon name="file-check" size={16} />
+        {certifications.note}
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Working toward ===== -->
+  <section class="section on-dark">
+    <div class="container">
+      <div class="split">
+        <div data-reveal>
+          <p class="eyebrow">What we do not hold</p>
+          <h2>{certifications.workingToward.title}</h2>
+        </div>
+        <div data-reveal data-reveal-delay="80">
+          <p class="toward__text">{certifications.workingToward.text}</p>
+          <a href="/why-us" class="btn btn--outline toward__cta">
+            More straight answers
+            <Icon name="arrow-right" size={17} class="icon-arrow" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Vendor onboarding ===== -->
+  <section class="section">
+    <div class="container">
+      <SectionHead
+        kicker="Supplier onboarding"
+        title="Details your vendor-registration form will ask for"
+        lead="Collected in one place so your procurement team is not chasing them across three emails. Bank details, PAN, GSTIN and Udyam number are sent directly on request rather than published."
+        wide
+      />
+
+      <div class="onboard" data-reveal>
+        <dl class="onboard__list">
+          {
+            onboarding.map((row) => (
+              <div class="onboard__row">
+                <dt>{row.label}</dt>
+                <dd>{row.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <aside class="onboard__aside">
+          <h3 class="onboard__title">Sent on request</h3>
+          <ul class="onboard__req">
+            {
+              certifications.items.map((cert) => (
+                <li>
+                  <Icon name="file-text" size={15} />
+                  <span>{cert.name} certificate</span>
+                </li>
+              ))
+            }
+            <li>
+              <Icon name="file-text" size={15} />
+              <span>PAN, GSTIN &amp; Udyam number</span>
+            </li>
+            <li>
+              <Icon name="file-text" size={15} />
+              <span>Bank details for payment setup</span>
+            </li>
+            <li>
+              <Icon name="file-text" size={15} />
+              <span>Machine &amp; inspection equipment list</span>
+            </li>
+            <li>
+              <Icon name="file-text" size={15} />
+              <span>Completed vendor registration form</span>
+            </li>
+          </ul>
+          <a href="/contact" class="btn btn--primary btn--block onboard__cta">
+            Request onboarding pack
+            <Icon name="arrow-right" size={17} class="icon-arrow" />
+          </a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <CTABand
+    kicker="Ready to onboard us?"
+    title="Ask for the pack with your first RFQ."
+    text="Send the enquiry and tell us what your supplier registration process needs. We will return the quotation and the documentation together."
+  />
+</BaseLayout>
+
+<style>
+  /* ---- Certificates ------------------------------------------------------------- */
+
+  .certs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-5);
+  }
+
+  @media (max-width: 1000px) {
+    .certs {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .cert {
+    display: flex;
+    flex-direction: column;
+    padding: var(--sp-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ge-red);
+    scroll-margin-top: calc(var(--header-h) + 2rem);
+  }
+
+  .cert__head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--sp-4);
+    align-items: center;
+    padding-bottom: var(--sp-5);
+    margin-bottom: var(--sp-5);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cert__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: var(--ge-red-ink);
+    color: #fff;
+    flex: none;
+  }
+
+  .cert__name {
+    font-size: var(--fs-h4);
+    margin: 0;
+  }
+
+  .cert__type {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    margin: 0.15rem 0 0;
+  }
+
+  .cert__badge {
+    grid-column: 1 / -1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    justify-self: start;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ge-red-ink);
+    border: 1px solid currentColor;
+    padding: 0.15rem 0.45rem;
+  }
+
+  .cert__detail {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0 0 var(--sp-5);
+  }
+
+  .cert__meta {
+    margin: 0 0 var(--sp-5);
+    padding-top: var(--sp-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .cert__meta dt {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-400);
+    margin-bottom: 0.3rem;
+  }
+
+  .cert__meta dd {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: var(--ink-800);
+    line-height: 1.5;
+  }
+
+  .cert .btn,
+  .cert .link-arrow {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+
+  .note {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    margin: var(--sp-6) 0 0;
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  .note :global(svg) {
+    color: var(--ge-red-ink);
+    margin-top: 0.2rem;
+  }
+
+  /* ---- Working toward ----------------------------------------------------------- */
+
+  .toward__text {
+    font-size: var(--fs-lead);
+    color: var(--ink-300);
+    line-height: var(--lh-relaxed);
+    margin: 0;
+    max-width: 68ch;
+  }
+
+  .toward__cta {
+    margin-top: var(--sp-6);
+  }
+
+  /* ---- Onboarding ---------------------------------------------------------------- */
+
+  .onboard {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+    gap: clamp(2rem, 1rem + 3vw, 4rem);
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .onboard {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .onboard__list {
+    margin: 0;
+    border-top: 2px solid var(--ink-900);
+  }
+
+  .onboard__row {
+    display: grid;
+    grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+    gap: var(--sp-4);
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (max-width: 560px) {
+    .onboard__row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.2rem;
+    }
+  }
+
+  .onboard__row dt {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+  }
+
+  .onboard__row dd {
+    margin: 0;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--ink-900);
+    line-height: 1.5;
+  }
+
+  .onboard__aside {
+    padding: var(--sp-6);
+    background: var(--ink-050);
+    border-top: 3px solid var(--ge-red);
+  }
+
+  .onboard__title {
+    font-size: var(--fs-h4);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .onboard__req {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--sp-5);
+    border-top: 1px solid var(--border);
+  }
+
+  .onboard__req li {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: var(--fs-sm);
+    color: var(--ink-700);
+    line-height: 1.45;
+  }
+
+  .onboard__req :global(svg) {
+    color: var(--ge-red-ink);
+    margin-top: 0.2rem;
+  }
+
+  .onboard__cta {
+    margin-top: var(--sp-2);
+  }
+</style>

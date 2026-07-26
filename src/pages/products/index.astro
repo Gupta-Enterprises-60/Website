@@ -1,0 +1,690 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import CTABand from '../../components/sections/CTABand.astro';
+import ProductCard from '../../components/ui/ProductCard.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { taxonomy, materialId } from '../../lib/site';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Products' }];
+
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const industries = (await getCollection('industries')).sort((a, b) => a.data.order - b.data.order);
+
+/**
+ * Filter values are attached to each card as data attributes and matched in the
+ * browser. With a catalog this size that is instant and needs no index; if the
+ * catalog grows past a few hundred parts, swap the matcher for a prebuilt
+ * lookup without changing the markup.
+ */
+const cards = products.map((product) => ({
+  product,
+  category: product.data.category,
+  industries: product.data.industries.join(' '),
+  processes: product.data.processes.join(' '),
+  materials: product.data.materials.map((m) => materialId(m)).join(' '),
+  search: [
+    product.data.name,
+    product.data.code,
+    product.data.summary,
+    product.data.description,
+    ...product.data.applications,
+    ...product.data.materials,
+  ]
+    .join(' ')
+    .toLowerCase(),
+}));
+
+// Only offer filter options that actually match something in the catalog.
+const usedProcesses = new Set(products.flatMap((p) => p.data.processes));
+const usedMaterials = new Set(products.flatMap((p) => p.data.materials.map((m) => materialId(m))));
+const usedIndustries = new Set(products.flatMap((p) => p.data.industries));
+
+const filterGroups = [
+  {
+    id: 'category',
+    label: 'Category',
+    options: taxonomy.categories
+      .filter((c) => products.some((p) => p.data.category === c.id))
+      .map((c) => ({ value: c.id, label: c.name })),
+  },
+  {
+    id: 'industries',
+    label: 'Industry',
+    options: industries
+      .filter((i) => usedIndustries.has(i.id))
+      .map((i) => ({ value: i.id, label: i.data.title })),
+  },
+  {
+    id: 'processes',
+    label: 'Manufacturing process',
+    options: taxonomy.processes
+      .filter((p) => usedProcesses.has(p.id))
+      .map((p) => ({ value: p.id, label: p.name })),
+  },
+  {
+    id: 'materials',
+    label: 'Material',
+    options: taxonomy.materials
+      .filter((m) => usedMaterials.has(m.id))
+      .map((m) => ({ value: m.id, label: m.name })),
+  },
+];
+---
+
+<BaseLayout
+  title="Product Catalog — Sheet Metal & Tubular"
+  description="Browse precision sheet-metal, tubular, welded and machined components. Filter by category, industry, process and material — or send a drawing."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Products"
+    title="An industrial catalog, not a product list"
+    lead="These are representative component families from current production. Most parts we make are not shown here — if yours is within our process range, we will tell you within one working day."
+    breadcrumbs={crumbs}
+    align="wide"
+    primaryCta={{ label: 'Send a drawing', href: '/rfq' }}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="catalog">
+        <!-- ===== Filters ===== -->
+        <aside class="filters" id="filters">
+          <div class="filters__inner">
+            <div class="filters__head">
+              <h2 class="filters__title">
+                <Icon name="filter" size={17} />
+                Refine
+              </h2>
+              <button type="button" class="filters__clear" data-clear hidden>Clear all</button>
+            </div>
+
+            <div class="field">
+              <label for="product-search" class="field__label">Search</label>
+              <div class="search">
+                <Icon name="search" size={17} class="search__icon" />
+                <input
+                  type="search"
+                  id="product-search"
+                  class="search__input"
+                  placeholder="Part name, code or application"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+
+            {
+              filterGroups.map(
+                (group) =>
+                  group.options.length > 0 && (
+                    <fieldset class="fgroup">
+                      <legend class="field__label">{group.label}</legend>
+                      <ul class="fgroup__list">
+                        {group.options.map((option) => (
+                          <li>
+                            <label class="check">
+                              <input
+                                type="checkbox"
+                                name={group.id}
+                                value={option.value}
+                                data-filter={group.id}
+                              />
+                              <span class="check__box" aria-hidden="true">
+                                <Icon name="check" size={13} stroke={3} />
+                              </span>
+                              <span class="check__label">{option.label}</span>
+                            </label>
+                          </li>
+                        ))}
+                      </ul>
+                    </fieldset>
+                  )
+              )
+            }
+
+            <aside class="filters__cta">
+              <p class="filters__cta-title">Can't find your part?</p>
+              <p class="filters__cta-text">
+                The catalog shows families, not every component we make. Send a drawing.
+              </p>
+              <a href="/rfq" class="btn btn--primary btn--sm btn--block">Request a quote</a>
+            </aside>
+          </div>
+        </aside>
+
+        <!-- ===== Results ===== -->
+        <div class="results">
+          <div class="results__bar">
+            <p class="results__count" data-count aria-live="polite">
+              Showing <strong>{products.length}</strong> of {products.length} component families
+            </p>
+            <button type="button" class="results__toggle" data-filters-toggle aria-expanded="false">
+              <Icon name="filter" size={16} />
+              Filters
+            </button>
+          </div>
+
+          <div class="grid grid--3 results__grid" data-grid>
+            {
+              cards.map(({ product, category, industries: ind, processes, materials, search }) => (
+                <div
+                  class="results__item"
+                  data-card
+                  data-category={category}
+                  data-industries={ind}
+                  data-processes={processes}
+                  data-materials={materials}
+                  data-search={search}
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))
+            }
+          </div>
+
+          <div class="empty" data-empty hidden>
+            <Icon name="search" size={30} stroke={1.4} class="empty__icon" />
+            <h3 class="empty__title">No components match those filters</h3>
+            <p class="empty__text">
+              Try removing a filter — or skip the catalog entirely and send us the drawing. Most
+              parts we quote are not listed here.
+            </p>
+            <div class="btn-row empty__actions">
+              <button type="button" class="btn btn--outline btn--sm" data-clear>Clear filters</button>
+              <a href="/rfq" class="btn btn--primary btn--sm">Request a quote</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Categories ===== -->
+  <section class="section section--sunken">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Browse by category</p>
+        <h2>Component families we manufacture</h2>
+      </div>
+      <div class="grid grid--3">
+        {
+          taxonomy.categories.map((category, i) => (
+            <a href={`/products/category/${category.id}`} class="cat-card" data-reveal data-reveal-delay={(i % 3) * 60}>
+              <Icon name={category.icon} size={24} stroke={1.65} class="cat-card__icon" />
+              <h3 class="cat-card__title">{category.name}</h3>
+              <p class="cat-card__text">{category.summary}</p>
+              <p class="cat-card__examples mono">{category.examples}</p>
+              <span class="link-arrow cat-card__cta">
+                View category
+                <Icon name="arrow-right" size={15} />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTABand
+    kicker="Custom components"
+    title="Your part almost certainly fits our process range."
+    text="Brackets, panels, drawn housings, tube assemblies, machined components — if it is sheet or tube and it has a drawing, send it."
+  />
+</BaseLayout>
+
+<style>
+  /* ---- Layout ------------------------------------------------------------------ */
+
+  .catalog {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: clamp(2rem, 1rem + 3vw, 3.5rem);
+    align-items: start;
+  }
+
+  @media (max-width: 940px) {
+    .catalog {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ---- Filters ------------------------------------------------------------------ */
+
+  .filters__inner {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    display: grid;
+    gap: var(--sp-6);
+  }
+
+  @media (max-width: 940px) {
+    .filters {
+      display: none;
+      padding: var(--sp-5);
+      border: 1px solid var(--border);
+      margin-bottom: var(--sp-6);
+    }
+    .filters.is-open {
+      display: block;
+    }
+    .filters__inner {
+      position: static;
+    }
+  }
+
+  .filters__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    padding-bottom: var(--sp-3);
+    border-bottom: 2px solid var(--ink-900);
+  }
+
+  .filters__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .filters__clear {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--ge-red-ink);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .field__label {
+    display: block;
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin-bottom: var(--sp-3);
+    padding: 0;
+  }
+
+  .search {
+    position: relative;
+  }
+
+  .search__icon {
+    position: absolute;
+    left: 0.7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-400);
+    pointer-events: none;
+  }
+
+  .search__input {
+    width: 100%;
+    padding: 0.65rem 0.75rem 0.65rem 2.3rem;
+    font-size: var(--fs-sm);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--white);
+    transition: border-color var(--dur) var(--ease);
+  }
+
+  .search__input:focus {
+    border-color: var(--ink-900);
+    outline-offset: 1px;
+  }
+
+  .search__input::-webkit-search-cancel-button {
+    cursor: pointer;
+  }
+
+  .fgroup {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .fgroup__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .check {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    padding: 0.35rem 0;
+    cursor: pointer;
+    font-size: var(--fs-sm);
+    color: var(--ink-700);
+    line-height: 1.4;
+  }
+
+  .check input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .check__box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-top: 0.1rem;
+    border: 1px solid var(--border-strong);
+    background: var(--white);
+    color: transparent;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+      color var(--dur) var(--ease);
+  }
+
+  .check:hover .check__box {
+    border-color: var(--ink-500);
+  }
+
+  .check input:checked + .check__box {
+    background: var(--ge-red-ink);
+    border-color: var(--ge-red-ink);
+    color: #fff;
+  }
+
+  .check input:focus-visible + .check__box {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  .check input:checked ~ .check__label {
+    color: var(--ink-900);
+    font-weight: 500;
+  }
+
+  .filters__cta {
+    padding: var(--sp-5);
+    background: var(--ink-050);
+    border-top: 3px solid var(--ge-red);
+  }
+
+  .filters__cta-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 var(--sp-2);
+  }
+
+  .filters__cta-text {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin: 0 0 var(--sp-4);
+  }
+
+  /* ---- Results ------------------------------------------------------------------- */
+
+  .results__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    padding-bottom: var(--sp-4);
+    margin-bottom: var(--sp-6);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .results__count {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .results__count strong {
+    color: var(--ink-900);
+    font-family: var(--font-mono);
+    font-weight: 500;
+  }
+
+  .results__toggle {
+    display: none;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--border-strong);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+
+  @media (max-width: 940px) {
+    .results__toggle {
+      display: inline-flex;
+    }
+  }
+
+  .results__grid {
+    align-items: stretch;
+  }
+
+  .results__item {
+    display: flex;
+  }
+
+  .results__item[hidden] {
+    display: none;
+  }
+
+  .results__item :global(.p-card) {
+    width: 100%;
+  }
+
+  /* ---- Empty state ---------------------------------------------------------------- */
+
+  .empty {
+    text-align: center;
+    padding: clamp(3rem, 2rem + 4vw, 5rem) var(--sp-5);
+    border: 1px dashed var(--border-strong);
+  }
+
+  .empty__icon {
+    color: var(--ink-300);
+    margin: 0 auto var(--sp-4);
+  }
+
+  .empty__title {
+    font-size: var(--fs-h4);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .empty__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    max-width: 48ch;
+    margin: 0 auto;
+    line-height: 1.65;
+  }
+
+  .empty__actions {
+    justify-content: center;
+    margin-top: var(--sp-5);
+  }
+
+  /* ---- Category cards -------------------------------------------------------------- */
+
+  .cat-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    height: 100%;
+    padding: var(--sp-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ge-red);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .cat-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .cat-card__icon {
+    color: var(--ge-red-ink);
+    margin-bottom: var(--sp-3);
+  }
+
+  .cat-card__title {
+    font-size: var(--fs-h4);
+    margin: 0;
+  }
+
+  .cat-card__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .cat-card__examples {
+    font-size: var(--fs-xs);
+    color: var(--ge-red-ink);
+    margin: var(--sp-2) 0 0;
+  }
+
+  .cat-card__cta {
+    margin-top: auto;
+    padding-top: var(--sp-4);
+  }
+</style>
+
+<script>
+  /* ------------------------------------------------------------------------
+   * Catalog filtering.
+   *
+   * State lives in the URL so a filtered view can be shared or bookmarked —
+   * which matters when a buyer wants to send a colleague "the tubular parts".
+   * --------------------------------------------------------------------- */
+
+  const gridRoot = document.querySelector<HTMLElement>('[data-grid]');
+  if (gridRoot) {
+    // Re-bound inside the block so the null check still holds inside the
+    // hoisted `apply()` declaration below.
+    const grid = gridRoot;
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-card]'));
+    const checkboxes = Array.from(document.querySelectorAll<HTMLInputElement>('[data-filter]'));
+    const searchInput = document.querySelector<HTMLInputElement>('#product-search');
+    const countEl = document.querySelector<HTMLElement>('[data-count]');
+    const emptyEl = document.querySelector<HTMLElement>('[data-empty]');
+    const clearButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-clear]'));
+    const filtersPanel = document.querySelector<HTMLElement>('#filters');
+    const filtersToggle = document.querySelector<HTMLButtonElement>('[data-filters-toggle]');
+    const total = cards.length;
+
+    const groups = ['category', 'industries', 'processes', 'materials'] as const;
+    type Group = (typeof groups)[number];
+
+    const selected = (group: Group): string[] =>
+      checkboxes.filter((c) => c.dataset.filter === group && c.checked).map((c) => c.value);
+
+    function apply(pushState = true) {
+      const query = (searchInput?.value ?? '').trim().toLowerCase();
+      const active: Record<Group, string[]> = {
+        category: selected('category'),
+        industries: selected('industries'),
+        processes: selected('processes'),
+        materials: selected('materials'),
+      };
+
+      let visible = 0;
+
+      cards.forEach((card) => {
+        // A card matches a group when it carries at least one selected value
+        // (OR within a group), and it must match every active group (AND across).
+        const groupMatch = groups.every((group) => {
+          const wanted = active[group];
+          if (wanted.length === 0) return true;
+          const owned = (card.dataset[group] ?? '').split(/\s+/).filter(Boolean);
+          return wanted.some((value) => owned.includes(value));
+        });
+
+        const searchMatch = !query || (card.dataset.search ?? '').includes(query);
+        const show = groupMatch && searchMatch;
+
+        card.hidden = !show;
+        if (show) visible += 1;
+      });
+
+      if (countEl) {
+        countEl.innerHTML = `Showing <strong>${visible}</strong> of ${total} component families`;
+      }
+      if (emptyEl) emptyEl.hidden = visible !== 0;
+      grid.hidden = visible === 0;
+
+      const anyActive = query.length > 0 || groups.some((g) => active[g].length > 0);
+      clearButtons.forEach((btn) => {
+        if (btn.closest('.filters__head')) btn.hidden = !anyActive;
+      });
+
+      if (pushState) syncUrl(active, query);
+    }
+
+    function syncUrl(active: Record<Group, string[]>, query: string) {
+      const params = new URLSearchParams();
+      groups.forEach((group) => {
+        if (active[group].length) params.set(group, active[group].join(','));
+      });
+      if (query) params.set('q', query);
+      const url = params.toString() ? `?${params}` : window.location.pathname;
+      window.history.replaceState({}, '', url);
+    }
+
+    function restore() {
+      const params = new URLSearchParams(window.location.search);
+      groups.forEach((group) => {
+        const values = (params.get(group) ?? '').split(',').filter(Boolean);
+        checkboxes
+          .filter((c) => c.dataset.filter === group)
+          .forEach((c) => (c.checked = values.includes(c.value)));
+      });
+      const q = params.get('q');
+      if (q && searchInput) searchInput.value = q;
+      apply(false);
+    }
+
+    checkboxes.forEach((c) => c.addEventListener('change', () => apply()));
+
+    // Debounced so typing does not thrash history or layout.
+    let debounce: number | undefined;
+    searchInput?.addEventListener('input', () => {
+      window.clearTimeout(debounce);
+      debounce = window.setTimeout(() => apply(), 140);
+    });
+
+    clearButtons.forEach((btn) =>
+      btn.addEventListener('click', () => {
+        checkboxes.forEach((c) => (c.checked = false));
+        if (searchInput) searchInput.value = '';
+        apply();
+      })
+    );
+
+    filtersToggle?.addEventListener('click', () => {
+      const open = filtersPanel?.classList.toggle('is-open');
+      filtersToggle.setAttribute('aria-expanded', String(Boolean(open)));
+    });
+
+    restore();
+  }
+</script>

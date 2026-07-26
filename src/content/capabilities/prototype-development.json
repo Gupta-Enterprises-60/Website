@@ -1,0 +1,91 @@
+{
+  "title": "Prototype & First-Article Development",
+  "navTitle": "Prototype Development",
+  "kicker": "Manufacturing capability",
+  "summary": "Drawing to first physical part in days, without committing to production tooling.",
+  "intro": "The gap between a drawing and a part you can hold is where most programmes lose time. Our laser cuts without tooling, our tool room builds simple soft fixtures quickly, and our press line covers 20 to 250 tonnes — so we can usually produce a representative first article in days rather than the weeks a hard tool demands.",
+  "sections": [
+    {
+      "heading": "Tooling-free first parts",
+      "body": [
+        "For flat and profiled components, the laser produces a real part in the real material straight from your DXF or STEP file. No die, no tooling cost, no waiting.",
+        "For formed parts we can often use soft or temporary tooling to prove geometry before committing to a production die — which means design changes discovered at first article cost a fixture modification instead of a die rebuild."
+      ]
+    },
+    {
+      "heading": "Feedback you can act on",
+      "body": [
+        "Because our tool room designs the production tooling, the people reviewing your prototype are the people who will have to make it repeatably at volume. Feedback on draw ratios, bend reliefs, hole-to-edge distances and weld access comes from that perspective, not from a sales desk.",
+        "If a feature is going to cause a tooling problem at 50,000 pieces, the prototype stage is when you want to hear it."
+      ]
+    },
+    {
+      "heading": "A clean path into production",
+      "body": [
+        "Prototypes made here transfer into production here. The material, the process route and the inspection method are already established — so first-article approval on the production tool is a shorter conversation.",
+        "Several of our longest-running programmes began as a small trial batch that never needed re-sourcing."
+      ]
+    }
+  ],
+  "stats": [
+    {
+      "value": "Days",
+      "label": "Typical first-article lead time"
+    },
+    {
+      "value": "No tooling",
+      "label": "Required for laser-cut parts"
+    },
+    {
+      "value": "In-house",
+      "label": "Soft tooling & fixtures"
+    }
+  ],
+  "specs": [
+    {
+      "label": "Fastest route",
+      "value": "Laser cut — no tooling"
+    },
+    {
+      "label": "Formed prototypes",
+      "value": "Soft / temporary tooling"
+    },
+    {
+      "label": "Accepted files",
+      "value": "DXF, DWG, STEP, PDF"
+    },
+    {
+      "label": "Materials",
+      "value": "Production material, not substitutes"
+    },
+    {
+      "label": "Transfer to production",
+      "value": "Same plant, same quality system"
+    },
+    {
+      "label": "Confidentiality",
+      "value": "NDA signed on request"
+    }
+  ],
+  "materials": [
+    "HR steel",
+    "CRCA / Cold-rolled steel",
+    "Stainless steel",
+    "Mild steel tube",
+    "Aluminium"
+  ],
+  "applications": [
+    "First-article samples",
+    "Design validation batches",
+    "Fit and function trials",
+    "Pre-production pilot runs",
+    "Design-for-manufacture review"
+  ],
+  "icon": "compass",
+  "inHouse": true,
+  "order": 7,
+  "seo": {
+    "title": "Prototype & First-Article Development",
+    "description": "Rapid prototype and first-article manufacturing in Faridabad. Tooling-free laser-cut parts, soft tooling, clean transfer into volume production."
+  }
+}

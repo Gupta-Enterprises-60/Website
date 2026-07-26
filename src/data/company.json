@@ -1,0 +1,232 @@
+{
+  "intro": "Gupta Enterprises manufactures precision sheet-metal, tubular and deep-draw components — and the tools and dies that make them. Founded in Faridabad in 2004, we run 35 power presses from 20 to 250 tonnes alongside laser cutting, CNC/VMC machining, fixture welding and a fully equipped in-house tool room. Because tooling, fabrication and inspection all sit under our own roof, quality, cost and lead time stay under our control rather than a supplier's.",
+  "positioning": "A single-source component partner for automotive OEMs and Tier-1 suppliers — from die design to inspected, dispatch-ready parts.",
+  "mission": "Deliver components that meet exact specification, on time, every time — controlling quality and cost through in-house tooling and modern machinery.",
+  "missionPoints": [
+    "Deliver components that meet exact specification, on time, every time.",
+    "Control quality and cost through in-house tooling and modern machinery.",
+    "Build long-term partnerships through responsiveness and integrity.",
+    "Grow into new industries and export markets without compromising quality."
+  ],
+  "vision": "To be the manufacturing partner of choice for automotive OEMs in India and abroad — recognised for precision, reliability and engineering excellence.",
+  "story": [
+    "Gupta Enterprises began in 2004 on a modest press shop floor in Faridabad, Haryana, with a single discipline: sheet-metal press work done right. Two decades on, that discipline is still what the business runs on — the machines have multiplied, the standard has not moved.",
+    "The turning point came in 2010, when we brought die and fixture design in-house. It is a decision that shaped everything since. When the tooling that forms your part is built and maintained by the same people who run the press, a die revision takes days instead of weeks, and nobody waits on an outside vendor to fix a problem they did not create. Quality, cost and lead time stopped being things we negotiated with suppliers and became things we controlled.",
+    "In 2015 we added fibre laser cutting and VMC machining, which extended us from stamped and formed parts into precision-machined components and better tooling. By 2021 annual turnover had crossed ₹20 crore. Today we operate two manufacturing units in Faridabad totalling 1,100 sq. yards, with 35 power presses spanning 20 to 250 tonnes, 15 welding stations, a full tool room and a team of more than 50 people.",
+    "We supply sheet-metal, tubular and tooling components to eight-plus OEM and Tier-1 partners across the Indian automotive supply chain — most of them repeat, multi-year customers. That repeat business is the number we watch most closely, because in this industry nobody re-orders out of politeness.",
+    "The fundamentals have not changed: 100% inspection before dispatch, 144 kVA of standby power so production never depends on the grid, and tooling we build ourselves. What is changing is reach — we are applying the same capabilities to industrial equipment, electrical, renewable energy, robotics and agriculture, and building the quality documentation that export programmes demand."
+  ],
+  "values": [
+    {
+      "icon": "shield-check",
+      "title": "Quality First",
+      "text": "Every part is inspected against customer specification before dispatch — incoming, in-process and final. No exceptions, no sampling shortcuts."
+    },
+    {
+      "icon": "clock",
+      "title": "On-Time Delivery",
+      "text": "Reliable lead times, backed by real press capacity and 144 kVA of standby power that keeps the shop running when the grid does not."
+    },
+    {
+      "icon": "compass",
+      "title": "Engineering Excellence",
+      "text": "In-house tooling and precision machining on every job, so the die that forms your part is designed by people accountable for the part."
+    },
+    {
+      "icon": "handshake",
+      "title": "Integrity",
+      "text": "Honest commitments and transparent partnerships. If a date or a tolerance is not achievable, you hear it at quotation — not at delivery."
+    },
+    {
+      "icon": "headset",
+      "title": "Customer Focus",
+      "text": "Responsive support and custom-engineered solutions, with a reply to every enquiry inside one working day."
+    },
+    {
+      "icon": "trending-up",
+      "title": "Continuous Improvement",
+      "text": "Ongoing investment in people, machines and processes — the reason our capability list is longer every five years."
+    }
+  ],
+  "timeline": [
+    {
+      "year": "2004",
+      "title": "Founded in Faridabad",
+      "text": "Gupta Enterprises opens as a sheet-metal press shop in Faridabad, Haryana."
+    },
+    {
+      "year": "2010",
+      "title": "In-house tool room established",
+      "text": "Die and fixture design brought in-house — the decision that put quality, cost and lead time under our own control."
+    },
+    {
+      "year": "2015",
+      "title": "Laser cutting & VMC machining added",
+      "text": "Capability extends from stamped and formed parts into precision-machined components and better tooling."
+    },
+    {
+      "year": "2021",
+      "title": "₹20 crore milestone",
+      "text": "Annual turnover crosses ₹20 crore on the back of repeat OEM and Tier-1 programmes."
+    },
+    {
+      "year": "2024",
+      "title": "Two units, 35 presses",
+      "text": "₹25.35 Cr turnover · 2 manufacturing units · 35 power presses · 50+ skilled team members.",
+      "current": true
+    }
+  ],
+  "growth": {
+    "unit": "₹ Cr",
+    "caption": "Annual turnover, ₹ crore",
+    "series": [
+      {
+        "period": "FY 2020–21",
+        "value": 20.58
+      },
+      {
+        "period": "FY 2021–22",
+        "value": 21.18
+      },
+      {
+        "period": "FY 2022–23",
+        "value": 25.35
+      }
+    ],
+    "footnote": "Latest audited figure. Financial statements available to serious enquiries on request."
+  },
+  "whyUs": [
+    {
+      "icon": "layers",
+      "title": "Single-source manufacturing",
+      "text": "Cutting, forming, welding, machining and tooling under one roof. One purchase order, one point of accountability, no sub-vendor chain to chase when a date slips.",
+      "proof": "6 in-house capabilities"
+    },
+    {
+      "icon": "gauge",
+      "title": "Scalable press capacity",
+      "text": "35 power presses from 20 to 250 tonnes handle prototype batches and high-volume programmes on the same floor — so you are not re-sourcing when volumes ramp.",
+      "proof": "20 – 250 T · 35 presses"
+    },
+    {
+      "icon": "clipboard-check",
+      "title": "Quality you can audit",
+      "text": "100% of parts checked against your specification before dispatch, with incoming, in-process and final stages documented under an ISO 9001:2015 system.",
+      "proof": "100% inspected"
+    },
+    {
+      "icon": "zap",
+      "title": "Supply you can rely on",
+      "text": "144 kVA of standby generation (62 + 82 kVA DG sets) keeps presses, lasers and welding lines running through grid outages — a real risk in North Indian industrial belts.",
+      "proof": "144 kVA standby"
+    },
+    {
+      "icon": "cog",
+      "title": "Tooling we build ourselves",
+      "text": "Dies, fixtures and gauges designed, built and maintained in our own tool room. Revisions and repairs never sit in an outside vendor's queue.",
+      "proof": "In-house since 2010"
+    },
+    {
+      "icon": "repeat",
+      "title": "Customers who re-order",
+      "text": "Eight-plus OEM and Tier-1 partners, most of them multi-year repeat customers. Consistency, not one-off wins, is what the record shows.",
+      "proof": "8+ Tier-1 partners"
+    }
+  ],
+  "process": [
+    {
+      "step": "01",
+      "title": "Enquiry & feasibility",
+      "text": "Send drawings in PDF, DWG, DXF or STEP. We review manufacturability, tooling requirements, material availability and volume fit, then come back with a costed quotation — or an honest no.",
+      "output": "Quotation & feasibility notes"
+    },
+    {
+      "step": "02",
+      "title": "Design & in-house tooling",
+      "text": "Our tool room designs and builds the progressive dies, deep-draw tools, weld fixtures and inspection gauges your part needs. Because it happens here, revisions take days.",
+      "output": "Dies, fixtures & gauges"
+    },
+    {
+      "step": "03",
+      "title": "Material sourcing",
+      "text": "Raw material is procured against your specification and verified at incoming inspection before it is released to production.",
+      "output": "Verified raw material"
+    },
+    {
+      "step": "04",
+      "title": "Fabrication",
+      "text": "Parts are cut, blanked, formed, drawn and machined across the laser, press and CNC/VMC lines — with in-process checks at each transfer.",
+      "output": "Formed & machined parts"
+    },
+    {
+      "step": "05",
+      "title": "Welding & assembly",
+      "text": "Fixture-based MIG and projection welding joins components into finished sub-assemblies with repeatable, hole-to-hole accurate geometry.",
+      "output": "Welded sub-assemblies"
+    },
+    {
+      "step": "06",
+      "title": "Inspection & dispatch",
+      "text": "Final inspection against your drawing, then packing and dispatch with the documentation your goods-inward team needs.",
+      "output": "Inspected, dispatch-ready parts"
+    }
+  ],
+  "futureVision": [
+    {
+      "icon": "compass",
+      "title": "New industries",
+      "text": "Applying precision press, tube and machining capability beyond automotive — into industrial equipment, electrical, renewable energy, robotics and agriculture."
+    },
+    {
+      "icon": "globe",
+      "title": "Export ready",
+      "text": "Building the quality systems, documentation and packaging standards international OEMs and buyers require before they place a first order."
+    },
+    {
+      "icon": "trending-up",
+      "title": "Growing capacity",
+      "text": "Continued investment in machinery, tooling and skilled people so we scale with our customers' programmes rather than capping them."
+    }
+  ],
+  "clients": [
+    {
+      "name": "Neel Metal Products",
+      "logo": ""
+    },
+    {
+      "name": "Neel Auto",
+      "logo": ""
+    },
+    {
+      "name": "Metal Man Auto",
+      "logo": ""
+    },
+    {
+      "name": "Metal Man Micro Turners",
+      "logo": ""
+    },
+    {
+      "name": "Satyam Auto Components",
+      "logo": ""
+    },
+    {
+      "name": "Caparo Engineering",
+      "logo": ""
+    },
+    {
+      "name": "Badve Engineering",
+      "logo": ""
+    },
+    {
+      "name": "Victora Engg Tools",
+      "logo": ""
+    }
+  ],
+  "clientsNote": "We supply components to leading Indian automotive parts manufacturers — many of them repeat, multi-year customers.",
+  "currentPrograms": [
+    "Seat assemblies for utility-vehicle programmes",
+    "Two-wheeler footrest assemblies (RH/LH)",
+    "Seat structure components",
+    "Coated and tubular parts"
+  ]
+}

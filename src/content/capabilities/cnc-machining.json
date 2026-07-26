@@ -1,0 +1,91 @@
+{
+  "title": "CNC & VMC Machining",
+  "navTitle": "CNC Machining",
+  "kicker": "Manufacturing capability",
+  "summary": "3-axis milling, turning and drilling within a 1300 × 800 mm envelope — on production parts and on our own tooling.",
+  "intro": "Our CNC and VMC line handles the features that pressing and welding cannot hold: tight-tolerance bores, machined faces, reamed and tapped holes, and precision locating features. It works on finished components and as a secondary operation on formed parts — so a job needing both stays on one purchase order.",
+  "sections": [
+    {
+      "heading": "Secondary operations without a second supplier",
+      "body": [
+        "A pressed bracket that needs a reamed locating hole is a common requirement and a common source of delay, because it usually means shipping parts out for machining and back again — two transport legs, two goods-inward checks, and a batch you cannot see for a week.",
+        "We machine in-house, in the unit next door to the press shop. The part never leaves, the inspection record stays continuous, and the lead time is ours to control."
+      ]
+    },
+    {
+      "heading": "The same machines cut our dies",
+      "body": [
+        "Our VMC capability serves both production parts and the tool room, where it machines die components, fixture bodies and gauge details.",
+        "That dual use is deliberate. Machinists who cut tooling to tool-room tolerances bring the same standard to production parts, and the tool room gets machine time whenever a die needs correcting."
+      ]
+    },
+    {
+      "heading": "Envelope and capability",
+      "body": [
+        "Production machining runs within a 1300 × 800 mm working envelope with 3-axis milling, supported by turning and drilling for cylindrical and hole features.",
+        "The tool room adds a BFW VMC with a 700 × 1250 mm bed, four surface grinders, milling, turning and drilling equipment."
+      ]
+    }
+  ],
+  "stats": [
+    {
+      "value": "1300 × 800",
+      "label": "Working envelope, mm"
+    },
+    {
+      "value": "3-axis",
+      "label": "Milling capability"
+    },
+    {
+      "value": "2",
+      "label": "VMC machining centres"
+    }
+  ],
+  "specs": [
+    {
+      "label": "Working envelope",
+      "value": "1300 × 800 mm"
+    },
+    {
+      "label": "Capability",
+      "value": "3-axis milling"
+    },
+    {
+      "label": "Additional",
+      "value": "Turning & drilling"
+    },
+    {
+      "label": "Tool room VMC",
+      "value": "BFW · 700 × 1250 mm bed"
+    },
+    {
+      "label": "Surface grinders",
+      "value": "4"
+    },
+    {
+      "label": "Applications",
+      "value": "Production parts & tooling"
+    }
+  ],
+  "materials": [
+    "CRCA / Cold-rolled steel",
+    "HR steel",
+    "Mild steel bar",
+    "Aluminium",
+    "Tool steel"
+  ],
+  "applications": [
+    "Secondary machining on pressed parts",
+    "Tight-tolerance bores and faces",
+    "Tapped and reamed features",
+    "Die and fixture components",
+    "Precision locating features"
+  ],
+  "icon": "cog",
+  "inHouse": true,
+  "order": 4,
+  "seo": {
+    "title": "CNC & VMC Machining — 3-Axis, 1300×800 mm",
+    "description": "3-axis CNC and VMC machining in Faridabad within a 1300 x 800 mm envelope. Secondary operations on pressed parts, plus in-house die and fixture machining."
+  }
+}

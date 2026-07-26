@@ -1,0 +1,19 @@
+{
+  "name": "Traub Automatic Lathe",
+  "group": "machining",
+  "quantity": 1,
+  "capacity": "Bar turning",
+  "make": "Traub",
+  "order": 40,
+  "specs": [
+    {
+      "label": "Type",
+      "value": "Automatic bar lathe"
+    },
+    {
+      "label": "Applications",
+      "value": "Turned components from bar stock"
+    }
+  ],
+  "notes": "Used for repetitive turned components and turned features on bar-stock parts."
+}

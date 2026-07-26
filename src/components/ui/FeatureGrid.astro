@@ -1,0 +1,186 @@
+---
+/**
+ * Bordered feature grid with hover treatment.
+ *
+ * A port of the Aceternity "features with hover effects" pattern to plain
+ * Astro + CSS. Every interaction in the original is a hover state, so none of
+ * it needs JavaScript: the wash, the growing accent bar and the sliding title
+ * are all CSS transitions on `:hover`. Reduced-motion is handled globally in
+ * base.css, so there is no per-component guard here.
+ *
+ * Separators are drawn as right/bottom borders on each cell, with the grid
+ * pulled 1px past its wrapper so the outermost pair is clipped. That keeps a
+ * ragged final row (item count not divisible by the column count) from leaving
+ * a solid block of border colour, which the `gap: 1px` idiom used elsewhere in
+ * this codebase would.
+ */
+import Icon from './Icon.astro';
+
+export interface Props {
+  items: { icon: string; title: string; text: string; proof?: string }[];
+  /** Columns at the widest breakpoint; steps down to 2 then 1 as space runs out. */
+  columns?: 2 | 3 | 4;
+  /** Match the surrounding document outline — these are section-level headings. */
+  headingLevel?: 2 | 3;
+}
+
+const { items, columns = 3, headingLevel = 3 } = Astro.props;
+const Heading = headingLevel === 2 ? 'h2' : 'h3';
+---
+
+<div class="fgrid-wrap">
+  <ul class:list={['fgrid', `fgrid--${columns}`]}>
+    {
+      items.map((item, i) => (
+        <li class="fcell" data-reveal data-reveal-delay={(i % columns) * 70}>
+          <span class="fcell__icon">
+            <Icon name={item.icon} size={22} stroke={1.75} />
+          </span>
+
+          {item.proof && <p class="fcell__proof mono">{item.proof}</p>}
+
+          <Heading class="fcell__title">
+            <span class="fcell__title-text">{item.title}</span>
+          </Heading>
+
+          <p class="fcell__text">{item.text}</p>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .fgrid-wrap {
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .fgrid {
+    list-style: none;
+    padding: 0;
+    /* Pushes the outer right/bottom cell borders under the wrapper's own. */
+    margin: 0 -1px -1px 0;
+    display: grid;
+    grid-template-columns: repeat(var(--fgrid-cols, 3), minmax(0, 1fr));
+  }
+
+  .fgrid--2 {
+    --fgrid-cols: 2;
+  }
+  .fgrid--3 {
+    --fgrid-cols: 3;
+  }
+  .fgrid--4 {
+    --fgrid-cols: 4;
+  }
+
+  @media (max-width: 1024px) {
+    .fgrid--3,
+    .fgrid--4 {
+      --fgrid-cols: 2;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .fgrid {
+      --fgrid-cols: 1;
+    }
+  }
+
+  /* ---- Cell ---------------------------------------------------------------- */
+
+  .fcell {
+    --fcell-pad: var(--sp-6);
+    position: relative;
+    padding: var(--sp-7) var(--fcell-pad);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Hover wash. Sits behind the content and fades up from the cell's base. */
+  .fcell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--fcell-wash, var(--ink-050)), transparent);
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease);
+    pointer-events: none;
+  }
+
+  .fcell:hover::before {
+    opacity: 1;
+  }
+
+  .fcell > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .fcell__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: var(--sp-4);
+    background: var(--ge-red-wash);
+    color: var(--ge-red-ink);
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+
+  .fcell:hover .fcell__icon {
+    background: var(--ge-red-ink);
+    color: #fff;
+  }
+
+  .fcell__proof {
+    font-size: var(--fs-xs);
+    color: var(--ink-500);
+    letter-spacing: 0.02em;
+    margin: 0 0 var(--sp-2);
+  }
+
+  .fcell__title {
+    position: relative;
+    font-size: 1.0625rem;
+    margin: 0 0 var(--sp-2);
+  }
+
+  /* The accent bar: flush to the cell edge, centred on the title, growing and
+     turning red on hover. */
+  .fcell__title::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--fcell-pad) * -1);
+    top: 50%;
+    width: 3px;
+    height: 1.25rem;
+    background: var(--ink-300);
+    transform: translateY(-50%);
+    transition: height var(--dur) var(--ease), background var(--dur) var(--ease);
+  }
+
+  .fcell:hover .fcell__title::before {
+    height: 2rem;
+    background: var(--ge-red);
+  }
+
+  .fcell__title-text {
+    display: inline-block;
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .fcell:hover .fcell__title-text {
+    transform: translateX(0.5rem);
+  }
+
+  .fcell__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+</style>

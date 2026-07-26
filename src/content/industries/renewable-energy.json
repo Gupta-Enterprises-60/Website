@@ -1,0 +1,32 @@
+{
+  "title": "Renewable Energy",
+  "summary": "Structural brackets, mounting hardware and fabricated assemblies for solar and renewable installations.",
+  "intro": "Renewable energy installations consume large quantities of structural steel fabrication: module mounting brackets, rails, clamps, base plates and support assemblies — parts that are simple individually but demanded in volume, to consistent dimensions, on a construction schedule.",
+  "body": [
+    "Volume repeatability at a competitive unit cost is exactly what a 35-press shop with in-house tooling is built to deliver. Where a part suits progressive tooling, we can bring the piece price down substantially against laser-cut or machined alternatives.",
+    "Our 25 mm HR steel cutting capacity handles the heavier structural profiles, and our 250-tonne press capacity covers formed structural components.",
+    "This is a target sector for us. We have the process capability; we do not yet have a track record in it, and we will not claim otherwise. Coated and galvanised finishes — essential for outdoor installations — are managed through qualified finishing partners."
+  ],
+  "core": false,
+  "status": "Target sector",
+  "componentTypes": [
+    "Module mounting brackets",
+    "Structural rails and clamps",
+    "Base and foundation plates",
+    "Support frames",
+    "Formed structural components"
+  ],
+  "capabilitiesUsed": [
+    "metal-stamping",
+    "laser-cutting",
+    "sheet-metal-fabrication",
+    "welding",
+    "powder-coating"
+  ],
+  "icon": "sun",
+  "order": 4,
+  "seo": {
+    "title": "Renewable Energy Components",
+    "description": "Structural brackets, mounting hardware and fabricated assemblies for solar and renewable energy installations. Volume pressing and 25 mm laser cutting capacity."
+  }
+}

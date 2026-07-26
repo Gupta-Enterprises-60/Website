@@ -1,0 +1,58 @@
+---
+import Icon from '../ui/Icon.astro';
+
+export interface Props {
+  kicker?: string;
+  title: string;
+  lead?: string;
+  /** Optional link rendered opposite the heading on wide viewports. */
+  link?: { label: string; href: string };
+  as?: 'h2' | 'h3';
+  wide?: boolean;
+  class?: string;
+}
+
+const { kicker, title, lead, link, as: Tag = 'h2', wide = false, class: className = '' } = Astro.props;
+---
+
+<div class={`sec-head ${link ? 'sec-head--with-link' : ''} ${className}`} data-reveal>
+  <div class:list={['section-head', wide && 'section-head--wide']} style="margin-bottom:0">
+    {kicker && <p class="eyebrow">{kicker}</p>}
+    <Tag>{title}</Tag>
+    {lead && <p>{lead}</p>}
+  </div>
+
+  {
+    link && (
+      <a href={link.href} class="link-arrow sec-head__link">
+        {link.label}
+        <Icon name="arrow-right" size={16} />
+      </a>
+    )
+  }
+</div>
+
+<style>
+  .sec-head {
+    margin-bottom: clamp(2rem, 1.2rem + 2.6vw, 3.5rem);
+  }
+
+  .sec-head--with-link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--sp-5);
+    align-items: end;
+  }
+
+  @media (max-width: 720px) {
+    .sec-head--with-link {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+
+  .sec-head__link {
+    padding-bottom: 0.3rem;
+    white-space: nowrap;
+  }
+</style>

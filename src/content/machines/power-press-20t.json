@@ -1,0 +1,26 @@
+{
+  "name": "Power Press — 20 Tonne",
+  "group": "press-shop",
+  "quantity": 5,
+  "capacity": "20 tonnes",
+  "order": 10,
+  "specs": [
+    {
+      "label": "Capacity",
+      "value": "20 T"
+    },
+    {
+      "label": "Quantity",
+      "value": "5"
+    },
+    {
+      "label": "Frame type",
+      "value": "C-frame / pillar type"
+    },
+    {
+      "label": "Tooling",
+      "value": "Progressive, deep-draw & trim dies (in-house)"
+    }
+  ],
+  "notes": "Runs small precision parts, clips and retainers economically."
+}

@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import { site, addressOneLine } from '../lib/site';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Terms' }];
+const updated = 'July 2026';
+---
+
+<BaseLayout
+  title="Terms of Use"
+  description="Terms governing use of the Gupta Enterprises website, including the status of published specifications, quotations and product information."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Legal"
+    title="Terms of use"
+    lead="What the information on this website does and does not commit us to. Short, and worth reading if you are about to place an order."
+    breadcrumbs={crumbs}
+    align="wide"
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="prose">
+        <p class="mono note">Last updated: {updated}</p>
+
+        <h2>About this website</h2>
+        <p>
+          This website is operated by {site.legalName}, {addressOneLine()}. By using it you accept
+          the terms below.
+        </p>
+
+        <h2>Information is indicative, not a contract</h2>
+        <p>
+          The capabilities, machine specifications, capacities, materials and product descriptions
+          published here are accurate to the best of our knowledge at the time of publication, and we
+          keep them current. They are provided for general information.
+        </p>
+        <p>
+          They are <strong>not</strong> an offer, and they are not a warranty that a particular part
+          can be produced to a particular tolerance, price or date. Every commitment we make is made
+          in a written quotation or order acknowledgement for a specific part. Where a quotation and
+          this website disagree, the quotation governs.
+        </p>
+
+        <h2>Quotations and orders</h2>
+        <p>
+          Quotations are valid for the period stated on them and are subject to our written terms of
+          sale, which are supplied with the quotation. Prices depend on the drawing, material grade,
+          annual volume, finish requirement and delivery schedule you provide — if any of those
+          change, the quotation may need to be revised, and we will say so rather than absorb it
+          quietly.
+        </p>
+        <p>
+          Tooling ownership, storage and maintenance responsibility are stated explicitly in the
+          quotation. We do this because ambiguity on this point causes real disputes later.
+        </p>
+
+        <h2>Financial and certification information</h2>
+        <p>
+          Turnover figures shown on this site are historical and relate to the financial years
+          stated. Certifications shown are current as at the date of publication; certificate copies
+          with issue and expiry dates are available on request, and those documents — not this
+          website — are the authoritative record.
+        </p>
+
+        <h2>Your content</h2>
+        <p>
+          When you send us drawings, specifications or other material, you confirm that you are
+          entitled to share them with us for the purpose of obtaining a quotation and having parts
+          manufactured. You retain all rights in your designs. We use them only for that purpose —
+          see our <a href="/privacy">privacy policy</a>.
+        </p>
+
+        <h2>Our content</h2>
+        <p>
+          The text, photographs, drawings and design of this website belong to {site.legalName} or
+          are used with permission. Please do not reproduce substantial parts of it commercially
+          without asking. Quoting a specification or linking to a page is fine and welcome.
+        </p>
+
+        <h2>Third-party links</h2>
+        <p>
+          Where we link to another website — a map service, for example — we are not responsible for
+          its content or its handling of your data.
+        </p>
+
+        <h2>Availability</h2>
+        <p>
+          We aim to keep this site available and accurate but do not guarantee uninterrupted access.
+          If a form submission fails, please call or email us directly rather than assume the enquiry
+          reached us.
+        </p>
+
+        <h2>Governing law</h2>
+        <p>
+          These terms are governed by the laws of India, and the courts at Faridabad, Haryana have
+          jurisdiction over any dispute arising from use of this website. Contractual disputes arising
+          from a supply agreement are governed by the dispute-resolution provisions of that
+          agreement.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          Questions about these terms:
+          <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a> or
+          <a href={`tel:${site.contact.phonesE164[0]}`}>{site.contact.phones[0]}</a>.
+        </p>
+
+        <hr class="hairline" style="margin: 2.5rem 0" />
+
+        <p class="disclaimer">
+          These terms are written in plain language to be genuinely useful rather than
+          comprehensive. They are not legal advice and they do not replace our written terms of sale,
+          which apply to every order. If your procurement process requires specific contractual
+          wording, <a href="/contact">contact us</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .note {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    letter-spacing: 0.02em;
+  }
+
+  .disclaimer {
+    font-size: var(--fs-sm);
+    color: var(--text-subtle);
+    line-height: 1.7;
+  }
+</style>

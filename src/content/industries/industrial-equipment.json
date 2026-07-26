@@ -1,0 +1,32 @@
+{
+  "title": "Industrial Equipment",
+  "summary": "Fabricated frames, guards, brackets and machined components for capital equipment and machinery builders.",
+  "intro": "Industrial equipment manufacturers need the same things automotive customers do — repeatable geometry, honest lead times, and a supplier who flags a problem before it ships — usually at lower volumes and higher mix.",
+  "body": [
+    "That profile suits us. Our laser cuts without tooling, so a batch of forty frames is economic. Our press line covers 20 to 250 tonnes for formed and drawn parts. Our tool room builds fixtures for welded assemblies quickly, which matters when each equipment model needs its own.",
+    "Typical work includes machine frames and sub-frames, guards and covers, mounting brackets, base plates, and machined components with tight-tolerance locating features.",
+    "We are actively expanding into this sector, applying capability proven under automotive quality expectations. If you are evaluating a new supplier, we would encourage a plant visit — it is the fastest way to judge whether our shop matches your requirements."
+  ],
+  "core": false,
+  "status": "Active growth sector",
+  "componentTypes": [
+    "Machine frames and sub-frames",
+    "Guards, covers and enclosures",
+    "Mounting brackets and base plates",
+    "Machined components",
+    "Fabricated weldments"
+  ],
+  "capabilitiesUsed": [
+    "sheet-metal-fabrication",
+    "laser-cutting",
+    "welding",
+    "cnc-machining",
+    "custom-fabrication"
+  ],
+  "icon": "settings",
+  "order": 2,
+  "seo": {
+    "title": "Industrial Equipment Components",
+    "description": "Fabricated frames, guards, brackets and machined components for machinery manufacturers. Laser cutting, pressing, welding and machining in Faridabad."
+  }
+}

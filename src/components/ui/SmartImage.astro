@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets';
+import { resolveImage } from '../../lib/images';
+import Placeholder from './Placeholder.astro';
+
+/**
+ * Renders whichever image source the content gave us, or a branded placeholder
+ * when no photograph has been supplied yet. See src/lib/images.ts.
+ */
+export interface Props {
+  src?: string | null;
+  alt?: string;
+  /** Rendered intrinsic width for build-time optimised assets. */
+  width?: number;
+  height?: number;
+  /** CSS aspect-ratio applied to the wrapper, e.g. "16 / 10". */
+  ratio?: string;
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  class?: string;
+  /** Placeholder configuration, used when src is empty or unresolvable. */
+  placeholderLabel?: string;
+  placeholderHint?: string;
+  placeholderIcon?: string;
+}
+
+const {
+  src,
+  alt = '',
+  width = 1200,
+  height,
+  ratio,
+  sizes = '(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 620px',
+  loading = 'lazy',
+  fetchpriority,
+  class: className = '',
+  placeholderLabel = 'Photograph to be added',
+  placeholderHint,
+  placeholderIcon = 'image',
+} = Astro.props;
+
+const resolved = resolveImage(src);
+const style = ratio ? `aspect-ratio:${ratio};` : undefined;
+---
+
+{
+  resolved.kind === 'asset' && (
+    <Image
+      src={resolved.image}
+      alt={alt}
+      width={width}
+      height={height}
+      widths={[400, 800, 1200, 1600]}
+      sizes={sizes}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      decoding="async"
+      class={className}
+      style={style}
+    />
+  )
+}
+
+{
+  resolved.kind === 'public' && (
+    <img
+      src={resolved.src}
+      alt={alt}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      decoding="async"
+      class={className}
+      style={style}
+    />
+  )
+}
+
+{
+  resolved.kind === 'missing' && (
+    <Placeholder
+      label={placeholderLabel}
+      hint={placeholderHint}
+      icon={placeholderIcon}
+      ratio={ratio}
+      class={className}
+    />
+  )
+}

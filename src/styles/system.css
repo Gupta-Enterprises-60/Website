@@ -1,0 +1,817 @@
+/* ==========================================================================
+   Layout primitives & recurring UI patterns
+   ========================================================================== */
+
+/* ---- Containers -------------------------------------------------------- */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
+.section {
+  padding-block: var(--section-y);
+}
+
+.section--lg {
+  padding-block: var(--section-y-lg);
+}
+
+.section--tight {
+  padding-block: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
+}
+
+.section--sunken {
+  background: var(--surface-sunken);
+}
+
+/* ---- Grid -------------------------------------------------------------- */
+
+.grid {
+  display: grid;
+  gap: var(--sp-5);
+}
+
+.grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+@media (max-width: 1000px) {
+  .grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .grid--2,
+  .grid--3,
+  .grid--4 { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Asymmetric editorial split — the workhorse layout for section intros.
+   Deliberately not 50/50: the 5:7 ratio is what makes the page read as
+   designed rather than generated. */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2rem, 1rem + 4vw, 5rem);
+  align-items: start;
+}
+
+.split--balanced {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.split--flip > :first-child { order: 2; }
+
+@media (max-width: 900px) {
+  .split,
+  .split--balanced {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .split--flip > :first-child { order: 0; }
+}
+
+/* ---- Section heading pattern -------------------------------------------
+   The red rule + tracked-out uppercase kicker is lifted from the company
+   profile deck, so print and web read as one identity.
+   ---------------------------------------------------------------------- */
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ge-red-ink);
+  margin-bottom: var(--sp-4);
+}
+
+.on-dark .eyebrow {
+  color: #ff6b66;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 3px;
+  background: var(--ge-red);
+  flex: none;
+}
+
+.eyebrow--plain::before {
+  display: none;
+}
+
+.section-head {
+  max-width: 46ch;
+  margin-bottom: clamp(2rem, 1.2rem + 2.6vw, 3.5rem);
+}
+
+.section-head > h2,
+.section-head > h1 {
+  margin-bottom: var(--sp-4);
+}
+
+.section-head p {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+  max-width: 58ch;
+}
+
+.section-head--wide {
+  max-width: 62ch;
+}
+
+/* A heading rule used under page titles */
+.rule {
+  width: 64px;
+  height: 4px;
+  background: var(--ge-red);
+  border: 0;
+  margin: var(--sp-5) 0;
+}
+
+.hairline {
+  height: 1px;
+  background: var(--border);
+  border: 0;
+  margin: 0;
+}
+
+/* ---- Text helpers ------------------------------------------------------- */
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  letter-spacing: 0.01em;
+  font-feature-settings: 'zero' 1;
+}
+
+.prose > * + * {
+  margin-top: var(--sp-5);
+}
+
+.prose {
+  max-width: var(--container-prose);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-relaxed);
+  color: var(--ink-700);
+}
+
+.prose h2 {
+  margin-top: var(--sp-9);
+  margin-bottom: var(--sp-4);
+}
+
+.prose h3 {
+  margin-top: var(--sp-7);
+  margin-bottom: var(--sp-3);
+}
+
+.prose a {
+  color: var(--ge-red-ink);
+  font-weight: 500;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.35em;
+}
+
+.prose li + li {
+  margin-top: var(--sp-2);
+}
+
+.prose blockquote {
+  border-left: 3px solid var(--ge-red);
+  padding-left: var(--sp-5);
+  font-size: 1.0625em;
+  color: var(--ink-800);
+}
+
+.prose img {
+  border: 1px solid var(--border);
+}
+
+/* ---- Buttons ------------------------------------------------------------ */
+
+.btn {
+  --btn-bg: var(--ink-900);
+  --btn-fg: #fff;
+  --btn-bd: var(--ink-900);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.6rem;
+  min-height: 48px;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 1px solid var(--btn-bd);
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn svg {
+  flex: none;
+  transition: transform var(--dur) var(--ease);
+}
+
+.btn:hover svg.icon-arrow {
+  transform: translateX(3px);
+}
+
+.btn--primary {
+  --btn-bg: var(--ge-red-ink);
+  --btn-bd: var(--ge-red-ink);
+}
+
+.btn--primary:hover {
+  --btn-bg: var(--ge-red-dark);
+  --btn-bd: var(--ge-red-dark);
+}
+
+.btn--dark:hover {
+  --btn-bg: var(--ink-700);
+  --btn-bd: var(--ink-700);
+}
+
+.btn--outline {
+  --btn-bg: transparent;
+  --btn-fg: var(--text);
+  --btn-bd: var(--border-strong);
+}
+
+.btn--outline:hover {
+  --btn-bg: var(--ink-900);
+  --btn-fg: #fff;
+  --btn-bd: var(--ink-900);
+}
+
+.on-dark .btn--outline:hover {
+  --btn-bg: #fff;
+  --btn-fg: var(--ink-900);
+  --btn-bd: #fff;
+}
+
+.btn--light {
+  --btn-bg: #fff;
+  --btn-fg: var(--ink-900);
+  --btn-bd: #fff;
+}
+
+.btn--light:hover {
+  --btn-bg: var(--ink-100);
+  --btn-bd: var(--ink-100);
+}
+
+.btn--sm {
+  padding: 0.6rem 1.1rem;
+  min-height: 40px;
+  font-size: var(--fs-xs);
+}
+
+.btn--lg {
+  padding: 1.05rem 2rem;
+  min-height: 56px;
+  font-size: var(--fs-body);
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.btn[disabled],
+.btn[aria-disabled='true'] {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+/* Text link with arrow — used at the foot of cards */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ge-red-ink);
+  text-decoration: none;
+}
+
+.on-dark .link-arrow {
+  color: #ff6b66;
+}
+
+.link-arrow svg {
+  transition: transform var(--dur) var(--ease);
+}
+
+.link-arrow:hover svg,
+a:hover .link-arrow svg {
+  transform: translateX(4px);
+}
+
+/* ---- Cards -------------------------------------------------------------- */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  overflow: hidden;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+a.card:hover,
+.card--interactive:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card__body {
+  padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  flex: 1;
+}
+
+.card__title {
+  font-size: var(--fs-h4);
+  font-weight: 600;
+}
+
+.card__text {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: var(--lh-body);
+}
+
+.card__foot {
+  margin-top: auto;
+  padding-top: var(--sp-3);
+}
+
+/* The red top-edge accent from the profile deck */
+.card--accent {
+  border-top: 3px solid var(--ge-red);
+}
+
+/* Media inside cards */
+.card__media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--ink-100);
+}
+
+.card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+a.card:hover .card__media img {
+  transform: scale(1.035);
+}
+
+/* ---- Chips / tags ------------------------------------------------------- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.chip--accent {
+  background: var(--ge-red-ink);
+  border-color: var(--ge-red-ink);
+  color: #fff;
+  font-weight: 600;
+}
+
+.chip--dark {
+  background: var(--ink-900);
+  border-color: var(--ink-900);
+  color: #fff;
+  font-weight: 600;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+/* ---- Stats -------------------------------------------------------------- */
+
+.stat__value {
+  font-family: var(--font-display);
+  font-size: var(--fs-stat);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat__label {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-top: var(--sp-2);
+}
+
+/* ---- Spec / data tables ------------------------------------------------- */
+
+.spec-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--border);
+}
+
+.spec-list > li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp-4);
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.spec-list dt,
+.spec-list .spec__label {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.spec-list dd,
+.spec-list .spec__value {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text);
+  text-align: right;
+  margin: 0;
+}
+
+.data-table {
+  width: 100%;
+  font-size: var(--fs-sm);
+}
+
+.data-table th {
+  text-align: left;
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0 var(--sp-4) var(--sp-3) 0;
+  border-bottom: 2px solid var(--ink-900);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 0.95rem var(--sp-4) 0.95rem 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.data-table td:last-child,
+.data-table th:last-child {
+  padding-right: 0;
+}
+
+.data-table .num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---- Media placeholder --------------------------------------------------
+   Shown wherever a real photograph has not been supplied yet. Deliberately
+   branded and captioned — it must never be mistaken for a real photo, and it
+   tells the site owner exactly what to shoot.
+   ---------------------------------------------------------------------- */
+
+.ph {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: var(--sp-5);
+  text-align: center;
+  background-color: var(--ink-050);
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 9px,
+    rgba(11, 13, 16, 0.028) 9px,
+    rgba(11, 13, 16, 0.028) 18px
+  );
+  border: 1px solid var(--border);
+  color: var(--ink-400);
+  min-height: 100%;
+}
+
+.ph::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px dashed var(--ink-200);
+  margin: 7px;
+  pointer-events: none;
+}
+
+.ph__icon {
+  color: var(--ink-300);
+}
+
+.ph__label {
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.ph__hint {
+  font-size: var(--fs-xs);
+  color: var(--ink-400);
+  max-width: 30ch;
+  line-height: 1.45;
+}
+
+.on-dark .ph {
+  background-color: #1a1e25;
+  border-color: var(--border-on-dark);
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 9px,
+    rgba(255, 255, 255, 0.03) 9px,
+    rgba(255, 255, 255, 0.03) 18px
+  );
+}
+
+.on-dark .ph::after { border-color: rgba(255, 255, 255, 0.12); }
+.on-dark .ph__label { color: var(--ink-300); }
+.on-dark .ph__hint,
+.on-dark .ph__icon { color: var(--ink-500); }
+
+/* ---- Scroll reveal ------------------------------------------------------
+   Opacity plus a short offset. The offset is expressed as three custom
+   properties so a variant is a property override rather than a second
+   transition — every element still animates one transform, one opacity.
+
+   Variants: (bare) rise · left · right · scale · clip
+   ---------------------------------------------------------------------- */
+
+[data-reveal] {
+  --reveal-x: 0;
+  --reveal-y: 14px;
+  --reveal-scale: 1;
+  opacity: 0;
+  transform: translate3d(var(--reveal-x), var(--reveal-y), 0) scale(var(--reveal-scale));
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  will-change: opacity, transform;
+}
+
+[data-reveal='left'] {
+  --reveal-x: -28px;
+  --reveal-y: 0;
+}
+
+[data-reveal='right'] {
+  --reveal-x: 28px;
+  --reveal-y: 0;
+}
+
+[data-reveal='scale'] {
+  --reveal-y: 10px;
+  --reveal-scale: 0.97;
+}
+
+[data-reveal='rise'] {
+  --reveal-y: 34px;
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* NB: do not add a clip-path-based variant here. Clipping the observed element
+   to zero area makes IntersectionObserver report it as not intersecting, so it
+   never receives .is-visible and never unclips — a deadlock that leaves the
+   element permanently invisible. A wipe would have to clip an inner wrapper,
+   never the element carrying data-reveal. */
+
+/* Stagger container: the parent is what gets observed, the children carry the
+   delay. Saves hand-writing data-reveal-delay on every item in a list. */
+[data-reveal][data-reveal-stagger] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+[data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+
+[data-reveal-stagger].is-visible > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* Capped at 8 — past that the tail of the list feels broken rather than
+   staggered. Items beyond 8 inherit the 8th delay. */
+[data-reveal-stagger] > *:nth-child(1) {
+  transition-delay: 0ms;
+}
+[data-reveal-stagger] > *:nth-child(2) {
+  transition-delay: 60ms;
+}
+[data-reveal-stagger] > *:nth-child(3) {
+  transition-delay: 120ms;
+}
+[data-reveal-stagger] > *:nth-child(4) {
+  transition-delay: 180ms;
+}
+[data-reveal-stagger] > *:nth-child(5) {
+  transition-delay: 240ms;
+}
+[data-reveal-stagger] > *:nth-child(6) {
+  transition-delay: 300ms;
+}
+[data-reveal-stagger] > *:nth-child(7) {
+  transition-delay: 360ms;
+}
+[data-reveal-stagger] > *:nth-child(n + 8) {
+  transition-delay: 420ms;
+}
+
+/* Progressive enhancement: if JS never runs, content must still be visible. */
+.no-js [data-reveal],
+.no-js [data-reveal-stagger] > * {
+  opacity: 1;
+  transform: none;
+  clip-path: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal-stagger] > * {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition-delay: 0ms;
+  }
+}
+
+/* ---- Scroll-linked motion ----------------------------------------------
+   CSS scroll-driven animations. No scroll listener, no rAF loop, no library:
+   the compositor drives these off the scroll position directly. Browsers
+   without support skip the block and render the static end state, which is
+   why the effects are all decorative.
+   ---------------------------------------------------------------------- */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Slow drift on a photograph as its section passes through the viewport.
+       The oversize scale keeps the frame filled at both ends of the travel. */
+    [data-parallax] {
+      animation: parallax-drift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+
+    @keyframes parallax-drift {
+      from {
+        transform: translate3d(0, var(--parallax-from, 4%), 0) scale(var(--parallax-scale, 1.1));
+      }
+      to {
+        transform: translate3d(0, var(--parallax-to, -4%), 0) scale(var(--parallax-scale, 1.1));
+      }
+    }
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  /* Page-progress rule along the bottom edge of the sticky header. */
+  .scroll-progress {
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+
+  @keyframes scroll-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+
+/* ---- Breadcrumbs -------------------------------------------------------- */
+
+.breadcrumbs {
+  font-size: var(--fs-xs);
+  color: var(--text-subtle);
+}
+
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumbs li:not(:last-child)::after {
+  content: '/';
+  margin-left: 0.5rem;
+  color: var(--ink-300);
+}
+
+.breadcrumbs a {
+  text-decoration: none;
+  color: var(--text-muted);
+}
+
+.breadcrumbs a:hover {
+  color: var(--ge-red-ink);
+}
+
+.breadcrumbs [aria-current='page'] {
+  color: var(--text);
+  font-weight: 500;
+}

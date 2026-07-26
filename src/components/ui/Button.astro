@@ -1,0 +1,76 @@
+---
+import Icon from './Icon.astro';
+
+export interface Props {
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  variant?: 'primary' | 'dark' | 'outline' | 'light';
+  size?: 'sm' | 'md' | 'lg';
+  icon?: string;
+  /** Renders the icon before the label instead of after. */
+  iconLeading?: boolean;
+  block?: boolean;
+  class?: string;
+  download?: boolean | string;
+  target?: string;
+  rel?: string;
+  'aria-label'?: string;
+  id?: string;
+}
+
+const {
+  href,
+  type = 'button',
+  variant = 'dark',
+  size = 'md',
+  icon,
+  iconLeading = false,
+  block = false,
+  class: className = '',
+  download,
+  target,
+  rel,
+  id,
+  ...rest
+} = Astro.props;
+
+const classes = [
+  'btn',
+  `btn--${variant}`,
+  size !== 'md' && `btn--${size}`,
+  block && 'btn--block',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+
+// Arrow icons get a hover nudge; other icons stay put.
+const iconClass = icon === 'arrow-right' || icon === 'arrow-up-right' ? 'icon-arrow' : '';
+const isExternal = href ? /^https?:\/\//i.test(href) : false;
+const computedRel = rel ?? (isExternal ? 'noopener noreferrer' : undefined);
+const computedTarget = target ?? (isExternal ? '_blank' : undefined);
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class={classes}
+      id={id}
+      download={download}
+      target={computedTarget}
+      rel={computedRel}
+      {...rest}
+    >
+      {icon && iconLeading && <Icon name={icon} size={18} class={iconClass} />}
+      <span><slot /></span>
+      {icon && !iconLeading && <Icon name={icon} size={18} class={iconClass} />}
+    </a>
+  ) : (
+    <button type={type} class={classes} id={id} {...rest}>
+      {icon && iconLeading && <Icon name={icon} size={18} class={iconClass} />}
+      <span><slot /></span>
+      {icon && !iconLeading && <Icon name={icon} size={18} class={iconClass} />}
+    </button>
+  )
+}

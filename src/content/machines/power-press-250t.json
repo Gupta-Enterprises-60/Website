@@ -1,0 +1,26 @@
+{
+  "name": "Power Press — 250 Tonne",
+  "group": "press-shop",
+  "quantity": 4,
+  "capacity": "250 tonnes",
+  "order": 70,
+  "specs": [
+    {
+      "label": "Capacity",
+      "value": "250 T"
+    },
+    {
+      "label": "Quantity",
+      "value": "4"
+    },
+    {
+      "label": "Frame type",
+      "value": "H-frame"
+    },
+    {
+      "label": "Tooling",
+      "value": "Progressive, deep-draw & trim dies (in-house)"
+    }
+  ],
+  "notes": "Heaviest capacity on the floor — handles deep draw and heavy forming operations."
+}

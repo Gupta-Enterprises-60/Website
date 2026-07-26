@@ -1,0 +1,17 @@
+{
+  "name": "Surface Grinders",
+  "group": "tool-room",
+  "quantity": 4,
+  "order": 20,
+  "specs": [
+    {
+      "label": "Quantity",
+      "value": "4"
+    },
+    {
+      "label": "Applications",
+      "value": "Die block and punch grinding, flat finishing"
+    }
+  ],
+  "notes": "Four machines let die maintenance run in parallel with new tool build."
+}

@@ -1,0 +1,64 @@
+{
+  "name": "Machined Components & Critical Features",
+  "code": "GE-MC-001",
+  "category": "machined-components",
+  "summary": "3-axis milled, turned and drilled features within a 1300 × 800 mm envelope, on parts and tooling alike.",
+  "description": "CNC and VMC machining for the features a press or a weld fixture cannot hold — bores, faces, tapped holes and tight-tolerance locating features. We machine finished components as well as secondary operations on pressed and welded parts, which keeps a multi-process job on one purchase order and one inspection record instead of shipping a part out for machining and back. The same machines support our tool room, so the equipment that cuts your part also cuts the dies that form it.",
+  "images": [],
+  "placeholderHint": "Photograph the VMC with a part clamped on the table, door open, plus a machined component close-up.",
+  "applications": [
+    "Secondary machining on pressed parts",
+    "Tight-tolerance bores and faces",
+    "Tapped and reamed features",
+    "Machined tooling components"
+  ],
+  "materials": [
+    "CRCA / Cold-rolled steel",
+    "HR steel",
+    "Mild steel bar",
+    "Aluminium",
+    "Tool steel"
+  ],
+  "processes": [
+    "cnc-machining",
+    "tool-room"
+  ],
+  "industries": [
+    "automotive",
+    "industrial-equipment",
+    "robotics-automation"
+  ],
+  "specs": [
+    {
+      "label": "Working envelope",
+      "value": "1300 × 800 mm"
+    },
+    {
+      "label": "Capability",
+      "value": "3-axis milling"
+    },
+    {
+      "label": "Also available",
+      "value": "Turning & drilling"
+    },
+    {
+      "label": "Applications",
+      "value": "Production parts & tooling"
+    },
+    {
+      "label": "Manufactured to",
+      "value": "Customer drawing & specification"
+    }
+  ],
+  "featured": false,
+  "isNew": false,
+  "order": 6,
+  "related": [
+    "laser-cut-profiles",
+    "press-tools-dies-fixtures"
+  ],
+  "seo": {
+    "title": "CNC & VMC Machined Components",
+    "description": "3-axis CNC/VMC machining within a 1300 x 800 mm envelope. Machined components and secondary operations on pressed and welded parts. Faridabad, India."
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "gupta-enterprises-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static marketing & catalog website for Gupta Enterprises — precision sheet-metal and tubular components, Faridabad, India.",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "cms": "npx @sveltia/cms-proxy-server"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.0",
+    "@fontsource-variable/archivo": "^5.2.10",
+    "@fontsource-variable/inter": "^5.2.10",
+    "@fontsource/ibm-plex-mono": "^5.2.10",
+    "astro": "^5.16.2",
+    "motion": "^12.42.2",
+    "sharp": "^0.34.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.9.3"
+  },
+  "allowScripts": {
+    "sharp": true,
+    "esbuild": true
+  }
+}

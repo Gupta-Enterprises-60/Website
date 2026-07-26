@@ -1,0 +1,441 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import SectionHead from '../components/sections/SectionHead.astro';
+import SmartImage from '../components/ui/SmartImage.astro';
+import Icon from '../components/ui/Icon.astro';
+import { site } from '../lib/site';
+import { jobSchema } from '../lib/seo';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Careers' }];
+
+const jobs = (await getCollection('jobs', ({ data }) => data.open)).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title)
+);
+
+const schema = jobs.map((job) => jobSchema(job.data));
+
+const whyJoin = [
+  {
+    icon: 'wrench',
+    title: 'You build the tooling, not just run it',
+    text: 'Our tool room designs and maintains our own dies, fixtures and gauges. If you want to understand why a part forms the way it does — not just press the cycle button — this is the right kind of shop.',
+  },
+  {
+    icon: 'trending-up',
+    title: 'A business that keeps investing',
+    text: 'Laser and VMC in 2015, a second unit, growing turnover across three consecutive years. New machines mean new skills, and we train people on them rather than hiring past them.',
+  },
+  {
+    icon: 'clipboard-check',
+    title: 'Standards that are actually held',
+    text: '100% inspection before dispatch is not a poster on the wall here. If you take pride in parts that measure right, you will not spend your time arguing to be allowed to do the job properly.',
+  },
+  {
+    icon: 'users',
+    title: 'A team of 50+, not a number',
+    text: 'Small enough that the people running the company know your name and see your work. Large enough to offer a real career path across press shop, tool room, machining and quality.',
+  },
+];
+---
+
+<BaseLayout
+  title="Careers — Join Our Team in Faridabad"
+  description="Open roles in Faridabad: tool room technicians, quality inspectors and press shop operators. Join a 50+ person team that builds its own tooling."
+  breadcrumbs={crumbs}
+  schema={schema}
+>
+  <PageHero
+    kicker="Careers"
+    title="Work where the standard is actually held"
+    lead="We are a 50-plus person precision manufacturing team in Faridabad, running 35 presses, a laser, CNC machining and our own tool room. If you take pride in parts that measure right, we want to hear from you."
+    breadcrumbs={crumbs}
+    stats={[
+      { label: 'Team size', value: '50+' },
+      { label: 'Open roles', value: String(jobs.length) },
+      { label: 'Location', value: 'Faridabad' },
+    ]}
+  />
+
+  <!-- ===== Why join ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div data-reveal>
+          <p class="eyebrow">Why work here</p>
+          <h2>Four honest reasons</h2>
+          <figure class="team-figure">
+            <SmartImage
+              src=""
+              alt=""
+              ratio="4 / 3"
+              placeholderLabel="Our team"
+              placeholderHint="A group photograph on the shop floor, or the tool room team at the bench."
+              placeholderIcon="users"
+            />
+          </figure>
+        </div>
+
+        <ul class="why" data-reveal data-reveal-delay="80">
+          {
+            whyJoin.map((item) => (
+              <li>
+                <span class="why__icon">
+                  <Icon name={item.icon} size={20} stroke={1.7} />
+                </span>
+                <div>
+                  <h3 class="why__title">{item.title}</h3>
+                  <p class="why__text">{item.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Open roles ===== -->
+  <section class="section section--sunken">
+    <div class="container">
+      <SectionHead
+        kicker="Open positions"
+        title={jobs.length > 0 ? `${jobs.length} roles open` : 'No roles open right now'}
+        lead={
+          jobs.length > 0
+            ? 'Apply by email with a CV. We read every application and reply — including when the answer is no.'
+            : 'We are not actively recruiting at the moment, but we always read speculative applications. If you are good at what you do, write to us anyway.'
+        }
+      />
+
+      {
+        jobs.length > 0 && (
+          <div class="jobs">
+            {jobs.map((job, i) => (
+              <article class="job" data-reveal data-reveal-delay={(i % 2) * 70}>
+                <header class="job__head">
+                  <div>
+                    <h3 class="job__title">{job.data.title}</h3>
+                    <p class="job__meta">
+                      <span class="chip">{job.data.department}</span>
+                      <span class="chip">{job.data.type}</span>
+                      <span class="chip">{job.data.experience}</span>
+                    </p>
+                  </div>
+                  <p class="job__loc">
+                    <Icon name="map-pin" size={15} />
+                    {job.data.location}
+                  </p>
+                </header>
+
+                <p class="job__summary">{job.data.summary}</p>
+
+                <details class="job__more">
+                  <summary>
+                    <span>Full role detail</span>
+                    <Icon name="chevron-down" size={17} />
+                  </summary>
+
+                  <div class="job__detail">
+                    {job.data.responsibilities.length > 0 && (
+                      <div>
+                        <p class="job__subtitle">What you will do</p>
+                        <ul class="job__list">
+                          {job.data.responsibilities.map((item) => (
+                            <li>
+                              <Icon name="check" size={15} />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {job.data.requirements.length > 0 && (
+                      <div>
+                        <p class="job__subtitle">What we are looking for</p>
+                        <ul class="job__list">
+                          {job.data.requirements.map((item) => (
+                            <li>
+                              <Icon name="check" size={15} />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </details>
+
+                <a
+                  href={`mailto:${site.contact.careersEmail}?subject=${encodeURIComponent(`Application — ${job.data.title}`)}`}
+                  class="btn btn--primary btn--sm job__apply"
+                >
+                  Apply for this role
+                  <Icon name="arrow-right" size={16} class="icon-arrow" />
+                </a>
+              </article>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- ===== How to apply ===== -->
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="apply" data-reveal>
+        <Icon name="mail" size={26} stroke={1.6} class="apply__icon" />
+        <h2 class="apply__title">How to apply</h2>
+        <p class="apply__text">
+          Email your CV to <a href={`mailto:${site.contact.careersEmail}`}>{site.contact.careersEmail}</a>
+          with the role in the subject line. Tell us what you have actually worked on — a specific
+          die you built, a problem you diagnosed, a batch you stopped. That is far more useful to us
+          than a list of software you have heard of.
+        </p>
+        <p class="apply__text">
+          Speculative applications are welcome even when nothing is listed. We reply to everyone.
+        </p>
+
+        <div class="btn-row apply__actions">
+          <a
+            href={`mailto:${site.contact.careersEmail}?subject=${encodeURIComponent('Application — Gupta Enterprises')}`}
+            class="btn btn--primary"
+          >
+            <Icon name="mail" size={17} />
+            Email your CV
+          </a>
+          <a href={`tel:${site.contact.phonesE164[0]}`} class="btn btn--outline">
+            <Icon name="phone" size={17} />
+            {site.contact.phones[0]}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .team-figure {
+    margin: var(--sp-6) 0 0;
+  }
+
+  .team-figure :global(img),
+  .team-figure :global(.ph) {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  /* ---- Why join -------------------------------------------------------------- */
+
+  .why {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .why li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--sp-4);
+    padding: var(--sp-5) 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .why__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--ge-red-wash);
+    color: var(--ge-red-ink);
+    flex: none;
+  }
+
+  .why__title {
+    font-size: var(--fs-h4);
+    margin: 0 0 var(--sp-2);
+  }
+
+  .why__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* ---- Jobs ------------------------------------------------------------------ */
+
+  .jobs {
+    display: grid;
+    gap: var(--sp-5);
+  }
+
+  .job {
+    padding: var(--sp-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--ge-red);
+  }
+
+  .job__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    padding-bottom: var(--sp-4);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .job__title {
+    font-size: var(--fs-h3);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .job__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    margin: 0;
+  }
+
+  .job__loc {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .job__loc :global(svg) {
+    color: var(--ge-red-ink);
+  }
+
+  .job__summary {
+    font-size: var(--fs-lead);
+    color: var(--ink-700);
+    line-height: var(--lh-body);
+    margin: var(--sp-5) 0;
+    max-width: 74ch;
+  }
+
+  .job__more summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--ge-red-ink);
+    list-style: none;
+  }
+
+  .job__more summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .job__more summary :global(svg) {
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .job__more[open] summary :global(svg) {
+    transform: rotate(180deg);
+  }
+
+  .job__detail {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-6);
+    margin-top: var(--sp-5);
+    padding-top: var(--sp-5);
+    border-top: 1px dashed var(--border);
+  }
+
+  @media (max-width: 760px) {
+    .job__detail {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .job__subtitle {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .job__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .job__list li {
+    display: grid;
+    grid-template-columns: 17px minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    font-size: var(--fs-sm);
+    color: var(--ink-700);
+    line-height: 1.55;
+  }
+
+  .job__list :global(svg) {
+    color: var(--ge-red-ink);
+    margin-top: 0.2rem;
+  }
+
+  .job__apply {
+    margin-top: var(--sp-6);
+  }
+
+  /* ---- Apply ----------------------------------------------------------------- */
+
+  .apply {
+    text-align: center;
+    padding: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+    background: var(--ink-900);
+    color: #fff;
+    border-top: 4px solid var(--ge-red);
+  }
+
+  .apply__icon {
+    color: #ff6b66;
+    margin: 0 auto var(--sp-5);
+  }
+
+  .apply__title {
+    color: #fff;
+    font-size: var(--fs-h3);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .apply__text {
+    font-size: var(--fs-lead);
+    color: var(--ink-300);
+    line-height: var(--lh-body);
+    margin: 0 auto var(--sp-4);
+    max-width: 64ch;
+  }
+
+  .apply__text a {
+    color: #ff6b66;
+    font-weight: 500;
+  }
+
+  .apply__actions {
+    justify-content: center;
+    margin-top: var(--sp-6);
+  }
+</style>

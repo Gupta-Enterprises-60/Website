@@ -1,0 +1,22 @@
+{
+  "name": "Crane Lifters",
+  "group": "material-handling",
+  "quantity": 2,
+  "capacity": "1 tonne each",
+  "order": 10,
+  "specs": [
+    {
+      "label": "Quantity",
+      "value": "2"
+    },
+    {
+      "label": "Capacity",
+      "value": "1 tonne"
+    },
+    {
+      "label": "Use",
+      "value": "Die changes and heavy material handling"
+    }
+  ],
+  "notes": "Safe die changeover on the heavier presses and movement of raw material and finished assemblies."
+}

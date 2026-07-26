@@ -1,0 +1,321 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import CTABand from '../components/sections/CTABand.astro';
+import Icon from '../components/ui/Icon.astro';
+import faqs from '../data/faqs.json';
+import { faqSchema } from '../lib/seo';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'FAQs' }];
+
+const allItems = faqs.groups.flatMap((group) => group.items);
+const schema = [faqSchema(allItems)];
+---
+
+<BaseLayout
+  title="FAQs — Component Manufacturing"
+  description="Answers on quoting, minimum order quantities, press and laser capacity, tooling ownership, certifications, audits, export and confidentiality."
+  breadcrumbs={crumbs}
+  schema={schema}
+>
+  <PageHero
+    kicker="Frequently asked questions"
+    title="Straight answers to what buyers actually ask"
+    lead={faqs.intro}
+    breadcrumbs={crumbs}
+    stats={[
+      { label: 'Questions answered', value: String(allItems.length) },
+      { label: 'Reply time', value: '1 working day' },
+    ]}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="faq">
+        <!-- Group nav -->
+        <aside class="faq__nav">
+          <div class="faq__nav-inner">
+            <p class="faq__nav-title">Jump to</p>
+            <nav aria-label="FAQ topics">
+              <ul>
+                {
+                  faqs.groups.map((group) => (
+                    <li>
+                      <a href={`#${group.id}`}>
+                        <span>{group.title}</span>
+                        <span class="faq__nav-count mono">{group.items.length}</span>
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </nav>
+
+            <div class="faq__ask">
+              <p class="faq__ask-title">Not answered here?</p>
+              <p class="faq__ask-text">
+                Ask us directly. We reply to every enquiry within one working day.
+              </p>
+              <a href="/contact" class="btn btn--primary btn--sm btn--block">Ask a question</a>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Groups -->
+        <div class="faq__body">
+          {
+            faqs.groups.map((group, groupIndex) => (
+              <section class="fgroup" id={group.id}>
+                <header class="fgroup__head" data-reveal>
+                  <span class="fgroup__num mono">{String(groupIndex + 1).padStart(2, '0')}</span>
+                  <h2 class="fgroup__title">{group.title}</h2>
+                </header>
+
+                <div class="qlist">
+                  {group.items.map((item, i) => (
+                    <details class="q" open={groupIndex === 0 && i === 0}>
+                      <summary class="q__summary">
+                        <span class="q__text">{item.q}</span>
+                        <span class="q__toggle" aria-hidden="true">
+                          <Icon name="plus" size={17} class="q__plus" />
+                          <Icon name="minus" size={17} class="q__minus" />
+                        </span>
+                      </summary>
+                      <div class="q__answer">
+                        <p>{item.a}</p>
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABand
+    kicker="Still deciding?"
+    title="Send a drawing and find out properly."
+    text="A quotation on a real part tells you more about a supplier than any FAQ page — including this one."
+  />
+</BaseLayout>
+
+<style>
+  .faq {
+    display: grid;
+    grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    align-items: start;
+  }
+
+  @media (max-width: 940px) {
+    .faq {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ---- Nav ------------------------------------------------------------------ */
+
+  .faq__nav-inner {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    display: grid;
+    gap: var(--sp-6);
+  }
+
+  @media (max-width: 940px) {
+    .faq__nav-inner {
+      position: static;
+    }
+  }
+
+  .faq__nav-title {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin: 0 0 var(--sp-3);
+    padding-bottom: var(--sp-3);
+    border-bottom: 2px solid var(--ink-900);
+  }
+
+  .faq__nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .faq__nav li {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .faq__nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    padding: 0.75rem 0;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--ink-700);
+    text-decoration: none;
+  }
+
+  .faq__nav a:hover {
+    color: var(--ge-red-ink);
+  }
+
+  .faq__nav-count {
+    font-size: var(--fs-xs);
+    color: var(--ink-400);
+  }
+
+  .faq__ask {
+    padding: var(--sp-5);
+    background: var(--ink-050);
+    border-top: 3px solid var(--ge-red);
+  }
+
+  .faq__ask-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 var(--sp-2);
+  }
+
+  .faq__ask-text {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin: 0 0 var(--sp-4);
+  }
+
+  /* ---- Groups --------------------------------------------------------------- */
+
+  .fgroup {
+    scroll-margin-top: calc(var(--header-h) + 2rem);
+  }
+
+  .fgroup + .fgroup {
+    margin-top: clamp(2.5rem, 1.6rem + 3vw, 4rem);
+  }
+
+  .fgroup__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-4);
+    padding-bottom: var(--sp-4);
+    border-bottom: 2px solid var(--ink-900);
+  }
+
+  .fgroup__num {
+    font-size: var(--fs-xs);
+    color: var(--ge-red-ink);
+    letter-spacing: 0.1em;
+  }
+
+  .fgroup__title {
+    font-size: var(--fs-h3);
+    margin: 0;
+  }
+
+  /* ---- Question ------------------------------------------------------------- */
+
+  .q {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .q__summary {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    padding: var(--sp-5) 0;
+    cursor: pointer;
+    list-style: none;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .q__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .q__summary:hover .q__text {
+    color: var(--ge-red-ink);
+  }
+
+  .q__summary:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  .q__text {
+    font-family: var(--font-display);
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    color: var(--ink-900);
+    line-height: 1.35;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .q__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    flex: none;
+    border: 1px solid var(--border-strong);
+    color: var(--ink-600);
+    margin-top: 0.1rem;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+      color var(--dur) var(--ease);
+  }
+
+  .q__summary:hover .q__toggle {
+    background: var(--ge-red-ink);
+    border-color: var(--ge-red-ink);
+    color: #fff;
+  }
+
+  .q__minus {
+    display: none;
+  }
+
+  .q[open] .q__plus {
+    display: none;
+  }
+
+  .q[open] .q__minus {
+    display: block;
+  }
+
+  .q[open] .q__toggle {
+    background: var(--ink-900);
+    border-color: var(--ink-900);
+    color: #fff;
+  }
+
+  .q__answer {
+    padding: 0 calc(30px + var(--sp-4)) var(--sp-5) 0;
+  }
+
+  .q__answer p {
+    font-size: var(--fs-body);
+    color: var(--text-muted);
+    line-height: var(--lh-relaxed);
+    margin: 0;
+    max-width: 74ch;
+  }
+
+  @media (max-width: 560px) {
+    .q__answer {
+      padding-right: 0;
+    }
+  }
+</style>

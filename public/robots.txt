@@ -1,0 +1,10 @@
+# Gupta Enterprises — https://www.guptagroups.in
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+# Sveltia CMS admin is not content
+User-agent: GPTBot
+Allow: /
+
+Sitemap: https://www.guptagroups.in/sitemap-index.xml

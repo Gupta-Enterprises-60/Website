@@ -1,0 +1,336 @@
+---
+import Icon from '../ui/Icon.astro';
+import { site, footerNav, addressOneLine, mapUrl, yearsInOperation } from '../../lib/site';
+import certifications from '../../data/certifications.json';
+
+const year = new Date().getFullYear();
+const social = Object.entries(site.social).filter(([, url]) => Boolean(url));
+---
+
+<footer class="site-footer on-dark">
+  <div class="container">
+    {/* The closing call to action lives in CTABand, placed per page so the copy
+        can be tailored. Repeating it here put two near-identical "Let's talk"
+        blocks back to back on every content page. */}
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <p class="footer-brand__name">
+          <span>Gupta</span><strong>Enterprises</strong>
+        </p>
+        <p class="footer-brand__text">
+          {site.tagline}. Manufacturing in Faridabad since {site.founded} — {yearsInOperation()} years
+          of precision component supply to the Indian automotive industry.
+        </p>
+
+        <ul class="footer-contact">
+          <li>
+            <Icon name="map-pin" size={16} />
+            <a href={mapUrl()} target="_blank" rel="noopener noreferrer">{addressOneLine()}</a>
+          </li>
+          {
+            site.contact.phones.map((phone, i) => (
+              <li>
+                {i === 0 ? <Icon name="phone" size={16} /> : <span class="footer-contact__spacer" />}
+                <a href={`tel:${site.contact.phonesE164[i]}`}>{phone}</a>
+              </li>
+            ))
+          }
+          <li>
+            <Icon name="mail" size={16} />
+            <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+          </li>
+          <li>
+            <Icon name="clock" size={16} />
+            <span>{site.contact.hours}</span>
+          </li>
+        </ul>
+
+        {
+          social.length > 0 && (
+            <div class="footer-social">
+              {social.map(([key, url]) => (
+                <a href={url} target="_blank" rel="noopener noreferrer" aria-label={key}>
+                  <Icon name={key} size={18} />
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      <nav class="footer-nav" aria-label="Footer">
+        {
+          footerNav.map((group) => (
+            <div class="footer-nav__col">
+              <p class="footer-nav__title">{group.title}</p>
+              <ul>
+                {group.links.map((link) => (
+                  <li>
+                    <a href={link.href}>{link.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </nav>
+    </div>
+
+    <div class="footer-creds">
+      <ul class="footer-certs">
+        {
+          certifications.items.map((cert) => (
+            <li>
+              <Icon name={cert.icon} size={17} />
+              <span>{cert.name}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="footer-creds__note">Certificate copies available on request.</p>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {year} {site.legalName}. All rights reserved.</p>
+      <ul class="footer-legal">
+        <li><a href="/sitemap-index.xml">Sitemap</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-top: var(--section-y);
+    padding-bottom: var(--sp-6);
+  }
+
+  /* ---- Main grid -------------------------------------------------------- */
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+    gap: clamp(2.5rem, 1rem + 5vw, 5.5rem);
+    padding-bottom: var(--sp-9);
+  }
+
+  @media (max-width: 1000px) {
+    .footer-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sp-8);
+    }
+  }
+
+  .footer-brand__name {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin: 0 0 var(--sp-4);
+    color: #fff;
+  }
+
+  .footer-brand__name span {
+    font-weight: 400;
+    color: var(--ink-400);
+  }
+
+  .footer-brand__name strong {
+    font-weight: 700;
+  }
+
+  .footer-brand__text {
+    font-size: var(--fs-sm);
+    line-height: var(--lh-body);
+    color: var(--text-on-dark-muted);
+    margin: 0 0 var(--sp-6);
+    max-width: 46ch;
+  }
+
+  .footer-contact {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--sp-3);
+  }
+
+  .footer-contact li {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 0.65rem;
+    align-items: start;
+    font-size: var(--fs-sm);
+    color: var(--text-on-dark-muted);
+    line-height: 1.5;
+  }
+
+  .footer-contact :global(svg) {
+    color: var(--ge-red);
+    margin-top: 0.15rem;
+  }
+
+  .footer-contact__spacer {
+    display: block;
+  }
+
+  .footer-contact a {
+    color: var(--text-on-dark-muted);
+    text-decoration: none;
+  }
+
+  .footer-contact a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: var(--sp-2);
+    margin-top: var(--sp-5);
+  }
+
+  .footer-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border-on-dark);
+    color: var(--ink-300);
+    border-radius: var(--radius);
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+
+  .footer-social a:hover {
+    background: #fff;
+    color: var(--ink-900);
+  }
+
+  /* ---- Link columns ------------------------------------------------------ */
+
+  .footer-nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--sp-6);
+  }
+
+  @media (max-width: 760px) {
+    .footer-nav {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-7) var(--sp-5);
+    }
+  }
+
+  @media (max-width: 420px) {
+    .footer-nav {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .footer-nav__title {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: #fff;
+    margin: 0 0 var(--sp-4);
+    padding-bottom: var(--sp-3);
+    border-bottom: 1px solid var(--border-on-dark);
+  }
+
+  .footer-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .footer-nav a {
+    font-size: var(--fs-sm);
+    color: var(--text-on-dark-muted);
+    text-decoration: none;
+  }
+
+  .footer-nav a:hover {
+    color: #fff;
+  }
+
+  /* ---- Certifications strip ---------------------------------------------- */
+
+  .footer-creds {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    padding: var(--sp-5) 0;
+    border-top: 1px solid var(--border-on-dark);
+    border-bottom: 1px solid var(--border-on-dark);
+  }
+
+  .footer-certs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-5);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-certs li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .footer-certs :global(svg) {
+    color: var(--ge-red);
+  }
+
+  .footer-creds__note {
+    font-size: var(--fs-xs);
+    color: var(--ink-500);
+    margin: 0;
+  }
+
+  /* ---- Bottom bar --------------------------------------------------------- */
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    padding-top: var(--sp-5);
+    font-size: var(--fs-xs);
+    color: var(--ink-500);
+  }
+
+  .footer-bottom p {
+    margin: 0;
+  }
+
+  .footer-legal {
+    display: flex;
+    gap: var(--sp-5);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-legal a {
+    color: var(--ink-500);
+    text-decoration: none;
+  }
+
+  .footer-legal a:hover {
+    color: #fff;
+  }
+</style>

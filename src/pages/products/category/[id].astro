@@ -1,0 +1,282 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/sections/PageHero.astro';
+import CTABand from '../../../components/sections/CTABand.astro';
+import SectionHead from '../../../components/sections/SectionHead.astro';
+import ProductCard from '../../../components/ui/ProductCard.astro';
+import Icon from '../../../components/ui/Icon.astro';
+import { taxonomy, processName, processCapability } from '../../../lib/site';
+
+export async function getStaticPaths() {
+  const products = await getCollection('products');
+
+  return taxonomy.categories.map((category) => ({
+    params: { id: category.id },
+    props: {
+      category,
+      products: products
+        .filter((p) => p.data.category === category.id)
+        .sort((a, b) => a.data.order - b.data.order),
+    },
+  }));
+}
+
+const { category, products } = Astro.props;
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Products', href: '/products' },
+  { label: category.name },
+];
+
+// Distinct processes and materials across this category, for the summary rail.
+// Only processes that have a capability page are linked — see processCapability().
+const processes = [...new Set(products.flatMap((p) => p.data.processes))].map((id) => ({
+  id,
+  name: processName(id),
+  capability: processCapability(id),
+}));
+const materials = [...new Set(products.flatMap((p) => p.data.materials))];
+
+const otherCategories = taxonomy.categories.filter((c) => c.id !== category.id);
+---
+
+<BaseLayout
+  title={`${category.name} — Manufacturing`}
+  description={`${category.name} manufactured to your drawing by Gupta Enterprises — ISO 9001:2015 certified, Faridabad, India. ${category.examples}.`}
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Product category"
+    title={category.name}
+    lead={category.summary}
+    breadcrumbs={crumbs}
+    stats={[
+      { label: 'Component families', value: String(products.length) },
+      { label: 'Processes used', value: String(processes.length) },
+      { label: 'Materials', value: String(materials.length) },
+    ]}
+  />
+
+  <section class="section">
+    <div class="container">
+      {
+        products.length > 0 ? (
+          <>
+            <SectionHead
+              kicker="In this category"
+              title="Component families"
+              lead="Representative parts from current production. Your component does not need to appear here to be within our process range."
+              link={{ label: 'Filter the full catalog', href: '/products' }}
+            />
+            <div class="grid grid--3">
+              {products.map((product, i) => (
+                <div data-reveal data-reveal-delay={(i % 3) * 70}>
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div class="empty" data-reveal>
+            <Icon name="box" size={30} stroke={1.4} class="empty__icon" />
+            <h2 class="empty__title">Nothing published in this category yet</h2>
+            <p class="empty__text">
+              We manufacture in this category but have not yet published representative parts. Send
+              a drawing and we will quote it directly.
+            </p>
+            <a href="/rfq" class="btn btn--primary">Request a quote</a>
+          </div>
+        )
+      }
+
+      {
+        (processes.length > 0 || materials.length > 0) && (
+          <div class="cat-meta" data-reveal>
+            {processes.length > 0 && (
+              <div class="cat-meta__block">
+                <p class="cat-meta__title">Processes used in this category</p>
+                <ul class="cat-meta__links">
+                  {processes.map((proc) => (
+                    <li>
+                      {proc.capability ? (
+                        <a href={`/capabilities/${proc.capability}`}>
+                          {proc.name}
+                          <Icon name="arrow-up-right" size={13} />
+                        </a>
+                      ) : (
+                        <span class="cat-meta__plain">{proc.name}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {materials.length > 0 && (
+              <div class="cat-meta__block">
+                <p class="cat-meta__title">Materials we work in</p>
+                <ul class="chip-row">
+                  {materials.map((material) => (
+                    <li class="chip">{material}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- ===== Other categories ===== -->
+  <section class="section section--sunken">
+    <div class="container">
+      <SectionHead kicker="Browse further" title="Other product categories" />
+      <div class="grid grid--4">
+        {
+          otherCategories.map((other, i) => (
+            <a href={`/products/category/${other.id}`} class="ocat" data-reveal data-reveal-delay={(i % 4) * 55}>
+              <Icon name={other.icon} size={22} stroke={1.65} class="ocat__icon" />
+              <span class="ocat__title">{other.name}</span>
+              <span class="ocat__examples">{other.examples}</span>
+              <span class="link-arrow ocat__cta">
+                View
+                <Icon name="arrow-right" size={14} />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTABand />
+</BaseLayout>
+
+<style>
+  .empty {
+    text-align: center;
+    padding: clamp(3rem, 2rem + 4vw, 5rem) var(--sp-5);
+    border: 1px dashed var(--border-strong);
+  }
+
+  .empty__icon {
+    color: var(--ink-300);
+    margin: 0 auto var(--sp-4);
+  }
+
+  .empty__title {
+    font-size: var(--fs-h4);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .empty__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    max-width: 48ch;
+    margin: 0 auto var(--sp-5);
+    line-height: 1.65;
+  }
+
+  /* ---- Category meta -------------------------------------------------------- */
+
+  .cat-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2rem, 1rem + 3vw, 4rem);
+    margin-top: clamp(3rem, 2rem + 3vw, 4.5rem);
+    padding-top: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 760px) {
+    .cat-meta {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .cat-meta__title {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .cat-meta__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .cat-meta__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--ink-800);
+    text-decoration: none;
+  }
+
+  .cat-meta__links a:hover {
+    color: var(--ge-red-ink);
+  }
+
+  .cat-meta__plain {
+    display: block;
+    padding: 0.4rem 0;
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+  }
+
+  /* ---- Other categories ------------------------------------------------------ */
+
+  .ocat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    height: 100%;
+    padding: var(--sp-5);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ge-red);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .ocat:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .ocat__icon {
+    color: var(--ge-red-ink);
+    margin-bottom: var(--sp-3);
+  }
+
+  .ocat__title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .ocat__examples {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  .ocat__cta {
+    margin-top: auto;
+    padding-top: var(--sp-4);
+  }
+</style>

@@ -1,0 +1,700 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Icon from '../components/ui/Icon.astro';
+import { site, taxonomy } from '../lib/site';
+import '../styles/forms.css';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Request a quote' }];
+
+const accept = site.forms.acceptedDrawingTypes;
+const maxMb = site.forms.maxUploadMb;
+
+const timelines = [
+  'Urgent — within 2 weeks',
+  'Within 1 month',
+  '1 – 3 months',
+  '3 – 6 months',
+  'Planning stage / no fixed date',
+];
+
+const quantityBands = [
+  'Prototype / samples (1 – 50)',
+  'Small batch (50 – 500)',
+  '500 – 5,000 per year',
+  '5,000 – 50,000 per year',
+  'Over 50,000 per year',
+  'Not yet determined',
+];
+---
+
+<BaseLayout
+  title="Request a Quote — Send Your Drawings"
+  description="Submit an RFQ. Upload PDF, DWG, DXF or STEP drawings with material, volume and finish requirements. We acknowledge every enquiry in one working day."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Request for quotation"
+    title="Send us your drawings — we'll take it from there."
+    lead="Upload a drawing and tell us the material, volume and finish. A straightforward part quoted from an existing process typically comes back in two to three working days; parts needing new tooling take longer, because we cost the die properly rather than guess at it."
+    breadcrumbs={crumbs}
+    align="wide"
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="rfq">
+        <!-- ============ Form ============ -->
+        <div class="rfq__form">
+          <!--
+            Netlify Forms picks this up from the built HTML at deploy time.
+            `data-netlify="true"` registers it; the hidden form-name field is
+            what the POST is matched on; enctype is required for the file input.
+          -->
+          <form
+            name="rfq"
+            method="POST"
+            action="/rfq/thank-you"
+            enctype="multipart/form-data"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            class="form"
+            id="rfq-form"
+          >
+            <input type="hidden" name="form-name" value="rfq" />
+            <p class="hp">
+              <label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+            </p>
+
+            <!-- 01 — Contact -->
+            <fieldset class="fieldset">
+              <legend class="fieldset__legend">
+                <span class="fieldset__num">01</span>
+                <span class="fieldset__title">Your details</span>
+              </legend>
+
+              <div class="fields">
+                <div class="field">
+                  <label class="label" for="company">Company name<span class="req">*</span></label>
+                  <input class="input" type="text" id="company" name="company" required autocomplete="organization" />
+                </div>
+
+                <div class="field">
+                  <label class="label" for="contact">Contact person<span class="req">*</span></label>
+                  <input class="input" type="text" id="contact" name="contact_person" required autocomplete="name" />
+                </div>
+
+                <div class="field">
+                  <label class="label" for="email">Email<span class="req">*</span></label>
+                  <input class="input" type="email" id="email" name="email" required autocomplete="email" />
+                </div>
+
+                <div class="field">
+                  <label class="label" for="phone">Phone<span class="req">*</span></label>
+                  <input
+                    class="input"
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    required
+                    autocomplete="tel"
+                    placeholder="Include country code"
+                  />
+                </div>
+
+                <div class="field">
+                  <label class="label" for="country">Country<span class="req">*</span></label>
+                  <input
+                    class="input"
+                    type="text"
+                    id="country"
+                    name="country"
+                    required
+                    value="India"
+                    autocomplete="country-name"
+                  />
+                </div>
+
+                <div class="field">
+                  <label class="label" for="role">
+                    Your role<span class="opt">optional</span>
+                  </label>
+                  <input
+                    class="input"
+                    type="text"
+                    id="role"
+                    name="role"
+                    placeholder="e.g. Sourcing Manager"
+                    autocomplete="organization-title"
+                  />
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- 02 — Requirement -->
+            <fieldset class="fieldset">
+              <legend class="fieldset__legend">
+                <span class="fieldset__num">02</span>
+                <span class="fieldset__title">What you need</span>
+              </legend>
+
+              <div class="fields">
+                <div class="field field--full">
+                  <label class="label" for="product">Product or component required<span class="req">*</span></label>
+                  <input
+                    class="input"
+                    type="text"
+                    id="product"
+                    name="product"
+                    required
+                    placeholder="e.g. Stamped mounting bracket, seat frame sub-assembly"
+                  />
+                </div>
+
+                <div class="field">
+                  <label class="label" for="part_code">
+                    Your part number<span class="opt">optional</span>
+                  </label>
+                  <input class="input" type="text" id="part_code" name="part_code" />
+                </div>
+
+                <div class="field">
+                  <label class="label" for="quantity">Annual quantity<span class="req">*</span></label>
+                  <select class="select" id="quantity" name="quantity" required>
+                    <option value="">Select a range…</option>
+                    {quantityBands.map((band) => <option value={band}>{band}</option>)}
+                  </select>
+                  <span class="help">Volume is the single biggest driver of unit price.</span>
+                </div>
+
+                <div class="field">
+                  <label class="label" for="material">
+                    Material<span class="opt">optional</span>
+                  </label>
+                  <input
+                    class="input"
+                    type="text"
+                    id="material"
+                    name="material"
+                    list="material-options"
+                    placeholder="Grade and thickness, e.g. CRCA 2.0 mm"
+                  />
+                  <datalist id="material-options">
+                    {taxonomy.materials.map((m) => <option value={m.name} />)}
+                  </datalist>
+                </div>
+
+                <div class="field">
+                  <label class="label" for="finish">
+                    Finish requirement<span class="opt">optional</span>
+                  </label>
+                  <input
+                    class="input"
+                    type="text"
+                    id="finish"
+                    name="finish"
+                    placeholder="e.g. Powder coat RAL 9005, or bare"
+                  />
+                </div>
+
+                <div class="field field--full">
+                  <span class="label" id="process-label">
+                    Manufacturing process<span class="opt">optional — select any that apply</span>
+                  </span>
+                  <ul class="options" role="group" aria-labelledby="process-label">
+                    {
+                      taxonomy.processes.map((process) => (
+                        <li>
+                          <label class="option">
+                            <input type="checkbox" name="processes" value={process.name} />
+                            <span class="option__box" aria-hidden="true">
+                              <Icon name="check" size={13} stroke={3} />
+                            </span>
+                            <span>{process.name}</span>
+                          </label>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                  <span class="help">
+                    Not sure? Leave it blank — recommending the right route is part of what we do.
+                  </span>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- 03 — Drawings -->
+            <fieldset class="fieldset">
+              <legend class="fieldset__legend">
+                <span class="fieldset__num">03</span>
+                <span class="fieldset__title">Drawings</span>
+                <span class="fieldset__hint">Max {maxMb} MB total</span>
+              </legend>
+
+              <div class="dropzone" data-dropzone>
+                <input
+                  type="file"
+                  id="drawings"
+                  name="drawings"
+                  multiple
+                  accept={accept}
+                  aria-describedby="drawing-hint"
+                />
+                <Icon name="download" size={26} stroke={1.5} class="dropzone__icon" />
+                <span class="dropzone__title">
+                  Drag files here or <u>browse</u>
+                </span>
+                <span class="dropzone__hint" id="drawing-hint">
+                  PDF, DWG, DXF, STEP, IGES, ZIP or images. A 2D drawing is enough to start — a
+                  STEP or DXF file alongside it lets us nest the part and check formability without
+                  redrawing your geometry.
+                </span>
+              </div>
+
+              <ul class="filelist" data-filelist hidden></ul>
+
+              <p class="help" style="margin-top:0.75rem">
+                <Icon name="shield-check" size={13} /> Drawings are used only to quote and manufacture
+                your part. We are happy to sign your NDA first — tick the box below and send it with
+                your enquiry.
+              </p>
+            </fieldset>
+
+            <!-- 04 — Project -->
+            <fieldset class="fieldset">
+              <legend class="fieldset__legend">
+                <span class="fieldset__num">04</span>
+                <span class="fieldset__title">Project detail</span>
+              </legend>
+
+              <div class="fields">
+                <div class="field field--full">
+                  <label class="label" for="description">Project description<span class="req">*</span></label>
+                  <textarea
+                    class="textarea"
+                    id="description"
+                    name="description"
+                    required
+                    rows="5"
+                    placeholder="What the part does, where it fits, any critical tolerances, and what you need from a supplier."></textarea>
+                </div>
+
+                <div class="field">
+                  <label class="label" for="timeline">Delivery timeline<span class="req">*</span></label>
+                  <select class="select" id="timeline" name="timeline" required>
+                    <option value="">Select…</option>
+                    {timelines.map((t) => <option value={t}>{t}</option>)}
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label class="label" for="target_price">
+                    Target price<span class="opt">optional</span>
+                  </label>
+                  <input
+                    class="input"
+                    type="text"
+                    id="target_price"
+                    name="target_price"
+                    placeholder="Per piece, if you have one"
+                  />
+                  <span class="help">
+                    Telling us saves time. If it is not achievable we will say so immediately.
+                  </span>
+                </div>
+
+                <div class="field field--full">
+                  <label class="label" for="remarks">
+                    Additional remarks<span class="opt">optional</span>
+                  </label>
+                  <textarea
+                    class="textarea"
+                    id="remarks"
+                    name="remarks"
+                    rows="3"
+                    placeholder="Packaging, documentation, tooling ownership, audit requirements — anything else we should know."></textarea>
+                </div>
+
+                <div class="field field--full">
+                  <ul class="options" style="grid-template-columns:minmax(0,1fr)">
+                    <li>
+                      <label class="option">
+                        <input type="checkbox" name="nda_required" value="Yes" />
+                        <span class="option__box" aria-hidden="true">
+                          <Icon name="check" size={13} stroke={3} />
+                        </span>
+                        <span>I would like an NDA signed before sharing further detail</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="option">
+                        <input type="checkbox" name="send_certificates" value="Yes" />
+                        <span class="option__box" aria-hidden="true">
+                          <Icon name="check" size={13} stroke={3} />
+                        </span>
+                        <span>Send certificate copies and vendor onboarding details with the quotation</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </fieldset>
+
+            <div class="form__submit">
+              <button type="submit" class="btn btn--primary btn--lg">
+                Submit request
+                <Icon name="arrow-right" size={18} class="icon-arrow" />
+              </button>
+              <p class="form__promise">
+                We acknowledge every enquiry within one working day — including the ones we are not
+                the right supplier for.
+              </p>
+            </div>
+          </form>
+        </div>
+
+        <!-- ============ Aside ============ -->
+        <aside class="rfq__aside">
+          <div class="rfq__sticky">
+            <div class="panel">
+              <p class="panel__title">What happens next</p>
+              <ol class="next">
+                <li>
+                  <span class="next__num mono">01</span>
+                  <div>
+                    <strong>Acknowledgement</strong>
+                    <span>Within one working day, from a person rather than an autoresponder.</span>
+                  </div>
+                </li>
+                <li>
+                  <span class="next__num mono">02</span>
+                  <div>
+                    <strong>Feasibility review</strong>
+                    <span>Manufacturability, tooling needs and material availability, checked against your drawing.</span>
+                  </div>
+                </li>
+                <li>
+                  <span class="next__num mono">03</span>
+                  <div>
+                    <strong>Costed quotation</strong>
+                    <span>2–3 working days for an existing process; longer where new tooling is needed.</span>
+                  </div>
+                </li>
+                <li>
+                  <span class="next__num mono">04</span>
+                  <div>
+                    <strong>First article</strong>
+                    <span>Often laser-cut in days while a production tool is built in parallel.</span>
+                  </div>
+                </li>
+              </ol>
+            </div>
+
+            <div class="panel panel--contact">
+              <p class="panel__title">Prefer to talk?</p>
+              <ul class="contact-list">
+                {
+                  site.contact.phones.map((phone, i) => (
+                    <li>
+                      <Icon name="phone" size={16} />
+                      <a href={`tel:${site.contact.phonesE164[i]}`}>{phone}</a>
+                    </li>
+                  ))
+                }
+                <li>
+                  <Icon name="mail" size={16} />
+                  <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+                </li>
+                <li>
+                  <Icon name="clock" size={16} />
+                  <span>{site.contact.hours}</span>
+                </li>
+              </ul>
+              <a
+                href={`https://wa.me/${site.contact.whatsapp}`}
+                class="btn btn--outline btn--sm btn--block"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon name="whatsapp" size={16} />
+                Message on WhatsApp
+              </a>
+            </div>
+
+            <div class="panel panel--tip">
+              <Icon name="file-text" size={20} stroke={1.7} class="tip__icon" />
+              <p class="tip__title">Getting an accurate quote</p>
+              <p class="tip__text">
+                Six things decide whether a quotation is firm or a guess. We wrote them down.
+              </p>
+              <a href="/blog/drawing-package-for-accurate-quotes" class="link-arrow">
+                Read the checklist
+                <Icon name="arrow-right" size={15} />
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .rfq {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    align-items: start;
+  }
+
+  @media (max-width: 1000px) {
+    .rfq {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .rfq__sticky {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    display: grid;
+    gap: var(--sp-5);
+  }
+
+  @media (max-width: 1000px) {
+    .rfq__sticky {
+      position: static;
+    }
+  }
+
+  .panel {
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ge-red);
+    padding: var(--sp-5);
+  }
+
+  .panel__title {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin: 0 0 var(--sp-4);
+  }
+
+  /* ---- Next steps ------------------------------------------------------------ */
+
+  .next {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--sp-4);
+  }
+
+  .next li {
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 0.7rem;
+  }
+
+  .next__num {
+    font-size: var(--fs-xs);
+    color: var(--ge-red-ink);
+    letter-spacing: 0.06em;
+    padding-top: 0.1rem;
+  }
+
+  .next strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: 0.15rem;
+  }
+
+  .next span:not(.next__num) {
+    display: block;
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  /* ---- Contact panel ---------------------------------------------------------- */
+
+  .panel--contact {
+    background: var(--ink-050);
+  }
+
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--sp-5);
+    display: grid;
+    gap: var(--sp-3);
+  }
+
+  .contact-list li {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    font-size: var(--fs-sm);
+    color: var(--ink-700);
+    line-height: 1.5;
+  }
+
+  .contact-list :global(svg) {
+    color: var(--ge-red-ink);
+    margin-top: 0.2rem;
+  }
+
+  .contact-list a {
+    color: var(--ink-800);
+    text-decoration: none;
+  }
+
+  .contact-list a:hover {
+    color: var(--ge-red-ink);
+  }
+
+  /* ---- Tip -------------------------------------------------------------------- */
+
+  .panel--tip {
+    background: var(--ink-900);
+    color: #fff;
+    border-color: var(--ink-900);
+  }
+
+  .tip__icon {
+    color: #ff6b66;
+    margin-bottom: var(--sp-3);
+  }
+
+  .tip__title {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 var(--sp-2);
+  }
+
+  .tip__text {
+    font-size: var(--fs-sm);
+    color: var(--ink-300);
+    line-height: 1.6;
+    margin: 0 0 var(--sp-4);
+  }
+
+  .panel--tip .link-arrow {
+    color: #ff6b66;
+  }
+</style>
+
+<script>
+  /* ------------------------------------------------------------------------
+   * RFQ form enhancements.
+   *
+   * Everything here is additive — the form posts correctly with JavaScript
+   * disabled. We add: prefill from a product page, drag-and-drop, a file list
+   * with a size warning, and a submit guard so a slow upload cannot be
+   * double-submitted.
+   * --------------------------------------------------------------------- */
+
+  const MAX_BYTES = 8 * 1024 * 1024;
+
+  /* Prefill from /products/... "Enquire about this part" links */
+  const params = new URLSearchParams(window.location.search);
+  const productField = document.querySelector<HTMLInputElement>('#product');
+  const codeField = document.querySelector<HTMLInputElement>('#part_code');
+
+  if (productField && params.get('product')) productField.value = params.get('product') ?? '';
+  if (codeField && params.get('code')) codeField.value = params.get('code') ?? '';
+
+  /* File input: drag-and-drop plus a readable list of what is attached */
+  const dropzone = document.querySelector<HTMLElement>('[data-dropzone]');
+  const fileInput = document.querySelector<HTMLInputElement>('#drawings');
+  const fileList = document.querySelector<HTMLElement>('[data-filelist]');
+
+  const formatSize = (bytes: number) => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
+  function renderFiles() {
+    if (!fileInput || !fileList) return;
+    const files = Array.from(fileInput.files ?? []);
+
+    fileList.innerHTML = '';
+    fileList.hidden = files.length === 0;
+
+    const totalBytes = files.reduce((sum, file) => sum + file.size, 0);
+
+    files.forEach((file) => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+          <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+        </svg>
+        <span class="name"></span>
+        <span class="size"></span>`;
+      li.querySelector('.name')!.textContent = file.name;
+      li.querySelector('.size')!.textContent = formatSize(file.size);
+      fileList.append(li);
+    });
+
+    if (totalBytes > MAX_BYTES) {
+      const warning = document.createElement('li');
+      warning.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>
+        </svg>
+        <span class="name too-big">Total ${formatSize(totalBytes)} exceeds the 8 MB limit — send large files by email instead.</span>
+        <span class="size"></span>`;
+      fileList.append(warning);
+    }
+  }
+
+  fileInput?.addEventListener('change', renderFiles);
+
+  if (dropzone && fileInput) {
+    ['dragenter', 'dragover'].forEach((event) =>
+      dropzone.addEventListener(event, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('is-dragging');
+      })
+    );
+
+    ['dragleave', 'drop'].forEach((event) =>
+      dropzone.addEventListener(event, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('is-dragging');
+      })
+    );
+
+    dropzone.addEventListener('drop', (event) => {
+      const dropped = (event as DragEvent).dataTransfer?.files;
+      if (dropped?.length) {
+        fileInput.files = dropped;
+        renderFiles();
+      }
+    });
+  }
+
+  /* Submit guard — uploads can take a while on an Indian mobile connection and
+     an impatient second click would post the form twice. */
+  const form = document.querySelector<HTMLFormElement>('#rfq-form');
+  form?.addEventListener('submit', () => {
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (!button) return;
+    button.disabled = true;
+    const label = button.querySelector('span');
+    if (label) label.textContent = 'Sending…';
+  });
+</script>

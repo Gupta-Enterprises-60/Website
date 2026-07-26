@@ -1,0 +1,73 @@
+{
+  "name": "Two-Wheeler Footrest & Bracket Assembly (RH/LH)",
+  "code": "GE-TP-001",
+  "category": "tubular-parts",
+  "summary": "Welded tubular footrest and mounting bracket assemblies supplied in matched right-hand / left-hand pairs.",
+  "description": "Cut, bent, flared and fixture-welded tube assemblies for two-wheeler footrest applications, supplied as matched RH/LH pairs. Every joint is made on a dedicated weld fixture, so the geometry that matters — mounting hole positions relative to the footrest axis — repeats across the batch rather than drifting between operators. This is a part family we run in current production for two-wheeler OEM programmes, including the flaring operation on our double-head special-purpose machine.",
+  "images": [
+    {
+      "src": "src/assets/products/footrest-bracket-assembly-1.jpg",
+      "alt": "Two-wheeler footrest and bracket assemblies in matched right-hand and left-hand pairs, black finish",
+      "caption": "Matched RH/LH footrest assemblies as supplied"
+    },
+    {
+      "src": "src/assets/products/footrest-bracket-assembly-2.jpg",
+      "alt": "Single welded tubular footrest bracket assembly showing flared tube ends and mounting bracket",
+      "caption": "Flared tube ends and welded mounting bracket"
+    }
+  ],
+  "applications": [
+    "Two-wheeler footrest mounting",
+    "Passenger footrest sub-assemblies",
+    "Structural tube brackets"
+  ],
+  "materials": [
+    "Mild steel tube",
+    "Mild steel bar"
+  ],
+  "processes": [
+    "tube-fabrication",
+    "welding",
+    "metal-stamping"
+  ],
+  "industries": [
+    "automotive"
+  ],
+  "specs": [
+    {
+      "label": "Construction",
+      "value": "Cut, bent, flared & fixture-welded tube"
+    },
+    {
+      "label": "Supply form",
+      "value": "Matched RH/LH pairs"
+    },
+    {
+      "label": "Joining",
+      "value": "MIG welding on dedicated fixtures"
+    },
+    {
+      "label": "Flaring",
+      "value": "Double-head flaring SPM"
+    },
+    {
+      "label": "Finish",
+      "value": "To specification — bare, coated or plated"
+    },
+    {
+      "label": "Manufactured to",
+      "value": "Customer drawing & specification"
+    }
+  ],
+  "featured": true,
+  "isNew": false,
+  "order": 1,
+  "related": [
+    "seat-frame-tubular-assembly",
+    "structural-brackets-reinforcements"
+  ],
+  "seo": {
+    "title": "Footrest & Bracket Assemblies (RH/LH)",
+    "description": "Welded tubular footrest and bracket assemblies for two-wheeler OEMs in matched RH/LH pairs. Cut, bent, flared and fixture-welded in Faridabad."
+  }
+}

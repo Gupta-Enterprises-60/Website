@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { site } from '../../lib/site';
+---
+
+<BaseLayout
+  title="Message Received — Thank You"
+  description="Your message has reached Gupta Enterprises. We reply to every enquiry within one working day."
+  noindex
+>
+  <section class="section section--lg">
+    <div class="container container--narrow">
+      <div class="done">
+        <span class="done__mark">
+          <Icon name="check" size={30} stroke={2.5} />
+        </span>
+        <h1 class="done__title">Message received.</h1>
+        <p class="done__lead">
+          Thank you for getting in touch. {site.contact.responsePromise} If it is urgent, calling is
+          faster than waiting for the reply.
+        </p>
+
+        <div class="done__contacts">
+          {
+            site.contact.phones.map((phone, i) => (
+              <a href={`tel:${site.contact.phonesE164[i]}`} class="done__contact">
+                <Icon name="phone" size={16} />
+                {phone}
+              </a>
+            ))
+          }
+          <a
+            href={`https://wa.me/${site.contact.whatsapp}`}
+            class="done__contact"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name="whatsapp" size={16} />
+            WhatsApp
+          </a>
+        </div>
+
+        <div class="done__actions">
+          <a href="/" class="btn btn--outline">
+            <Icon name="arrow-left" size={17} />
+            Back to home
+          </a>
+          <a href="/rfq" class="btn btn--primary">Request a quote</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .done {
+    text-align: center;
+  }
+
+  .done__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    background: var(--ge-red-ink);
+    color: #fff;
+    margin-bottom: var(--sp-6);
+  }
+
+  .done__title {
+    font-size: clamp(1.875rem, 1.4rem + 2.2vw, 3rem);
+    margin: 0 0 var(--sp-5);
+  }
+
+  .done__lead {
+    font-size: var(--fs-lead);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    max-width: 58ch;
+    margin: 0 auto;
+  }
+
+  .done__contacts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--sp-3);
+    margin-top: var(--sp-7);
+  }
+
+  .done__contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--border-strong);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--ink-800);
+    text-decoration: none;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+
+  .done__contact:hover {
+    background: var(--ink-900);
+    border-color: var(--ink-900);
+    color: #fff;
+  }
+
+  .done__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--sp-3);
+    margin-top: var(--sp-7);
+    padding-top: var(--sp-7);
+    border-top: 1px solid var(--border);
+  }
+</style>

@@ -1,0 +1,16 @@
+{
+  "name": "Lathe",
+  "group": "tool-room",
+  "quantity": 1,
+  "order": 50,
+  "specs": [
+    {
+      "label": "Quantity",
+      "value": "1"
+    },
+    {
+      "label": "Applications",
+      "value": "Turned tooling components, pillars and bushes"
+    }
+  ]
+}

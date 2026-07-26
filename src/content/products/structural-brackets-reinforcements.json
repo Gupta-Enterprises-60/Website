@@ -1,0 +1,73 @@
+{
+  "name": "Structural Brackets, Panels & Reinforcements",
+  "code": "GE-SM-001",
+  "category": "sheet-metal-parts",
+  "summary": "Stamped and formed sheet-metal components produced on 20 – 250 tonne presses with in-house progressive and deep-draw tooling.",
+  "description": "Stamped, formed and deep-drawn brackets, panels and reinforcement components covering a wide size and gauge range. Parts run on our 20 to 250 tonne press line using progressive and deep-draw tooling designed and built in our own tool room — which means the die that forms your part is maintained by the people accountable for the part, and a revision takes days rather than weeks. Suitable for everything from small precision clips to heavier structural reinforcements.",
+  "images": [
+    {
+      "src": "src/assets/products/sheet-metal-components-mixed.jpg",
+      "alt": "Assorted stamped and formed sheet-metal components including brackets, clips, reinforcements and tubular parts",
+      "caption": "Representative range of stamped and formed components"
+    }
+  ],
+  "applications": [
+    "Mounting brackets",
+    "Structural reinforcements",
+    "Body and trim panels",
+    "Clips and retainers"
+  ],
+  "materials": [
+    "CRCA / Cold-rolled steel",
+    "HR steel",
+    "Stainless steel",
+    "Aluminium"
+  ],
+  "processes": [
+    "metal-stamping",
+    "deep-drawing",
+    "laser-cutting"
+  ],
+  "industries": [
+    "automotive",
+    "industrial-equipment",
+    "electrical"
+  ],
+  "specs": [
+    {
+      "label": "Press range",
+      "value": "20 – 250 tonnes"
+    },
+    {
+      "label": "Tooling",
+      "value": "Progressive & deep-draw, built in-house"
+    },
+    {
+      "label": "Blank preparation",
+      "value": "Laser-cut or blanked on die"
+    },
+    {
+      "label": "Secondary ops",
+      "value": "Machining, welding, tapping as required"
+    },
+    {
+      "label": "Finish",
+      "value": "To specification — bare, coated or plated"
+    },
+    {
+      "label": "Manufactured to",
+      "value": "Customer drawing & specification"
+    }
+  ],
+  "featured": true,
+  "isNew": false,
+  "order": 3,
+  "related": [
+    "deep-drawn-components",
+    "laser-cut-profiles"
+  ],
+  "seo": {
+    "title": "Stamped Brackets, Panels & Reinforcements",
+    "description": "Stamped and formed sheet-metal brackets, panels and reinforcements on 20-250T presses with in-house tooling. ISO 9001:2015 manufacturer in Faridabad."
+  }
+}

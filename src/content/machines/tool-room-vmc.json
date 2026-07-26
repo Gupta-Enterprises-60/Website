@@ -1,0 +1,23 @@
+{
+  "name": "Tool Room VMC (BFW)",
+  "group": "tool-room",
+  "quantity": 1,
+  "capacity": "700 × 1250 mm bed",
+  "make": "BFW",
+  "order": 10,
+  "specs": [
+    {
+      "label": "Bed size",
+      "value": "700 × 1250 mm"
+    },
+    {
+      "label": "Make",
+      "value": "BFW"
+    },
+    {
+      "label": "Applications",
+      "value": "Die components, fixture bodies, gauge details"
+    }
+  ],
+  "notes": "The machine behind our in-house die build and maintenance capability."
+}

@@ -1,0 +1,167 @@
+---
+/**
+ * Auto-scrolling customer logo strip.
+ *
+ * The track holds the list four times and translates exactly -25%, so a copy
+ * lands where the previous one started and the loop is seamless. The duplicates
+ * are aria-hidden — visually it is the same row continuing, and a screen reader
+ * should hear each customer once.
+ *
+ * Four copies rather than two: the loop only stays gap-free while the track
+ * still covers the viewport at the end of its travel, which needs
+ * `viewport <= (copies - 1) x group`. Eight logos measure ~1410px, so two
+ * copies already tear on a 1470px window. Four holds past 4200px.
+ *
+ * Items without a logo fall back to their name as text, which is what renders
+ * until real logo files are supplied.
+ *
+ * Motion: pauses on hover and on keyboard focus, and does not animate at all
+ * under prefers-reduced-motion, where it lays out as a static wrapped row.
+ */
+export interface MarqueeItem {
+  name: string;
+  logo?: string;
+}
+
+export interface Props {
+  items: MarqueeItem[];
+  /** Seconds for one full pass. Longer = slower. */
+  speed?: number;
+}
+
+const { items, speed = 45 } = Astro.props;
+const entries: MarqueeItem[] = items;
+---
+
+<div class="marquee" style={`--marquee-speed:${speed}s`}>
+  <div class="marquee__track">
+    {
+      [0, 1, 2, 3].map((copy) => (
+        <ul class="marquee__group" aria-hidden={copy > 0 ? 'true' : undefined}>
+          {entries.map((item) => (
+            <li class="marquee__item">
+              {item.logo ? (
+                <img src={item.logo} alt={item.name} loading="lazy" decoding="async" />
+              ) : (
+                <span class="marquee__name">{item.name}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    border-block: 1px solid var(--border);
+    /* Softens both ends so logos enter and leave rather than being cut off. */
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 6%,
+      #000 94%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll var(--marquee-speed, 45s) linear infinite;
+  }
+
+  /* Reading a moving logo is hard — stopping on hover or on tab focus makes the
+     strip usable rather than just decorative. */
+  .marquee:hover .marquee__track,
+  .marquee:focus-within .marquee__track {
+    animation-play-state: paused;
+  }
+
+  /* -25% of a four-copy track is exactly one copy. */
+  @keyframes marquee-scroll {
+    to {
+      transform: translateX(-25%);
+    }
+  }
+
+  .marquee__group {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .marquee__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: clamp(150px, 12vw, 210px);
+    height: clamp(72px, 6vw, 92px);
+    padding-inline: var(--sp-5);
+    border-right: 1px solid var(--border);
+  }
+
+  .marquee__item img {
+    max-width: 100%;
+    max-height: 44px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    /* Mismatched customer logos sit together better desaturated; they come back
+       to full colour when the strip is paused under the cursor. */
+    filter: grayscale(1);
+    opacity: 0.6;
+    transition: filter var(--dur) var(--ease), opacity var(--dur) var(--ease);
+  }
+
+  .marquee:hover .marquee__item img {
+    filter: grayscale(0);
+    opacity: 1;
+  }
+
+  .marquee__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    color: var(--ink-600);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
+    .marquee__track {
+      animation: none;
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* One copy is enough once it is no longer a loop. */
+    .marquee__group:not(:first-child) {
+      display: none;
+    }
+
+    .marquee__group {
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .marquee__item img {
+      filter: none;
+      opacity: 1;
+    }
+  }
+</style>

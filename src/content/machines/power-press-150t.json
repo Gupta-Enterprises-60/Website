@@ -1,0 +1,26 @@
+{
+  "name": "Power Press — 150 Tonne",
+  "group": "press-shop",
+  "quantity": 6,
+  "capacity": "150 tonnes",
+  "order": 60,
+  "specs": [
+    {
+      "label": "Capacity",
+      "value": "150 T"
+    },
+    {
+      "label": "Quantity",
+      "value": "6"
+    },
+    {
+      "label": "Frame type",
+      "value": "C-frame / pillar type"
+    },
+    {
+      "label": "Tooling",
+      "value": "Progressive, deep-draw & trim dies (in-house)"
+    }
+  ],
+  "notes": "General forming and blanking capacity."
+}

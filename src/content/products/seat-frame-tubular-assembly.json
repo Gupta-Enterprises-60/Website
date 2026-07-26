@@ -1,0 +1,78 @@
+{
+  "name": "Seat Frame & Tubular Sub-Assembly",
+  "code": "GE-TP-002",
+  "category": "welded-assemblies",
+  "summary": "Fixture-welded tube-frame sub-assemblies for vehicle seating, built to hold hole-to-hole geometry across the batch.",
+  "description": "Welded tube-frame sub-assemblies for vehicle seating applications. Tube is cut and bent to profile, then located and joined on dedicated weld fixtures so that hole-to-hole geometry and frame squareness repeat unit to unit — the dimensions that decide whether the frame drops into your assembly line without rework. Supplied as a finished sub-assembly rather than loose components, removing an assembly operation from your own line. We manufacture this part family today for automotive seating programmes.",
+  "images": [
+    {
+      "src": "src/assets/products/tubular-frame-assembly-1.jpg",
+      "alt": "Welded tubular seat frame sub-assembly with flat mounting brackets",
+      "caption": "Seat frame sub-assembly with welded mounting brackets"
+    },
+    {
+      "src": "src/assets/products/tubular-frame-assembly-3.jpg",
+      "alt": "Seat frame tubular sub-assembly showing cross member and drilled mounting plates",
+      "caption": "Cross member and drilled mounting plates"
+    },
+    {
+      "src": "src/assets/products/tubular-frame-assembly-2.jpg",
+      "alt": "Underside view of a welded tubular seat frame sub-assembly",
+      "caption": "Fixture-controlled hole-to-hole geometry"
+    }
+  ],
+  "applications": [
+    "Vehicle seat frame structures",
+    "Structural tube sub-assemblies",
+    "Seat mounting frames"
+  ],
+  "materials": [
+    "Mild steel tube",
+    "CRCA / Cold-rolled steel"
+  ],
+  "processes": [
+    "tube-fabrication",
+    "welding",
+    "metal-stamping"
+  ],
+  "industries": [
+    "automotive"
+  ],
+  "specs": [
+    {
+      "label": "Construction",
+      "value": "Cut, bent & fixture-welded tube frame"
+    },
+    {
+      "label": "Accuracy",
+      "value": "Fixture-controlled hole-to-hole geometry"
+    },
+    {
+      "label": "Joining",
+      "value": "MIG & projection welding"
+    },
+    {
+      "label": "Supply form",
+      "value": "Finished sub-assembly"
+    },
+    {
+      "label": "Finish",
+      "value": "To specification — bare, coated or plated"
+    },
+    {
+      "label": "Manufactured to",
+      "value": "Customer drawing & specification"
+    }
+  ],
+  "featured": true,
+  "isNew": false,
+  "order": 2,
+  "related": [
+    "footrest-bracket-assembly",
+    "structural-brackets-reinforcements"
+  ],
+  "seo": {
+    "title": "Seat Frame & Tubular Sub-Assemblies",
+    "description": "Fixture-welded tube-frame seat sub-assemblies for automotive seating programmes. Repeatable hole-to-hole geometry, manufactured in Faridabad, India."
+  }
+}

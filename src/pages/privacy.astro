@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import { site, addressOneLine } from '../lib/site';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Privacy' }];
+const updated = 'July 2026';
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description="How Gupta Enterprises handles the information you send through this website, including RFQ submissions and uploaded drawings."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Legal"
+    title="Privacy policy"
+    lead="What we collect through this website, why, and what we do with it. Written plainly rather than defensively."
+    breadcrumbs={crumbs}
+    align="wide"
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="prose">
+        <p class="mono note">Last updated: {updated}</p>
+
+        <h2>Who we are</h2>
+        <p>
+          This website is operated by {site.legalName}, {addressOneLine()}. For any question about
+          this policy or about information you have sent us, contact
+          <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.
+        </p>
+
+        <h2>What we collect</h2>
+        <p>We collect information in exactly two situations:</p>
+        <ul>
+          <li>
+            <strong>When you submit a form.</strong> The Request for Quotation and Contact forms
+            collect the details you type into them — your name, company, email, phone, country, and
+            the description of your requirement — together with any drawing files you attach.
+          </li>
+          <li>
+            <strong>When you email or call us.</strong> Ordinary business correspondence, kept for as
+            long as the commercial relationship or enquiry reasonably requires.
+          </li>
+        </ul>
+        <p>
+          We do not run advertising trackers or third-party analytics on this site. There is no
+          cookie consent banner because we do not set marketing or analytics cookies.
+        </p>
+
+        <h2>Why we collect it</h2>
+        <p>
+          Solely to respond to your enquiry: to assess manufacturability, prepare a quotation,
+          manufacture and supply parts, and maintain the resulting commercial relationship. We do not
+          sell your information, and we do not add you to a marketing list without asking.
+        </p>
+
+        <h2>Your drawings and technical information</h2>
+        <p>
+          Drawings, specifications and technical files you send are used only to quote and
+          manufacture your part. They are shared internally only with the people who need them —
+          typically our estimating, tool room and production staff — and are not shown to other
+          customers or used as reference work without your written permission.
+        </p>
+        <p>
+          Where a finishing operation is subcontracted to a qualified partner, the minimum
+          information required to perform that operation is shared with them. Nothing beyond that.
+        </p>
+        <p>
+          We are happy to sign your non-disclosure agreement before you send anything. Tick the NDA
+          box on the <a href="/rfq">RFQ form</a> or send it with your enquiry.
+        </p>
+
+        <h2>Who processes data on our behalf</h2>
+        <p>
+          This site is a static website hosted by Netlify, which also receives and stores form
+          submissions on our behalf and forwards them to us by email. Netlify processes this data as
+          our service provider. Email correspondence is handled through our own business email
+          provider.
+        </p>
+        <p>
+          These providers may store data on servers outside India. We use them because they are
+          established services with their own security and data-protection commitments; we do not
+          transfer your information to anyone else.
+        </p>
+
+        <h2>How long we keep it</h2>
+        <p>
+          Enquiries that do not lead to business are kept while they remain commercially relevant and
+          then deleted. Records relating to orders we have fulfilled are kept for as long as
+          applicable Indian tax, statutory and quality-record requirements demand.
+        </p>
+
+        <h2>Security</h2>
+        <p>
+          The site is served over HTTPS and form submissions are encrypted in transit. No system is
+          perfectly secure, so if a drawing is genuinely commercially sensitive, tell us and we will
+          agree a handling arrangement — including an NDA — before you send it.
+        </p>
+
+        <h2>Your choices</h2>
+        <p>
+          You can ask us what information we hold about you, ask us to correct it, or ask us to
+          delete it. Email <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a> and we
+          will respond. Where we are legally required to retain a record — a tax invoice, for
+          example — we will tell you that rather than quietly ignore the request.
+        </p>
+
+        <h2>Changes to this policy</h2>
+        <p>
+          If we change how we handle information, we will update this page and the date at the top.
+          Material changes affecting existing customers will be communicated directly.
+        </p>
+
+        <hr class="hairline" style="margin: 2.5rem 0" />
+
+        <p class="disclaimer">
+          This policy describes our actual practice in plain language. It is not a substitute for
+          legal advice, and it does not attempt to recite every provision of the Digital Personal
+          Data Protection Act 2023 or any other applicable law. If you require a specific contractual
+          data-protection commitment for your procurement process,
+          <a href="/contact">contact us</a> and we will work to your form of words.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .note {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    letter-spacing: 0.02em;
+  }
+
+  .disclaimer {
+    font-size: var(--fs-sm);
+    color: var(--text-subtle);
+    line-height: 1.7;
+  }
+</style>

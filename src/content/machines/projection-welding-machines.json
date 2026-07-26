@@ -1,0 +1,22 @@
+{
+  "name": "Projection Welding Machines",
+  "group": "welding",
+  "quantity": 3,
+  "capacity": "75 kVA",
+  "order": 20,
+  "specs": [
+    {
+      "label": "Quantity",
+      "value": "3 machines"
+    },
+    {
+      "label": "Rating",
+      "value": "75 kVA"
+    },
+    {
+      "label": "Typical use",
+      "value": "Nut, stud & small component attachment"
+    }
+  ],
+  "notes": "Consistent, repeatable joints with no consumable weld wire — often cheaper than MIG at volume where the joint allows it."
+}

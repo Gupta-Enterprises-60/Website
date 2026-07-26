@@ -1,0 +1,144 @@
+/* ==========================================================================
+   Gupta Enterprises — Design tokens
+   --------------------------------------------------------------------------
+   Visual language: precision-industrial. Sharp corners, hairline rules,
+   generous whitespace, a restrained red accent taken from the GE mark, and a
+   monospaced face reserved strictly for measured/technical values.
+   ========================================================================== */
+
+:root {
+  /* ---- Brand -------------------------------------------------------------
+     The GE logo mark samples at #FF2B28 — correct for a printed mark, but too
+     hot for screen text (3.7:1 on white). We keep that hue and build an
+     accessible ramp from it: -accent for decoration, -ink for anything that
+     carries text or must meet WCAG AA.
+     -------------------------------------------------------------------- */
+  --ge-red-mark: #ff2b28;   /* the literal logo red — mark reproduction only */
+  --ge-red: #d81f26;        /* accent rules, bars, iconography, hover fills   */
+  --ge-red-ink: #b8121a;    /* 6.7:1 on white — links, text, solid buttons    */
+  --ge-red-dark: #8e0e14;   /* pressed / hover-darken                         */
+  --ge-red-wash: #fdf2f2;   /* tinted section backgrounds                     */
+
+  /* ---- Neutrals (very slightly cool — reads as steel, not warm paper) ---- */
+  --ink-900: #0b0d10;
+  --ink-800: #14171c;
+  --ink-700: #1e232a;
+  --ink-600: #39404a;
+  --ink-500: #5a626d;
+  --ink-400: #858d98;
+  --ink-300: #b4bbc4;
+  --ink-200: #d8dde3;
+  --ink-150: #e3e7ec;
+  --ink-100: #ebeef1;
+  --ink-050: #f5f7f9;
+  --white: #ffffff;
+
+  /* ---- Semantic surfaces ------------------------------------------------ */
+  --surface: var(--white);
+  --surface-sunken: var(--ink-050);
+  --surface-inverse: var(--ink-900);
+  --surface-inverse-raised: #191d23;
+
+  --text: var(--ink-900);
+  --text-muted: var(--ink-500);
+  --text-subtle: var(--ink-400);
+  --text-on-dark: #f2f4f7;
+  --text-on-dark-muted: #a8b0bb;
+
+  --border: var(--ink-150);
+  --border-strong: var(--ink-200);
+  --border-on-dark: rgba(255, 255, 255, 0.14);
+
+  --focus-ring: var(--ge-red-ink);
+
+  /* ---- Type ------------------------------------------------------------- */
+  --font-display: 'Archivo Variable', 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Fluid scale, 320px → 1440px viewport. Display sizes are set tight; body
+     copy stays fixed-ish so long-form pages don't get uncomfortably wide. */
+  --fs-display: clamp(2.75rem, 1.6rem + 5.1vw, 5.25rem);
+  --fs-h1: clamp(2.25rem, 1.45rem + 3.6vw, 4rem);
+  --fs-h2: clamp(1.75rem, 1.25rem + 2.2vw, 2.875rem);
+  --fs-h3: clamp(1.3125rem, 1.08rem + 1.05vw, 1.875rem);
+  --fs-h4: clamp(1.125rem, 1.03rem + 0.42vw, 1.3125rem);
+  --fs-lead: clamp(1.0625rem, 0.99rem + 0.34vw, 1.25rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.9375rem;
+  --fs-xs: 0.8125rem;
+  --fs-label: 0.75rem;
+  --fs-stat: clamp(2.5rem, 1.7rem + 3.6vw, 4.25rem);
+
+  --lh-tight: 1.04;
+  --lh-snug: 1.16;
+  --lh-heading: 1.22;
+  --lh-body: 1.65;
+  --lh-relaxed: 1.75;
+
+  --tracking-display: -0.033em;
+  --tracking-heading: -0.021em;
+  --tracking-tight: -0.011em;
+  --tracking-label: 0.13em;
+
+  /* ---- Space (4px base, doubling-ish steps) ----------------------------- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 2.5rem;
+  --sp-8: 3rem;
+  --sp-9: 4rem;
+  --sp-10: 5rem;
+  --sp-11: 6.5rem;
+  --sp-12: 8rem;
+
+  /* Vertical rhythm between full-width page sections */
+  --section-y: clamp(3.5rem, 2rem + 6.5vw, 7rem);
+  --section-y-lg: clamp(4.5rem, 2.4rem + 8.5vw, 9rem);
+
+  /* ---- Layout ----------------------------------------------------------- */
+  --container: 1320px;
+  --container-narrow: 900px;
+  --container-prose: 68ch;
+  --gutter: clamp(1.25rem, 0.7rem + 2.6vw, 3rem);
+  --header-h: 76px;
+
+  /* ---- Form ------------------------------------------------------------- */
+  /* Sharp corners throughout — 2px reads as machined, 12px reads as consumer
+     app. The only exception is the pill on small status chips. */
+  --radius: 2px;
+  --radius-lg: 3px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(11, 13, 16, 0.06), 0 1px 1px rgba(11, 13, 16, 0.04);
+  --shadow-md: 0 4px 16px rgba(11, 13, 16, 0.07), 0 1px 3px rgba(11, 13, 16, 0.05);
+  --shadow-lg: 0 18px 48px rgba(11, 13, 16, 0.12), 0 2px 8px rgba(11, 13, 16, 0.05);
+
+  --ease: cubic-bezier(0.2, 0.6, 0.25, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur: 220ms;
+  --dur-slow: 520ms;
+
+  --z-header: 100;
+  --z-drawer: 200;
+  --z-modal: 300;
+}
+
+/* Sections rendered on the dark surface remap the semantic tokens rather than
+   overriding component styles one by one. */
+.on-dark {
+  --surface: var(--ink-900);
+  --surface-sunken: var(--surface-inverse-raised);
+  --text: var(--text-on-dark);
+  --text-muted: var(--text-on-dark-muted);
+  --text-subtle: var(--ink-400);
+  --border: var(--border-on-dark);
+  --border-strong: rgba(255, 255, 255, 0.22);
+  --focus-ring: #ff6b66;
+
+  background: var(--ink-900);
+  color: var(--text-on-dark);
+}

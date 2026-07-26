@@ -1,0 +1,362 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import SectionHead from '../../components/sections/SectionHead.astro';
+import CTABand from '../../components/sections/CTABand.astro';
+import CapabilityCard from '../../components/ui/CapabilityCard.astro';
+import Icon from '../../components/ui/Icon.astro';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Capabilities' }];
+
+const capabilities = (await getCollection('capabilities')).sort((a, b) => a.data.order - b.data.order);
+const inHouse = capabilities.filter((c) => c.data.inHouse);
+const managed = capabilities.filter((c) => !c.data.inHouse);
+
+// The six headline capability figures, pulled straight from the machine data.
+const summary = [
+  { value: '35', unit: '', label: 'Power presses', detail: '20 – 250 tonnes' },
+  { value: '25', unit: 'mm', label: 'Laser cutting', detail: 'HR steel · 1500 × 3000 mm bed' },
+  { value: '1300×800', unit: 'mm', label: 'CNC / VMC envelope', detail: '3-axis milling, turning & drilling' },
+  { value: '15', unit: '', label: 'Welding stations', detail: '12 MIG + 3 projection' },
+  { value: 'In-house', unit: '', label: 'Tool room', detail: 'Dies, fixtures & gauges' },
+  { value: '144', unit: 'kVA', label: 'Standby power', detail: '62 + 82 kVA DG sets' },
+];
+---
+
+<BaseLayout
+  title="Manufacturing Capabilities Under One Roof"
+  description="Six in-house capabilities under one roof in Faridabad: metal stamping on 35 presses, laser cutting to 25 mm, CNC/VMC machining, welding and a tool room."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Manufacturing capabilities"
+    title="Everything your part needs, under one roof"
+    lead="Six in-house capabilities take a component from raw sheet or tube to an inspected, dispatch-ready part. Every handover that would normally sit between suppliers happens inside our own two units instead."
+    breadcrumbs={crumbs}
+    align="wide"
+    primaryCta={{ label: 'Send a drawing', href: '/rfq' }}
+    secondaryCta={{ label: 'See the machine list', href: '/infrastructure/machines' }}
+  />
+
+  <!-- ===== Capability figures ===== -->
+  <section class="section--tight">
+    <div class="container">
+      <ul class="summary">
+        {
+          summary.map((item, i) => (
+            <li data-reveal data-reveal-delay={(i % 3) * 50}>
+              <span class="summary__value">
+                {item.value}
+                {item.unit && <span class="summary__unit">{item.unit}</span>}
+              </span>
+              <span class="summary__label">{item.label}</span>
+              <span class="summary__detail">{item.detail}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== In-house capabilities ===== -->
+  <section class="section">
+    <div class="container">
+      <SectionHead
+        kicker="In-house"
+        title="Performed on our own shop floor"
+        lead="Eight capabilities we operate ourselves, with our own machines, our own tooling and our own inspection."
+      />
+      <div class="grid grid--2 caps-grid">
+        {
+          inHouse.map((capability, i) => (
+            <div data-reveal data-reveal-delay={(i % 2) * 70}>
+              <CapabilityCard capability={capability} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Managed services ===== -->
+  {
+    managed.length > 0 && (
+      <section class="section section--sunken">
+        <div class="container">
+          <SectionHead
+            kicker="Managed for you"
+            title="Delivered through qualified partners"
+            lead="We are explicit about the one step in our route that does not happen on our floor. You still place a single purchase order, and we still inspect before dispatch."
+          />
+          <div class="grid grid--2 caps-grid">
+            {managed.map((capability) => (
+              <div data-reveal>
+                <CapabilityCard capability={capability} />
+              </div>
+            ))}
+            <aside class="honesty" data-reveal data-reveal-delay="70">
+              <Icon name="shield-check" size={24} stroke={1.6} class="honesty__icon" />
+              <h3 class="honesty__title">Why we flag this at all</h3>
+              <p class="honesty__text">
+                Plenty of suppliers list subcontracted operations alongside in-house ones without
+                distinguishing them. It surfaces during an audit, and by then it has cost trust.
+                We would rather you knew now — and could weigh it properly against everything we do
+                run ourselves.
+              </p>
+              <a href="/why-us" class="link-arrow">
+                More straight answers
+                <Icon name="arrow-right" size={15} />
+              </a>
+            </aside>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ===== Route diagram ===== -->
+  <section class="section on-dark">
+    <div class="container">
+      <SectionHead
+        kicker="How they connect"
+        title="One route, six stations, no external handovers"
+        lead="A typical multi-process automotive part passes through most of these. Sourced separately, that is five vendors and five schedules."
+        wide
+      />
+
+      <ol class="route" data-reveal>
+        {
+          [
+            { name: 'Blank', detail: 'Laser or die', icon: 'zap' },
+            { name: 'Form', detail: 'Press, 20–250 T', icon: 'layers' },
+            { name: 'Machine', detail: 'CNC / VMC', icon: 'cog' },
+            { name: 'Join', detail: 'MIG / projection', icon: 'flame' },
+            { name: 'Finish', detail: 'Partner-managed', icon: 'droplet', partner: true },
+            { name: 'Inspect', detail: '100% to drawing', icon: 'clipboard-check' },
+          ].map((stage) => (
+            <li class:list={['route__step', stage.partner && 'route__step--partner']}>
+              <span class="route__icon">
+                <Icon name={stage.icon} size={20} stroke={1.7} />
+              </span>
+              <span class="route__name">{stage.name}</span>
+              <span class="route__detail">{stage.detail}</span>
+            </li>
+          ))
+        }
+      </ol>
+
+      <p class="route__legend">
+        <span class="route__key" aria-hidden="true"></span>
+        Partner-managed step — inspected by us on return, before dispatch.
+      </p>
+    </div>
+  </section>
+
+  <CTABand
+    kicker="Not sure which route fits?"
+    title="Send the drawing. We'll tell you the right process."
+    text="Including when the honest answer is that your volume does not justify tooling, or that another supplier is a better fit."
+  />
+</BaseLayout>
+
+<style>
+  /* ---- Summary figures ------------------------------------------------------ */
+
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  @media (max-width: 1080px) {
+    .summary {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 620px) {
+    .summary {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .summary li {
+    background: var(--white);
+    padding: var(--sp-5) var(--sp-4);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .summary__value {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    line-height: 1.1;
+    color: var(--ink-900);
+  }
+
+  .summary__unit {
+    font-size: 0.75em;
+    color: var(--ink-500);
+    margin-left: 0.15rem;
+  }
+
+  .summary__label {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--ink-700);
+    margin-top: 0.2rem;
+  }
+
+  .summary__detail {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    line-height: 1.4;
+  }
+
+  /* ---- Grid ------------------------------------------------------------------ */
+
+  .caps-grid > * {
+    height: 100%;
+  }
+
+  .caps-grid :global(.c-card) {
+    height: 100%;
+  }
+
+  /* ---- Honesty panel --------------------------------------------------------- */
+
+  .honesty {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    height: 100%;
+    padding: var(--sp-6);
+    background: var(--ink-900);
+    color: #fff;
+    border-top: 3px solid var(--ge-red);
+  }
+
+  .honesty__icon {
+    color: #ff6b66;
+  }
+
+  .honesty__title {
+    color: #fff;
+    font-size: var(--fs-h4);
+    margin: 0;
+  }
+
+  .honesty__text {
+    font-size: var(--fs-sm);
+    color: var(--ink-300);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .honesty .link-arrow {
+    margin-top: auto;
+    padding-top: var(--sp-4);
+    color: #ff6b66;
+  }
+
+  /* ---- Route ------------------------------------------------------------------ */
+
+  .route {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--sp-3);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: route;
+  }
+
+  @media (max-width: 900px) {
+    .route {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    .route {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .route__step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: var(--sp-5) var(--sp-4);
+    border: 1px solid var(--border-on-dark);
+    background: var(--surface-inverse-raised);
+  }
+
+  /* Connector arrow between stations on wide viewports */
+  @media (min-width: 901px) {
+    .route__step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: calc(var(--sp-3) * -1 - 1px);
+      width: var(--sp-3);
+      height: 1px;
+      background: var(--border-on-dark);
+    }
+  }
+
+  .route__step--partner {
+    border-style: dashed;
+    background: transparent;
+  }
+
+  .route__icon {
+    color: #ff6b66;
+    margin-bottom: var(--sp-2);
+  }
+
+  .route__step--partner .route__icon {
+    color: var(--ink-400);
+  }
+
+  .route__name {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    color: #fff;
+  }
+
+  .route__detail {
+    font-size: var(--fs-xs);
+    color: var(--ink-400);
+    line-height: 1.4;
+  }
+
+  .route__legend {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: var(--fs-xs);
+    color: var(--ink-400);
+    margin: var(--sp-5) 0 0;
+  }
+
+  .route__key {
+    display: inline-block;
+    width: 26px;
+    height: 14px;
+    border: 1px dashed var(--border-on-dark);
+    flex: none;
+  }
+</style>

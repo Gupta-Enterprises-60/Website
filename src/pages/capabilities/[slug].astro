@@ -1,0 +1,457 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import CTABand from '../../components/sections/CTABand.astro';
+import SectionHead from '../../components/sections/SectionHead.astro';
+import SmartImage from '../../components/ui/SmartImage.astro';
+import ProductCard from '../../components/ui/ProductCard.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { serviceSchema } from '../../lib/seo';
+import { processesForCapability } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const capabilities = await getCollection('capabilities');
+  return capabilities.map((capability) => ({
+    params: { slug: capability.id },
+    props: { capability },
+  }));
+}
+
+interface Props {
+  capability: CollectionEntry<'capabilities'>;
+}
+
+const { capability } = Astro.props;
+const d = capability.data;
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Capabilities', href: '/capabilities' },
+  { label: d.navTitle ?? d.title },
+];
+
+// Related products: anything using a process this capability page covers. The
+// mapping is not one-to-one — the metal-stamping page also covers deep drawing,
+// for instance — so go through the taxonomy rather than matching ids directly.
+const coveredProcesses = processesForCapability(capability.id);
+const allProducts = await getCollection('products');
+const related = allProducts
+  .filter((p) => p.data.processes.some((proc) => coveredProcesses.includes(proc)))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+
+// Other capabilities for the cross-link rail.
+const others = (await getCollection('capabilities'))
+  .filter((c) => c.id !== capability.id)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const schema = [serviceSchema(d.title, d.summary, `/capabilities/${capability.id}`)];
+---
+
+<BaseLayout
+  title={d.seo?.title ?? d.title}
+  description={d.seo?.description ?? d.summary}
+  breadcrumbs={crumbs}
+  schema={schema}
+>
+  <PageHero
+    kicker={d.kicker}
+    title={d.title}
+    lead={d.intro}
+    breadcrumbs={crumbs}
+    stats={d.stats.map((s) => ({ label: s.label, value: s.value }))}
+  />
+
+  <!-- Partner disclosure, shown only for capabilities we do not run ourselves -->
+  {
+    !d.inHouse && d.partnerNote && (
+      <section class="section--tight">
+        <div class="container">
+          <aside class="disclosure" data-reveal>
+            <Icon name="shield-check" size={22} stroke={1.7} class="disclosure__icon" />
+            <div>
+              <p class="disclosure__label">How this capability is delivered</p>
+              <p class="disclosure__text">{d.partnerNote}</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ===== Body ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="cap">
+        <div class="cap__main">
+          {
+            d.sections.map((section, i) => (
+              <section class="cap__section" data-reveal data-reveal-delay={(i % 2) * 60}>
+                <h2 class="cap__heading">{section.heading}</h2>
+                {section.body.map((paragraph) => (
+                  <p class="cap__para">{paragraph}</p>
+                ))}
+              </section>
+            ))
+          }
+
+          {
+            d.applications.length > 0 && (
+              <section class="cap__section" data-reveal>
+                <h2 class="cap__heading">Typical applications</h2>
+                <ul class="tick-list">
+                  {d.applications.map((application) => (
+                    <li>
+                      <Icon name="check" size={16} />
+                      <span>{application}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+        </div>
+
+        <aside class="cap__aside">
+          <div class="cap__sticky">
+            {
+              d.specs.length > 0 && (
+                <div class="panel" data-reveal>
+                  <p class="panel__title">Specification</p>
+                  <ul class="spec-list">
+                    {d.specs.map((spec) => (
+                      <li>
+                        <span class="spec__label">{spec.label}</span>
+                        <span class="spec__value">{spec.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            }
+
+            {
+              d.materials.length > 0 && (
+                <div class="panel" data-reveal data-reveal-delay="60">
+                  <p class="panel__title">Materials</p>
+                  <ul class="chip-row panel__chips">
+                    {d.materials.map((material) => (
+                      <li class="chip">{material}</li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            }
+
+            <div class="panel panel--cta" data-reveal data-reveal-delay="80">
+              <p class="panel__cta-title">Have a part for this process?</p>
+              <p class="panel__cta-text">
+                Send the drawing with material and annual volume. We reply within one working day.
+              </p>
+              <a href="/rfq" class="btn btn--primary btn--block">
+                Request a quote
+                <Icon name="arrow-right" size={17} class="icon-arrow" />
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Visual ===== -->
+  <section class="section--tight">
+    <div class="container">
+      <figure class="cap-figure" data-reveal>
+        <SmartImage
+          src={d.image?.src}
+          alt={d.image?.alt ?? ''}
+          ratio="21 / 9"
+          width={1600}
+          sizes="(max-width:1320px) 100vw, 1320px"
+          placeholderLabel={`${d.navTitle ?? d.title} — in operation`}
+          placeholderHint="Photograph this process running on the shop floor. Landscape, 2400 px wide or larger."
+          placeholderIcon="factory"
+        />
+        {d.image?.caption && <figcaption>{d.image.caption}</figcaption>}
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===== Related products ===== -->
+  {
+    related.length > 0 && (
+      <section class="section section--sunken">
+        <div class="container">
+          <SectionHead
+            kicker="Related products"
+            title="Components produced with this capability"
+            link={{ label: 'Full catalog', href: '/products' }}
+          />
+          <div class="grid grid--3">
+            {related.map((product, i) => (
+              <div data-reveal data-reveal-delay={(i % 3) * 70}>
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ===== Other capabilities ===== -->
+  <section class="section">
+    <div class="container">
+      <SectionHead kicker="Explore further" title="Other capabilities" as="h2" />
+      <ul class="others" data-reveal>
+        {
+          others.map((other) => (
+            <li>
+              <a href={`/capabilities/${other.id}`}>
+                <Icon name={other.data.icon} size={19} stroke={1.7} />
+                <span>{other.data.navTitle ?? other.data.title}</span>
+                <Icon name="arrow-right" size={15} class="others__arrow" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CTABand />
+</BaseLayout>
+
+<style>
+  /* ---- Partner disclosure ---------------------------------------------------- */
+
+  .disclosure {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: var(--sp-4);
+    align-items: start;
+    padding: var(--sp-6);
+    background: var(--ink-900);
+    color: #fff;
+    border-left: 4px solid var(--ge-red);
+  }
+
+  .disclosure__icon {
+    color: #ff6b66;
+    margin-top: 0.2rem;
+  }
+
+  .disclosure__label {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: #ff6b66;
+    margin: 0 0 var(--sp-3);
+  }
+
+  .disclosure__text {
+    font-size: var(--fs-sm);
+    color: var(--ink-200);
+    line-height: 1.7;
+    margin: 0;
+    max-width: 80ch;
+  }
+
+  /* ---- Body layout ------------------------------------------------------------ */
+
+  .cap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 330px);
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    align-items: start;
+  }
+
+  @media (max-width: 940px) {
+    .cap {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .cap__section + .cap__section {
+    margin-top: var(--sp-9);
+  }
+
+  .cap__heading {
+    font-size: var(--fs-h3);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .cap__para {
+    font-size: var(--fs-lead);
+    line-height: var(--lh-relaxed);
+    color: var(--ink-700);
+    margin: 0;
+    max-width: 68ch;
+  }
+
+  .cap__para + .cap__para {
+    margin-top: var(--sp-4);
+  }
+
+  .tick-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-3) var(--sp-5);
+  }
+
+  @media (max-width: 560px) {
+    .tick-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .tick-list li {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    font-size: var(--fs-sm);
+    color: var(--ink-700);
+    line-height: 1.55;
+  }
+
+  .tick-list :global(svg) {
+    color: var(--ge-red-ink);
+    margin-top: 0.2rem;
+  }
+
+  /* ---- Aside panels ------------------------------------------------------------ */
+
+  .cap__sticky {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    display: grid;
+    gap: var(--sp-5);
+  }
+
+  @media (max-width: 940px) {
+    .cap__sticky {
+      position: static;
+    }
+  }
+
+  .panel {
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ge-red);
+    padding: var(--sp-5);
+  }
+
+  .panel__title {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .panel__chips {
+    gap: var(--sp-2);
+  }
+
+  .panel--cta {
+    background: var(--ink-900);
+    color: #fff;
+    border-color: var(--ink-900);
+  }
+
+  .panel__cta-title {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .panel__cta-text {
+    font-size: var(--fs-sm);
+    color: var(--ink-300);
+    line-height: 1.6;
+    margin: 0 0 var(--sp-5);
+  }
+
+  /* ---- Figure -------------------------------------------------------------------- */
+
+  .cap-figure {
+    margin: 0;
+  }
+
+  .cap-figure :global(img),
+  .cap-figure :global(.ph) {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .cap-figure figcaption {
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    margin-top: var(--sp-3);
+  }
+
+  /* ---- Other capabilities --------------------------------------------------------- */
+
+  .others {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .others {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    .others {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .others a {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr) 16px;
+    align-items: center;
+    gap: 0.7rem;
+    padding: var(--sp-5) var(--sp-4);
+    background: var(--white);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--ink-800);
+    text-decoration: none;
+    height: 100%;
+    transition: background var(--dur) var(--ease);
+  }
+
+  .others a:hover {
+    background: var(--ink-050);
+    color: var(--ge-red-ink);
+  }
+
+  .others__arrow {
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .others a:hover .others__arrow {
+    opacity: 1;
+    transform: none;
+  }
+</style>

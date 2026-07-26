@@ -1,0 +1,16 @@
+{
+  "name": "Drilling Machines",
+  "group": "tool-room",
+  "quantity": 4,
+  "order": 30,
+  "specs": [
+    {
+      "label": "Quantity",
+      "value": "4"
+    },
+    {
+      "label": "Applications",
+      "value": "Die plates, fixture bases, general drilling"
+    }
+  ]
+}

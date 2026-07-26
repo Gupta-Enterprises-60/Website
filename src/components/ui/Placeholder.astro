@@ -1,0 +1,35 @@
+---
+import Icon from './Icon.astro';
+
+/**
+ * Stands in for imagery that has not been supplied yet.
+ *
+ * Deliberately obvious: hatched, dashed and captioned, so it can never be
+ * mistaken for a real photograph of the plant. The hint doubles as a shot
+ * brief for whoever takes the photo, and the whole block disappears the moment
+ * an image is uploaded through /admin.
+ */
+export interface Props {
+  label?: string;
+  hint?: string;
+  icon?: string;
+  ratio?: string;
+  class?: string;
+}
+
+const {
+  label = 'Photograph to be added',
+  hint,
+  icon = 'image',
+  ratio,
+  class: className = '',
+} = Astro.props;
+
+const style = ratio ? `aspect-ratio:${ratio};` : undefined;
+---
+
+<div class={`ph ${className}`} style={style} data-placeholder>
+  <Icon name={icon} size={26} stroke={1.5} class="ph__icon" />
+  <span class="ph__label">{label}</span>
+  {hint && <span class="ph__hint">{hint}</span>}
+</div>

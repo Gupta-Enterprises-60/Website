@@ -1,0 +1,48 @@
+{
+  "name": "Gupta Enterprises",
+  "legalName": "Gupta Enterprises",
+  "shortName": "Gupta Enterprises",
+  "url": "https://www.guptagroups.in",
+  "tagline": "Precision sheet-metal & tubular components, engineered for the automotive industry",
+  "descriptionShort": "ISO 9001:2015 certified manufacturer of precision sheet-metal, tubular and deep-draw components in Faridabad, India. 35 power presses, laser cutting, CNC/VMC machining, welding and a full in-house tool room.",
+  "founded": "2004",
+  "locale": "en_IN",
+  "lang": "en",
+  "contact": {
+    "addressLine1": "Plot No. 60, Bazri Industrial Area",
+    "addressLine2": "",
+    "city": "Faridabad",
+    "state": "Haryana",
+    "postalCode": "121004",
+    "country": "India",
+    "countryCode": "IN",
+    "phones": ["+91 95607 44339", "+91 96253 22563"],
+    "phonesE164": ["+919560744339", "+919625322563"],
+    "email": "guptaenterprises@guptagroups.in",
+    "salesEmail": "guptaenterprises@guptagroups.in",
+    "careersEmail": "guptaenterprises@guptagroups.in",
+    "whatsapp": "919560744339",
+    "hours": "Monday – Saturday, 9:00 – 18:00 IST",
+    "responsePromise": "We respond to every enquiry within one working day.",
+    "mapQuery": "Plot No. 60, Bazri Industrial Area, Faridabad, Haryana 121004, India",
+    "geo": { "latitude": "28.3670", "longitude": "77.3155" }
+  },
+  "social": {
+    "linkedin": "",
+    "indiamart": "",
+    "youtube": ""
+  },
+  "forms": {
+    "provider": "netlify",
+    "notifyEmail": "guptaenterprises@guptagroups.in",
+    "maxUploadMb": 8,
+    "acceptedDrawingTypes": ".pdf,.dwg,.dxf,.step,.stp,.igs,.iges,.zip,.png,.jpg,.jpeg"
+  },
+  "seo": {
+    "titleTemplate": "%s | Gupta Enterprises",
+    "defaultTitle": "Precision Sheet-Metal Components | Gupta Enterprises",
+    "defaultDescription": "ISO 9001:2015 precision manufacturer in Faridabad. Sheet-metal stamping, tubular fabrication, laser cutting, CNC machining and in-house tooling.",
+    "defaultImage": "/images/og/og-default.png",
+    "twitter": ""
+  }
+}

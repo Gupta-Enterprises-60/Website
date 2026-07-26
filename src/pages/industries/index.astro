@@ -1,0 +1,345 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import SectionHead from '../../components/sections/SectionHead.astro';
+import CTABand from '../../components/sections/CTABand.astro';
+import Icon from '../../components/ui/Icon.astro';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Industries' }];
+
+const industries = (await getCollection('industries')).sort((a, b) => a.data.order - b.data.order);
+const core = industries.filter((i) => i.data.core);
+const others = industries.filter((i) => !i.data.core);
+---
+
+<BaseLayout
+  title="Industries We Serve — Automotive & Beyond"
+  description="Automotive is our core after two decades of Tier-1 supply. The same press, tube and machining capability transfers into industrial, electrical and more."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Industries we serve"
+    title="Automotive is our core. The capability travels further."
+    lead="Two decades of automotive tolerances, call-off pressure and audit expectations shaped every process in this business. Those disciplines transfer directly into adjacent sectors — and we are honest about which ones we supply today versus where we are growing."
+    breadcrumbs={crumbs}
+    align="wide"
+  />
+
+  <!-- ===== Core sector ===== -->
+  <section class="section">
+    <div class="container">
+      {
+        core.map((industry) => (
+          <article class="core" data-reveal>
+            <div class="core__body">
+              <p class="core__badge">
+                <Icon name="check-circle" size={15} />
+                {industry.data.status}
+              </p>
+              <h2 class="core__title">{industry.data.title}</h2>
+              <p class="core__lead">{industry.data.intro}</p>
+              <p class="core__text">{industry.data.body[0]}</p>
+              <a href={`/industries/${industry.id}`} class="btn btn--light">
+                Explore {industry.data.title.toLowerCase()}
+                <Icon name="arrow-right" size={17} class="icon-arrow" />
+              </a>
+            </div>
+
+            <ul class="core__parts">
+              <li class="core__parts-title">What we supply today</li>
+              {industry.data.componentTypes.map((type) => (
+                <li>
+                  <Icon name="check" size={15} />
+                  <span>{type}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ===== Other sectors ===== -->
+  <section class="section section--sunken">
+    <div class="container">
+      <SectionHead
+        kicker="Growth sectors"
+        title="Where the same capability applies"
+        lead="We label each of these honestly. An 'active growth sector' means we are winning work in it; a 'target sector' means we have the process capability but not yet the track record — and we would rather you knew which is which."
+        wide
+      />
+
+      <div class="grid grid--3">
+        {
+          others.map((industry, i) => (
+            <a
+              href={`/industries/${industry.id}`}
+              class="ind"
+              data-reveal
+              data-reveal-delay={(i % 3) * 65}
+            >
+              <span class="ind__icon">
+                <Icon name={industry.data.icon} size={24} stroke={1.6} />
+              </span>
+              <span class="ind__status">{industry.data.status}</span>
+              <h3 class="ind__title">{industry.data.title}</h3>
+              <p class="ind__text">{industry.data.summary}</p>
+              <span class="link-arrow ind__cta">
+                Learn more
+                <Icon name="arrow-right" size={15} />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== What transfers ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div data-reveal>
+          <p class="eyebrow">Why it transfers</p>
+          <h2>What automotive work teaches a supplier</h2>
+        </div>
+
+        <div data-reveal data-reveal-delay="80">
+          <p class="lead transfer__lead">
+            Sector experience matters less than most buyers assume. What actually transfers between
+            industries is discipline, and automotive is the hardest school for it.
+          </p>
+          <ul class="transfer">
+            <li>
+              <h3>Repeatability under call-off pressure</h3>
+              <p>
+                Parts that measure the same in week forty as in week one, delivered against a
+                schedule that does not move. An automotive line stoppage costs a customer more in an
+                hour than most of our orders are worth — we plan accordingly.
+              </p>
+            </li>
+            <li>
+              <h3>Documentation that survives an audit</h3>
+              <p>
+                Inspection records, material traceability and first-article approval are routine
+                here because automotive customers audit them. Buyers in other sectors get the same
+                rigour without asking for it.
+              </p>
+            </li>
+            <li>
+              <h3>Tooling that holds tolerance at volume</h3>
+              <p>
+                Progressive dies that run tens of thousands of parts without drift are a different
+                discipline to one-off fabrication. That capability is what makes a component
+                economic at volume in any industry.
+              </p>
+            </li>
+            <li>
+              <h3>Honest capability limits</h3>
+              <p>
+                Automotive teaches you fast that over-promising is more expensive than losing the
+                order. It is why we tell you where our experience stops.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABand
+    kicker="Different sector, same question"
+    title="Send the drawing and we'll tell you honestly."
+    text="Including whether we have made something like it before — and what our experience in your sector actually amounts to."
+  />
+</BaseLayout>
+
+<style>
+  /* ---- Core sector ------------------------------------------------------------ */
+
+  .core {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    background: var(--ink-900);
+    color: #fff;
+    border-left: 4px solid var(--ge-red);
+  }
+
+  @media (max-width: 880px) {
+    .core {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .core__body {
+    padding: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+  }
+
+  .core__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: #ff6b66;
+    margin: 0 0 var(--sp-4);
+  }
+
+  .core__title {
+    font-size: clamp(1.875rem, 1.4rem + 2.2vw, 3rem);
+    color: #fff;
+    margin: 0 0 var(--sp-5);
+  }
+
+  .core__lead {
+    font-size: var(--fs-lead);
+    color: var(--ink-200);
+    line-height: var(--lh-body);
+    margin: 0 0 var(--sp-4);
+    max-width: 52ch;
+  }
+
+  .core__text {
+    font-size: var(--fs-sm);
+    color: var(--ink-400);
+    line-height: 1.7;
+    margin: 0 0 var(--sp-6);
+    max-width: 56ch;
+  }
+
+  .core__parts {
+    list-style: none;
+    padding: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+    margin: 0;
+    background: #14171c;
+    border-left: 1px solid var(--border-on-dark);
+  }
+
+  @media (max-width: 880px) {
+    .core__parts {
+      border-left: 0;
+      border-top: 1px solid var(--border-on-dark);
+    }
+  }
+
+  .core__parts-title {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-400);
+    margin-bottom: var(--sp-4);
+    padding-bottom: var(--sp-3);
+    border-bottom: 1px solid var(--border-on-dark);
+  }
+
+  .core__parts li:not(.core__parts-title) {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    padding: 0.6rem 0;
+    font-size: var(--fs-sm);
+    color: var(--ink-200);
+    line-height: 1.5;
+  }
+
+  .core__parts :global(svg) {
+    color: #ff6b66;
+    margin-top: 0.2rem;
+  }
+
+  /* ---- Sector cards ------------------------------------------------------------- */
+
+  .ind {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    height: 100%;
+    padding: var(--sp-6);
+    background: var(--white);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease),
+      border-color var(--dur) var(--ease);
+  }
+
+  .ind:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+  }
+
+  .ind__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: var(--ge-red-wash);
+    color: var(--ge-red-ink);
+    margin-bottom: var(--sp-4);
+  }
+
+  .ind__status {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-400);
+  }
+
+  .ind__title {
+    font-size: var(--fs-h4);
+    margin: 0;
+  }
+
+  .ind__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .ind__cta {
+    margin-top: auto;
+    padding-top: var(--sp-4);
+  }
+
+  /* ---- Transfer list ------------------------------------------------------------- */
+
+  .transfer__lead {
+    margin-bottom: var(--sp-6);
+    max-width: 60ch;
+  }
+
+  .transfer {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .transfer li {
+    padding: var(--sp-5) 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .transfer h3 {
+    font-size: var(--fs-h4);
+    margin: 0 0 var(--sp-2);
+  }
+
+  .transfer p {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+    max-width: 66ch;
+  }
+</style>

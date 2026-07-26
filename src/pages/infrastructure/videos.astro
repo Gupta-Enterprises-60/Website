@@ -1,0 +1,310 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import CTABand from '../../components/sections/CTABand.astro';
+import Placeholder from '../../components/ui/Placeholder.astro';
+import Icon from '../../components/ui/Icon.astro';
+import videos from '../../data/videos.json';
+import infrastructure from '../../data/infrastructure.json';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Infrastructure', href: '/infrastructure' },
+  { label: 'Factory videos' },
+];
+
+type VideoItem = {
+  title: string;
+  description?: string;
+  src: string;
+  poster?: string;
+  section?: string;
+  duration?: string;
+};
+
+const items = (videos.items as VideoItem[]).filter((v) => v.src?.trim());
+
+const sections = infrastructure.videoSections.map((section) => ({
+  ...section,
+  videos: items.filter((v) => v.section === section.id),
+}));
+
+const unassigned = items.filter((v) => !sections.some((s) => s.id === v.section));
+const hasAnyVideos = items.length > 0;
+---
+
+<BaseLayout
+  title="Factory Videos — Production in Motion"
+  description="Watch the shop floor in operation: progressive dies on power presses, fibre laser cutting, fixture welding, and a walkthrough of both Faridabad units."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Factory videos"
+    title="A photograph shows a machine. A video shows a shop that runs."
+    lead={videos.intro}
+    breadcrumbs={crumbs}
+    align="wide"
+    primaryCta={{ label: 'Arrange a visit', href: '/contact' }}
+    secondaryCta={{ label: 'View the gallery', href: '/infrastructure/gallery' }}
+  />
+
+  {
+    !hasAnyVideos && (
+      <section class="section--tight">
+        <div class="container">
+          <aside class="notice" data-reveal>
+            <Icon name="video" size={22} stroke={1.7} class="notice__icon" />
+            <div>
+              <p class="notice__title">Filming in progress</p>
+              <p class="notice__text">
+                We are shooting these properly on our own floor rather than publishing generic
+                manufacturing footage. The briefs below describe what each film will show. If you
+                need to assess our capability now, the fastest route is a
+                <a href="/contact">plant visit</a> or a video call from the shop floor — ask and we
+                will set one up.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="container">
+      <div class="vgrid">
+        {
+          sections.map((section, index) =>
+            section.videos.length > 0 ? (
+              section.videos.map((video) => (
+                <article class="vcard" data-reveal>
+                  <div class="vcard__media">
+                    <video
+                      controls
+                      preload="none"
+                      playsinline
+                      poster={video.poster || undefined}
+                      class="vcard__video"
+                    >
+                      <source src={video.src} type="video/mp4" />
+                      Your browser does not support embedded video.
+                      <a href={video.src}>Download the file</a> instead.
+                    </video>
+                  </div>
+                  <div class="vcard__body">
+                    <p class="vcard__index mono">{String(index + 1).padStart(2, '0')}</p>
+                    <h2 class="vcard__title">{video.title}</h2>
+                    {video.description && <p class="vcard__text">{video.description}</p>}
+                  </div>
+                </article>
+              ))
+            ) : (
+              <article class="vcard" data-reveal>
+                <div class="vcard__media">
+                  <Placeholder
+                    label="Video to be added"
+                    hint={`${section.description} Suggested length ${section.duration}.`}
+                    icon="play"
+                    ratio="16 / 9"
+                  />
+                </div>
+                <div class="vcard__body">
+                  <p class="vcard__index mono">{String(index + 1).padStart(2, '0')}</p>
+                  <h2 class="vcard__title">{section.title}</h2>
+                  <p class="vcard__text">{section.description}</p>
+                  <p class="vcard__meta">
+                    <Icon name="clock" size={14} />
+                    Planned length {section.duration}
+                  </p>
+                </div>
+              </article>
+            )
+          )
+        }
+
+        {
+          unassigned.map((video) => (
+            <article class="vcard" data-reveal>
+              <div class="vcard__media">
+                <video controls preload="none" playsinline poster={video.poster || undefined} class="vcard__video">
+                  <source src={video.src} type="video/mp4" />
+                  Your browser does not support embedded video.
+                </video>
+              </div>
+              <div class="vcard__body">
+                <h2 class="vcard__title">{video.title}</h2>
+                {video.description && <p class="vcard__text">{video.description}</p>}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Live alternative ===== -->
+  <section class="section section--sunken">
+    <div class="container container--narrow">
+      <div class="live" data-reveal>
+        <Icon name="headset" size={28} stroke={1.6} class="live__icon" />
+        <h2 class="live__title">Prefer a live walkthrough?</h2>
+        <p class="live__text">
+          We will take a video call from the shop floor and show you whatever you want to see — a
+          press setup, the tool room, the inspection station, or the specific machine your part
+          would run on. No editing, no highlight reel. Most buyers find fifteen minutes of that more
+          useful than any produced film.
+        </p>
+        <div class="btn-row live__actions">
+          <a href="/contact" class="btn btn--primary">Request a live walkthrough</a>
+          <a href="/infrastructure/machines" class="btn btn--outline">See the machine list</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABand />
+</BaseLayout>
+
+<style>
+  .notice {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: var(--sp-4);
+    align-items: start;
+    padding: var(--sp-6);
+    background: var(--ink-050);
+    border-left: 4px solid var(--ge-red);
+  }
+
+  .notice__icon {
+    color: var(--ge-red-ink);
+    margin-top: 0.2rem;
+  }
+
+  .notice__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 var(--sp-2);
+  }
+
+  .notice__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+    max-width: 78ch;
+  }
+
+  .notice__text a {
+    color: var(--ge-red-ink);
+    font-weight: 500;
+  }
+
+  /* ---- Video grid --------------------------------------------------------------- */
+
+  .vgrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  }
+
+  @media (max-width: 820px) {
+    .vgrid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .vcard {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ge-red);
+  }
+
+  .vcard__media {
+    background: var(--ink-900);
+  }
+
+  .vcard__media :global(.ph) {
+    min-height: 0;
+  }
+
+  .vcard__video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: block;
+    background: var(--ink-900);
+  }
+
+  .vcard__body {
+    padding: var(--sp-6);
+    flex: 1;
+  }
+
+  .vcard__index {
+    font-size: var(--fs-xs);
+    color: var(--ge-red-ink);
+    letter-spacing: 0.1em;
+    margin: 0 0 var(--sp-2);
+  }
+
+  .vcard__title {
+    font-size: var(--fs-h4);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .vcard__text {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .vcard__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: var(--fs-xs);
+    color: var(--text-subtle);
+    margin: var(--sp-4) 0 0;
+    padding-top: var(--sp-3);
+    border-top: 1px dashed var(--border);
+    width: 100%;
+  }
+
+  /* ---- Live ---------------------------------------------------------------------- */
+
+  .live {
+    text-align: center;
+    padding: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+    background: var(--ink-900);
+    color: #fff;
+    border-top: 4px solid var(--ge-red);
+  }
+
+  .live__icon {
+    color: #ff6b66;
+    margin: 0 auto var(--sp-5);
+  }
+
+  .live__title {
+    color: #fff;
+    font-size: var(--fs-h3);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .live__text {
+    font-size: var(--fs-lead);
+    color: var(--ink-300);
+    line-height: var(--lh-body);
+    margin: 0 auto;
+    max-width: 62ch;
+  }
+
+  .live__actions {
+    justify-content: center;
+    margin-top: var(--sp-6);
+  }
+</style>

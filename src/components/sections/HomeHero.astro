@@ -1,0 +1,574 @@
+---
+import Icon from '../ui/Icon.astro';
+import SmartImage from '../ui/SmartImage.astro';
+import home from '../../data/home.json';
+
+const { hero } = home;
+
+/**
+ * The hero has two modes.
+ *
+ * With `hero.video.src` set, the clip becomes a full-bleed background and the
+ * copy sits over it in a narrower, smaller column — a scrim carries the text
+ * contrast. Without it, the original two-column photo split is used unchanged.
+ *
+ * Playback is started from script rather than the autoplay attribute so that
+ * reduced-motion visitors never see a frame move, and so a no-JS visitor gets
+ * the poster instead of a black rectangle.
+ */
+const video = (hero as { video?: { src?: string; webm?: string; poster?: string } }).video;
+const videoSrc = video?.src?.trim() ?? '';
+const hasVideo = videoSrc.length > 0;
+const isGif = /\.gif$/i.test(videoSrc);
+const posterSrc = video?.poster?.trim() || hero.image.src || undefined;
+const webmSrc = video?.webm?.trim() ?? '';
+---
+
+<section class:list={['hero', 'on-dark', hasVideo && 'hero--video']}>
+  {
+    hasVideo && (
+      <div class="hero__bg" aria-hidden="true">
+        {isGif ? (
+          <img src={videoSrc} alt="" class="hero__bg-media" data-parallax />
+        ) : (
+          <video
+            class="hero__bg-media"
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            poster={posterSrc}
+            data-parallax
+            data-hero-video
+          >
+            {webmSrc && <source src={webmSrc} type="video/webm" />}
+            <source src={videoSrc} type="video/mp4" />
+          </video>
+        )}
+        <div class="hero__scrim" />
+      </div>
+    )
+  }
+
+  <div class="hero__grid">
+    <div class="hero__content">
+      <div class="hero__content-inner">
+        <p class="hero__kicker">
+          <span class="hero__kicker-bar" aria-hidden="true"></span>
+          {hero.kicker}
+        </p>
+
+        <h1 class="hero__title">{hero.title}</h1>
+        <p class="hero__lead">{hero.lead}</p>
+
+        <div class="hero__ctas">
+          <a href={hero.primaryCta.href} class="btn btn--primary btn--lg">
+            {hero.primaryCta.label}
+            <Icon name="arrow-right" size={18} class="icon-arrow" />
+          </a>
+          <a href={hero.secondaryCta.href} class="btn btn--outline btn--lg">
+            {hero.secondaryCta.label}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    {
+      !hasVideo && (
+        <div class="hero__media">
+          <SmartImage
+            src={hero.image.src}
+            alt={hero.image.alt}
+            loading="eager"
+            fetchpriority="high"
+            width={1400}
+            sizes="(max-width: 900px) 100vw, 52vw"
+            class="hero__img"
+            placeholderLabel="Hero photograph"
+            placeholderHint={hero.placeholderHint}
+            placeholderIcon="factory"
+          />
+        </div>
+      )
+    }
+  </div>
+
+  {/* WCAG 2.2.2 — anything that moves for more than five seconds needs a stop. */}
+  {
+    hasVideo && !isGif && (
+      <button type="button" class="hero__videotoggle" data-hero-videotoggle hidden>
+        <span class="hero__videotoggle-icon" aria-hidden="true" />
+        <span data-hero-videotoggle-label>Pause background video</span>
+      </button>
+    )
+  }
+
+  <!-- Proof strip: the three figures a buyer scans for before reading anything -->
+  <div class="hero__stats">
+    <div class="container">
+      <dl>
+        {
+          hero.quickStats.map((stat) => (
+            <div class="hero__stat">
+              <dd data-countup>{stat.value}</dd>
+              <dt>{stat.label}</dt>
+            </div>
+          ))
+        }
+        <div class="hero__stat hero__stat--link">
+          <a href="/infrastructure" class="link-arrow">
+            See the plant
+            <Icon name="arrow-right" size={15} />
+          </a>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* ----------------------------------------------------------------------
+   * Background video: start it only when it is both on screen and wanted.
+   * Off-screen playback is paused rather than left running, which is the
+   * single biggest saving on a looping background clip.
+   * -------------------------------------------------------------------- */
+  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-hero-videotoggle]');
+
+  if (video) {
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    /* Paused by the visitor, as opposed to paused because it scrolled away. */
+    let stoppedByUser = motionQuery.matches;
+
+    const label = toggle?.querySelector('[data-hero-videotoggle-label]');
+    const syncToggle = () => {
+      if (!toggle || !label) return;
+      toggle.classList.toggle('is-paused', stoppedByUser);
+      label.textContent = stoppedByUser ? 'Play background video' : 'Pause background video';
+    };
+
+    const attemptPlay = () => {
+      if (stoppedByUser) return;
+      /* Autoplay can still be refused (low power mode, data saver). Nothing to
+         recover from — the poster stays up. */
+      video.play().catch(() => {});
+    };
+
+    if (toggle) {
+      toggle.hidden = false;
+      toggle.addEventListener('click', () => {
+        stoppedByUser = !stoppedByUser;
+        if (stoppedByUser) video.pause();
+        else attemptPlay();
+        syncToggle();
+      });
+      syncToggle();
+    }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) attemptPlay();
+          else video.pause();
+        },
+        { threshold: 0.15 }
+      ).observe(video);
+    } else {
+      attemptPlay();
+    }
+
+    /* Respect a mid-session change to the OS motion setting. */
+    motionQuery.addEventListener('change', (e) => {
+      stoppedByUser = e.matches;
+      if (stoppedByUser) video.pause();
+      else attemptPlay();
+      syncToggle();
+    });
+  }
+
+  /* ----------------------------------------------------------------------
+   * Proof-strip figures count up once, on first view. Values like "20–250 T"
+   * or "100%" keep their prefix/suffix; only the leading number animates.
+   * -------------------------------------------------------------------- */
+  const counters = document.querySelectorAll<HTMLElement>('[data-countup]');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (counters.length && !reducedMotion && 'IntersectionObserver' in window) {
+    const countObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          countObserver.unobserve(el);
+
+          const raw = el.textContent ?? '';
+          const match = raw.match(/^(\D*)(\d+)(.*)$/s);
+          if (!match) return;
+
+          const [, prefix, digits, suffix] = match;
+          const target = Number(digits);
+          if (!Number.isFinite(target) || target === 0) return;
+
+          const duration = 900;
+          const start = performance.now();
+
+          const tick = (now: number) => {
+            const progress = Math.min((now - start) / duration, 1);
+            /* easeOutExpo: fast commit, soft landing on the real figure. */
+            const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+            el.textContent = `${prefix}${Math.round(eased * target)}${suffix}`;
+            if (progress < 1) requestAnimationFrame(tick);
+            else el.textContent = raw;
+          };
+
+          requestAnimationFrame(tick);
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    counters.forEach((el) => countObserver.observe(el));
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    background: var(--ink-900);
+  }
+
+  /* Asymmetric split — content column is narrower than the media, and the
+     media bleeds to the right viewport edge rather than sitting in the grid. */
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: stretch;
+    min-height: clamp(480px, 62vh, 660px);
+  }
+
+  @media (max-width: 900px) {
+    .hero__grid {
+      grid-template-columns: minmax(0, 1fr);
+      min-height: 0;
+    }
+  }
+
+  .hero__content {
+    display: flex;
+    align-items: center;
+    padding-block: clamp(3rem, 2rem + 5vw, 6rem);
+    /* Align the left edge with .container while letting the column stretch. */
+    padding-left: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter)));
+    padding-right: clamp(1.5rem, 1rem + 3vw, 4rem);
+  }
+
+  .hero__content-inner {
+    max-width: 40rem;
+  }
+
+  .hero__kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-300);
+    margin: 0 0 var(--sp-5);
+  }
+
+  .hero__kicker-bar {
+    width: 32px;
+    height: 3px;
+    background: var(--ge-red);
+    flex: none;
+  }
+
+  .hero__title {
+    font-size: var(--fs-display);
+    font-weight: 600;
+    line-height: var(--lh-tight);
+    letter-spacing: var(--tracking-display);
+    color: #fff;
+    margin: 0;
+    max-width: 16ch;
+  }
+
+  .hero__lead {
+    font-size: var(--fs-lead);
+    line-height: var(--lh-body);
+    color: var(--text-on-dark-muted);
+    max-width: 54ch;
+    margin: var(--sp-6) 0 0;
+  }
+
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    margin-top: var(--sp-7);
+  }
+
+  /* ---- Video mode --------------------------------------------------------
+     The clip fills the section, so the copy column loses its neighbour and
+     steps down a size to give the footage room to read. */
+
+  .hero--video .hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: clamp(540px, 78vh, 820px);
+  }
+
+  .hero--video .hero__content-inner {
+    max-width: 34rem;
+  }
+
+  .hero--video .hero__title {
+    font-size: var(--fs-h1);
+    max-width: 18ch;
+  }
+
+  .hero--video .hero__lead {
+    font-size: 1.0625rem;
+    max-width: 46ch;
+    margin-top: var(--sp-5);
+    /* Brighter than the usual on-dark muted tone: over a scrim rather than a
+       solid panel, #a8b0bb drops to 3:1 against a bright frame. This holds
+       6.2:1 in the worst case. */
+    color: #dfe4ea;
+  }
+
+  .hero--video .hero__ctas {
+    margin-top: var(--sp-6);
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .hero__bg-media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Two passes: a left-weighted wash that holds the headline above 4.5:1, and
+     a full-surface darken so the CTAs stay legible over a bright frame. The
+     stops are set for the worst case — an overexposed white frame — where the
+     copy column still measures 7.9:1 for the headline and 6.2:1 for the lead. */
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(11, 13, 16, 0.94) 0%,
+        rgba(11, 13, 16, 0.82) 34%,
+        rgba(11, 13, 16, 0.5) 68%,
+        rgba(11, 13, 16, 0.3) 100%
+      ),
+      linear-gradient(180deg, rgba(11, 13, 16, 0.45) 0%, transparent 30%, rgba(11, 13, 16, 0.55) 100%);
+  }
+
+  @media (max-width: 900px) {
+    .hero__scrim {
+      background: linear-gradient(180deg, rgba(11, 13, 16, 0.72) 0%, rgba(11, 13, 16, 0.88) 70%),
+        rgba(11, 13, 16, 0.3);
+    }
+  }
+
+  .hero--video .hero__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ---- Video toggle ------------------------------------------------------ */
+
+  .hero__videotoggle {
+    position: absolute;
+    right: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+    /* Clears the proof strip, which is anchored to the section's bottom edge. */
+    bottom: clamp(6.5rem, 5rem + 6vw, 9rem);
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--text-on-dark);
+    background: rgba(11, 13, 16, 0.55);
+    border: 1px solid var(--border-on-dark);
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+
+  .hero__videotoggle:hover {
+    background: rgba(11, 13, 16, 0.8);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Two bars for pause, a triangle for play — drawn in CSS so the toggle
+     costs nothing extra. */
+  .hero__videotoggle-icon {
+    width: 9px;
+    height: 11px;
+    border-left: 3px solid currentColor;
+    border-right: 3px solid currentColor;
+    transition: border-width var(--dur) var(--ease);
+  }
+
+  .hero__videotoggle.is-paused .hero__videotoggle-icon {
+    width: 0;
+    height: 0;
+    border-left: 9px solid currentColor;
+    border-right: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+  }
+
+  @media (max-width: 640px) {
+    .hero__videotoggle span:not(.hero__videotoggle-icon) {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
+  /* ---- Media ------------------------------------------------------------ */
+
+  .hero__media {
+    position: relative;
+    overflow: hidden;
+    background: #14171c;
+    min-height: 320px;
+  }
+
+  .hero__media :global(.hero__img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__media :global(.ph) {
+    min-height: 320px;
+  }
+
+  /* A short gradient on the seam keeps the photo from fighting the headline. */
+  .hero__media::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 120px;
+    background: linear-gradient(90deg, var(--ink-900), transparent);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .hero__content {
+      padding-inline: var(--gutter);
+    }
+    .hero__media {
+      min-height: 260px;
+      aspect-ratio: 16 / 10;
+    }
+    .hero__media::before {
+      inset: 0 0 auto 0;
+      width: auto;
+      height: 80px;
+      background: linear-gradient(180deg, var(--ink-900), transparent);
+    }
+  }
+
+  /* ---- Proof strip ------------------------------------------------------- */
+
+  .hero__stats {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border-on-dark);
+    background: #0e1116;
+  }
+
+  .hero--video .hero__stats {
+    background: rgba(14, 17, 22, 0.86);
+    backdrop-filter: blur(10px);
+  }
+
+  .hero__stats dl {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    margin: 0;
+    gap: 0;
+  }
+
+  .hero__stat {
+    padding: var(--sp-5) var(--sp-5) var(--sp-5) 0;
+    border-right: 1px solid var(--border-on-dark);
+  }
+
+  .hero__stat:first-child {
+    padding-left: 0;
+  }
+
+  .hero__stat:not(:first-child) {
+    padding-left: var(--sp-5);
+  }
+
+  .hero__stat--link {
+    display: flex;
+    align-items: center;
+    border-right: 0;
+    padding-right: 0;
+  }
+
+  .hero__stat dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2rem);
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+
+  .hero__stat dt {
+    font-size: var(--fs-xs);
+    color: var(--ink-400);
+    margin-top: 0.35rem;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 780px) {
+    .hero__stats dl {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .hero__stat--link {
+      display: none;
+    }
+    .hero__stat:last-of-type {
+      border-right: 0;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .hero__stats dl {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .hero__stat {
+      border-right: 0;
+      border-bottom: 1px solid var(--border-on-dark);
+      padding-left: 0 !important;
+    }
+    .hero__stat:last-of-type {
+      border-bottom: 0;
+    }
+  }
+</style>

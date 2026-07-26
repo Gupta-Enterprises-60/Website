@@ -1,0 +1,16 @@
+{
+  "name": "Milling / MTR Machines",
+  "group": "tool-room",
+  "quantity": 2,
+  "order": 40,
+  "specs": [
+    {
+      "label": "Quantity",
+      "value": "2"
+    },
+    {
+      "label": "Applications",
+      "value": "Die and fixture component milling"
+    }
+  ]
+}

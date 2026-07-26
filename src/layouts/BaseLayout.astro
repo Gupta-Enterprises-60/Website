@@ -1,0 +1,157 @@
+---
+// Hashed URLs for the two faces that render above the fold, so they can be
+// preloaded rather than discovered after the stylesheet parses.
+import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2?url';
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+
+import '../styles/fonts.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/system.css';
+
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { site } from '../lib/site';
+import { graph, absoluteUrl, type Crumb, breadcrumbSchema } from '../lib/seo';
+
+export interface Props {
+  title: string;
+  description: string;
+  /** Path only, e.g. "/products". Canonical is built from the deploy origin. */
+  canonical?: string;
+  image?: string;
+  noindex?: boolean;
+  /** Additional JSON-LD nodes merged into the page @graph. */
+  schema?: object[];
+  breadcrumbs?: Crumb[];
+  ogType?: 'website' | 'article';
+  /** Suppresses the "| Gupta Enterprises" suffix (home page only). */
+  bareTitle?: boolean;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  image,
+  noindex = false,
+  schema = [],
+  breadcrumbs,
+  ogType = 'website',
+  bareTitle = false,
+  bodyClass = '',
+} = Astro.props;
+
+// Astro.site comes from astro.config.mjs; Astro.url is the page being built.
+const origin = Astro.site?.origin ?? site.url;
+const canonicalPath = canonical ?? Astro.url.pathname;
+const canonicalUrl = absoluteUrl(canonicalPath, origin).replace(/(.+)\/$/, '$1');
+
+const fullTitle = bareTitle ? title : site.seo.titleTemplate.replace('%s', title);
+const ogImage = absoluteUrl(image ?? site.seo.defaultImage, origin);
+
+const nodes = [...schema];
+if (breadcrumbs?.length) nodes.push(breadcrumbSchema(breadcrumbs, origin));
+const jsonLd = graph(nodes, origin);
+---
+
+<!doctype html>
+<html lang={site.lang} class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!--
+      Preload the display and body faces. Both are needed for first paint of
+      the headline and lead paragraph on every page, so discovering them via
+      the stylesheet costs a round trip we can avoid.
+    -->
+    <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {!noindex && <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={site.locale} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Icons & theme -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0b0d10" />
+
+    <!-- Business metadata used by some crawlers and directories -->
+    <meta name="geo.region" content="IN-HR" />
+    <meta name="geo.placename" content={site.contact.city} />
+    <meta name="author" content={site.name} />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+    <!--
+      Flips the `no-js` class before first paint so scroll-reveal styles only
+      apply when the observer below can actually clear them.
+    -->
+    <script is:inline>
+      document.documentElement.classList.remove('no-js');
+    </script>
+
+    <slot name="head" />
+  </head>
+
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      /* --------------------------------------------------------------------
+       * Scroll reveal. One observer for the whole page, unobserving as it
+       * goes. Falls back to showing everything if IntersectionObserver is
+       * unavailable or the user prefers reduced motion.
+       * ------------------------------------------------------------------ */
+      const reveals = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduced || !('IntersectionObserver' in window)) {
+        reveals.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              const el = entry.target as HTMLElement;
+              const delay = Number(el.dataset.revealDelay ?? 0);
+              window.setTimeout(() => el.classList.add('is-visible'), delay);
+              observer.unobserve(el);
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+        );
+        reveals.forEach((el) => observer.observe(el));
+      }
+    </script>
+  </body>
+</html>

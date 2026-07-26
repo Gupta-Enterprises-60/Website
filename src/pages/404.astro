@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/ui/Icon.astro';
+
+const suggestions = [
+  { label: 'Product catalog', href: '/products', icon: 'box', text: 'Filter by category, industry, process or material' },
+  { label: 'Manufacturing capabilities', href: '/capabilities', icon: 'cog', text: 'Stamping, laser, machining, welding, tooling' },
+  { label: 'Machine list', href: '/infrastructure/machines', icon: 'factory', text: 'Every machine, with capacity' },
+  { label: 'Request a quote', href: '/rfq', icon: 'file-text', text: 'Upload a drawing and get a costed quotation' },
+];
+---
+
+<BaseLayout
+  title="Page Not Found"
+  description="The page you were looking for does not exist. Browse our product catalog, manufacturing capabilities or send us a drawing."
+  noindex
+>
+  <section class="section section--lg">
+    <div class="container">
+      <div class="nf">
+        <div class="nf__main">
+          <p class="nf__code">404</p>
+          <h1 class="nf__title">This page isn't in the catalog.</h1>
+          <p class="nf__lead">
+            The link may be out of date, or the page may have moved. Nothing is broken on our end
+            that we know of — but if you followed a link from somewhere and it should work,
+            <a href="/contact">tell us</a> and we will fix it.
+          </p>
+
+          <div class="btn-row nf__actions">
+            <a href="/" class="btn btn--primary">
+              <Icon name="arrow-left" size={17} />
+              Back to home
+            </a>
+            <a href="/rfq" class="btn btn--outline">Request a quote</a>
+          </div>
+        </div>
+
+        <div class="nf__aside">
+          <p class="nf__aside-title">Try one of these</p>
+          <ul class="nf__links">
+            {
+              suggestions.map((item) => (
+                <li>
+                  <a href={item.href}>
+                    <Icon name={item.icon} size={20} stroke={1.7} />
+                    <span>
+                      <strong>{item.label}</strong>
+                      <em>{item.text}</em>
+                    </span>
+                    <Icon name="arrow-right" size={15} class="nf__arrow" />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .nf {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .nf__code {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 3rem + 5vw, 7rem);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-150);
+    margin: 0 0 var(--sp-5);
+  }
+
+  .nf__title {
+    font-size: clamp(1.75rem, 1.3rem + 2.2vw, 2.875rem);
+    margin: 0 0 var(--sp-5);
+    max-width: 22ch;
+  }
+
+  .nf__lead {
+    font-size: var(--fs-lead);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    margin: 0;
+    max-width: 56ch;
+  }
+
+  .nf__lead a {
+    color: var(--ge-red-ink);
+    font-weight: 500;
+  }
+
+  .nf__actions {
+    margin-top: var(--sp-7);
+  }
+
+  .nf__aside-title {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin: 0 0 var(--sp-4);
+    padding-bottom: var(--sp-3);
+    border-bottom: 2px solid var(--ink-900);
+  }
+
+  .nf__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nf__links li {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nf__links a {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr) 16px;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-4) 0;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .nf__links :global(svg) {
+    color: var(--ge-red-ink);
+  }
+
+  .nf__links strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .nf__links em {
+    display: block;
+    font-style: normal;
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    margin-top: 0.1rem;
+    line-height: 1.4;
+  }
+
+  .nf__arrow {
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .nf__links a:hover .nf__arrow {
+    opacity: 1;
+    transform: none;
+  }
+
+  .nf__links a:hover strong {
+    color: var(--ge-red-ink);
+  }
+</style>

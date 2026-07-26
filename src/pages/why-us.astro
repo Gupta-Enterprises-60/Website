@@ -1,0 +1,325 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import SectionHead from '../components/sections/SectionHead.astro';
+import CTABand from '../components/sections/CTABand.astro';
+import Icon from '../components/ui/Icon.astro';
+import FeatureGrid from '../components/ui/FeatureGrid.astro';
+import company from '../data/company.json';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Why choose us' }];
+
+/**
+ * Buyer objections, answered directly. This section is the reason the page
+ * exists — a supplier page that only lists strengths does not help a sourcing
+ * manager who is already sceptical.
+ */
+const objections = [
+  {
+    concern: '"You are smaller than our usual supply base."',
+    answer:
+      'True — we are a 50-person operation with two units, not a multi-plant group. What that buys you is direct access: the people who quote your part run the shop that makes it, and a tooling problem gets escalated to a decision-maker the same day. What it costs you is the buffer capacity of a very large supplier, which is why we are explicit about volumes we can and cannot absorb before we accept a programme.',
+  },
+  {
+    concern: '"You hold ISO 9001, not IATF 16949."',
+    answer:
+      'Correct, and we say so on our certifications page rather than leaving it to be found. Our ISO 9001:2015 system covers production and inspection, we inspect 100% of parts against customer drawings, and we welcome customer audits. If IATF certification is a hard gate for your supply base, tell us at enquiry stage — we would rather lose the enquiry than waste your qualification cycle.',
+  },
+  {
+    concern: '"Your recent turnover figure is from FY 2022–23."',
+    answer:
+      'That is the latest audited figure we publish. We are happy to share current financial statements directly with serious enquiries under NDA, along with bank references and statutory details for your vendor onboarding pack.',
+  },
+  {
+    concern: '"We need a supplier who exports."',
+    answer:
+      'Our current customer base is Indian OEMs and Tier-1 suppliers. We are building export-standard documentation and packaging practice and we welcome international enquiries — with the honest caveat that we will discuss compliance requirements and timelines openly before committing rather than promising and discovering later.',
+  },
+  {
+    concern: '"Coating is not done in your plant."',
+    answer:
+      'It is not, and we do not list it as an in-house capability. Surface finishing is managed through qualified partners under our purchase order, with coated parts returning to us for inspection before dispatch. You get one PO and one point of accountability; you also get a clear answer during your audit.',
+  },
+];
+---
+
+<BaseLayout
+  title="Why Choose Us — Single-Source Supply"
+  description="What changes when tooling, fabrication and inspection sit under one roof — plus honest answers to the objections procurement teams actually raise."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    kicker="Why Gupta Enterprises"
+    title="Built to be a supplier you don't have to manage"
+    lead="Procurement teams do not need another vendor to chase. Six reasons buyers keep coming back — and, further down, straight answers to the objections we hear most."
+    breadcrumbs={crumbs}
+    stats={[
+      { label: 'In-house capabilities', value: '6' },
+      { label: 'Press capacity', value: '20–250 T' },
+      { label: 'Parts inspected', value: '100%' },
+      { label: 'Standby power', value: '144 kVA' },
+    ]}
+  />
+
+  <!-- ===== The advantage ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="advantage">
+        <aside class="advantage__panel" data-reveal>
+          <p class="advantage__kicker">The Gupta advantage</p>
+          <p class="advantage__statement">One shop. Full control. From die design to dispatch.</p>
+          <p class="advantage__sub">
+            Everything that shapes your part's quality, cost and timeline stays in-house.
+          </p>
+        </aside>
+
+        <FeatureGrid items={company.whyUs} columns={2} headingLevel={2} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Comparison ===== -->
+  <section class="section section--sunken">
+    <div class="container">
+      <SectionHead
+        kicker="The difference"
+        title="Single-source versus a vendor chain"
+        lead="The usual failure mode in fabricated components is not any single operation — it is the handovers between them."
+        wide
+      />
+
+      <div class="table-scroll" data-reveal>
+        <table class="data-table compare">
+          <thead>
+            <tr>
+              <th scope="col">What happens when…</th>
+              <th scope="col">Typical multi-vendor route</th>
+              <th scope="col">Gupta Enterprises</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">A die needs a revision</th>
+              <td>Parts ship to the tool vendor and queue behind their other customers. Weeks.</td>
+              <td class="compare__ours">The die moves 20 metres to our own tool room. Days.</td>
+            </tr>
+            <tr>
+              <th scope="row">A dimension drifts mid-run</th>
+              <td>Discovered at the next vendor, or at your goods-inward. Blame is contested.</td>
+              <td class="compare__ours">Caught at the in-process check that follows the operation causing it.</td>
+            </tr>
+            <tr>
+              <th scope="row">The part needs machining after forming</th>
+              <td>Two transport legs, two goods-inward checks, a week you cannot see.</td>
+              <td class="compare__ours">Machined in the unit next door. The part never leaves.</td>
+            </tr>
+            <tr>
+              <th scope="row">Volume ramps from 500 to 50,000</th>
+              <td>Re-source, re-qualify, re-run first article with a new supplier.</td>
+              <td class="compare__ours">Laser to progressive die, same plant, same quality system.</td>
+            </tr>
+            <tr>
+              <th scope="row">The grid goes down</th>
+              <td>Production stops. Your delivery date moves.</td>
+              <td class="compare__ours">144 kVA of standby generation carries the shop through.</td>
+            </tr>
+            <tr>
+              <th scope="row">Something goes wrong</th>
+              <td>Three suppliers, three explanations, no single owner.</td>
+              <td class="compare__ours">One purchase order, one point of accountability.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Objections ===== -->
+  <section class="section">
+    <div class="container container--narrow">
+      <SectionHead
+        kicker="Straight answers"
+        title="The objections we hear — and our honest response"
+        lead="Every supplier has limits. We would rather you learn ours here than three weeks into a qualification cycle."
+        wide
+      />
+
+      <ul class="objections">
+        {
+          objections.map((item, i) => (
+            <li class="objection" data-reveal data-reveal-delay={(i % 3) * 50}>
+              <p class="objection__concern">
+                <Icon name="quote" size={20} stroke={1.6} />
+                {item.concern}
+              </p>
+              <p class="objection__answer">{item.answer}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="objections__foot" data-reveal>
+        Have a concern that is not here? <a href="/contact">Ask us directly</a> — we will answer it
+        the same way.
+      </p>
+    </div>
+  </section>
+
+  <CTABand
+    kicker="Evaluate us properly"
+    title="Visit the plant before you place an order."
+    text="Several of our current Tier-1 relationships began with a factory visit. Come and see the tool room, the press floor and the inspection station in use."
+    primaryCta={{ label: 'Arrange a visit', href: '/contact' }}
+    secondaryCta={{ label: 'Request a quote', href: '/rfq' }}
+  />
+</BaseLayout>
+
+<style>
+  /* ---- Advantage layout ---------------------------------------------------- */
+
+  .advantage {
+    display: grid;
+    grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+    gap: clamp(2rem, 1rem + 4vw, 4.5rem);
+    align-items: start;
+  }
+
+  @media (max-width: 940px) {
+    .advantage {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .advantage__panel {
+    background: var(--ink-900);
+    color: #fff;
+    padding: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+    border-left: 4px solid var(--ge-red);
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+  }
+
+  @media (max-width: 940px) {
+    .advantage__panel {
+      position: static;
+    }
+  }
+
+  .advantage__kicker {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: #ff6b66;
+    margin: 0 0 var(--sp-5);
+  }
+
+  .advantage__statement {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);
+    font-weight: 600;
+    line-height: 1.18;
+    letter-spacing: var(--tracking-heading);
+    margin: 0 0 var(--sp-4);
+  }
+
+  .advantage__sub {
+    font-size: var(--fs-sm);
+    color: var(--ink-400);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ---- Comparison table ----------------------------------------------------- */
+
+  .compare {
+    min-width: 760px;
+    background: var(--white);
+  }
+
+  .compare th[scope='row'] {
+    font-weight: 600;
+    color: var(--ink-900);
+    border-bottom: 1px solid var(--border);
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: var(--fs-sm);
+    padding: 0.95rem var(--sp-4) 0.95rem var(--sp-4);
+    vertical-align: top;
+    white-space: normal;
+  }
+
+  .compare thead th:first-child {
+    padding-left: var(--sp-4);
+  }
+
+  .compare td {
+    color: var(--text-muted);
+    padding-left: var(--sp-4);
+    padding-right: var(--sp-4);
+  }
+
+  .compare__ours {
+    color: var(--ink-900);
+    font-weight: 500;
+    background: var(--ge-red-wash);
+    border-left: 3px solid var(--ge-red);
+  }
+
+  /* ---- Objections ----------------------------------------------------------- */
+
+  .objections {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .objection {
+    padding: var(--sp-6) 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .objection__concern {
+    display: flex;
+    gap: var(--sp-3);
+    align-items: flex-start;
+    font-family: var(--font-display);
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    color: var(--ink-900);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .objection__concern :global(svg) {
+    color: var(--ge-red);
+    flex: none;
+    margin-top: 0.15rem;
+  }
+
+  .objection__answer {
+    font-size: var(--fs-body);
+    color: var(--text-muted);
+    line-height: var(--lh-relaxed);
+    margin: 0;
+    padding-left: calc(20px + var(--sp-3));
+  }
+
+  @media (max-width: 560px) {
+    .objection__answer {
+      padding-left: 0;
+    }
+  }
+
+  .objections__foot {
+    margin-top: var(--sp-6);
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+  }
+
+  .objections__foot a {
+    color: var(--ge-red-ink);
+    font-weight: 500;
+  }
+</style>

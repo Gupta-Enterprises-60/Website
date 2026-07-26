@@ -1,0 +1,17 @@
+{
+  "name": "Diesel Generator — 82 kVA",
+  "group": "power",
+  "quantity": 1,
+  "capacity": "82 kVA",
+  "order": 10,
+  "specs": [
+    {
+      "label": "Rating",
+      "value": "82 kVA"
+    },
+    {
+      "label": "Coverage",
+      "value": "Press shop & fabrication"
+    }
+  ]
+}

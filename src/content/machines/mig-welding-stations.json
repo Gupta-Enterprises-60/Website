@@ -1,0 +1,22 @@
+{
+  "name": "MIG Welding Stations",
+  "group": "welding",
+  "quantity": 12,
+  "capacity": "400 A",
+  "order": 10,
+  "specs": [
+    {
+      "label": "Quantity",
+      "value": "12 stations"
+    },
+    {
+      "label": "Rating",
+      "value": "400 A"
+    },
+    {
+      "label": "Fixturing",
+      "value": "Dedicated fixtures, built in-house"
+    }
+  ],
+  "notes": "Structural and general joining across sheet and tube, always fixtured for repeatable geometry."
+}
