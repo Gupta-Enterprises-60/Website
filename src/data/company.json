@@ -191,35 +191,35 @@
   "clients": [
     {
       "name": "Neel Metal Products",
-      "logo": ""
-    },
-    {
-      "name": "Neel Auto",
-      "logo": ""
+      "logo": "images/clients/neel metal.jpg"
     },
     {
       "name": "Metal Man Auto",
-      "logo": ""
+      "logo": "https://www.metalmanauto.com/apple-icon.png?9064c9e98e6c4756"
     },
     {
       "name": "Metal Man Micro Turners",
-      "logo": ""
+      "logo": "https://static.ambitionbox.com/alpha/company/photos/logos/metal-man-micro-turners.jpg"
     },
     {
       "name": "Satyam Auto Components",
-      "logo": ""
+      "logo": "https://www.satyamauto.in/images/logo_big.png"
     },
     {
       "name": "Caparo Engineering",
-      "logo": ""
+      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdoTF-LMPA-9O3HT3ugSwUEeLmWkYWUG4P0wY_HMTf3g&s=10"
     },
     {
       "name": "Badve Engineering",
-      "logo": ""
+      "logo": "https://translationindia.com/blog/images/gr.jpg"
     },
     {
       "name": "Victora Engg Tools",
-      "logo": ""
+      "logo": "https://cdn.theorg.com/dfc762c3-bbc4-4010-b7d3-62846537697f_medium.jpg"
+    },
+    {
+      "name": "Belrise Industries",
+      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPswoFesrw4hyTOZVR29K21ktrzOa3Cs-xNj4HfcICiA&s=10"
     }
   ],
   "clientsNote": "We supply components to leading Indian automotive parts manufacturers — many of them repeat, multi-year customers.",
